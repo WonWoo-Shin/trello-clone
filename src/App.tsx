@@ -1,3 +1,4 @@
+import Boards from "./components/Boards";
 import { BoardCanvas, BoardHeader, Header, Main, Surface } from "./style/style";
 
 function App() {
@@ -6,7 +7,9 @@ function App() {
       <Header></Header>
       <Main>
         <BoardHeader></BoardHeader>
-        <BoardCanvas></BoardCanvas>
+        <BoardCanvas>
+          <Boards />
+        </BoardCanvas>
       </Main>
     </Surface>
   );

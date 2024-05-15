@@ -26,5 +26,23 @@ export const BoardHeader = styled.div`
 
 export const BoardCanvas = styled.div`
   background-color: ${(props) => props.theme.boardCanvasColor};
+  padding: 12px;
   flex-grow: 1;
+`;
+
+export const BoardsStyle = styled.ul`
+  display: flex;
+  background-color: gray;
+`;
+
+export const Board = styled.li`
+  width: 275px;
+  min-height: 90px;
+  background-color: #f1f2f4;
+  margin-right: 12px;
+`;
+
+export const AnotherList = styled.div`
+  flex-grow: 1;
+  background-color: skyblue;
 `;
