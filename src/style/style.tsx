@@ -46,6 +46,7 @@ export const BoardContainer = styled.div`
   padding: 8px;
   background-color: #f1f2f4;
   border-radius: 12px;
+  box-shadow: 0px 1px 1px #091e4240;
 `;
 
 export const BoardTitle = styled.h2`
@@ -64,11 +65,16 @@ export const Cards = styled.ul`
 `;
 
 export const Card = styled.li`
+  color: #172b4d;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
   width: 256px;
   height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
   margin-bottom: 8px;
+  padding: 8px 12px;
   box-shadow: 0px 1px 1px #091e4240;
 `;
 

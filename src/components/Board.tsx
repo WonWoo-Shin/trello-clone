@@ -2,10 +2,11 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { BoardBlock, BoardContainer, BoardTitle, Cards } from "../style/style";
 import { memo } from "react";
 import DraggableCard from "./DraggableCard";
+import { ICard } from "../atom";
 
 interface IBoardProps {
   boardId: string;
-  cards: string[];
+  cards: ICard[];
   index: number;
 }
 
@@ -20,7 +21,7 @@ function Board({ boardId, cards, index }: IBoardProps) {
               {(provided) => (
                 <Cards ref={provided.innerRef} {...provided.droppableProps}>
                   {cards.map((card, index) => (
-                    <DraggableCard key={card} card={card} index={index} />
+                    <DraggableCard key={card.id} card={card} index={index} />
                   ))}
                   {provided.placeholder}
                 </Cards>
