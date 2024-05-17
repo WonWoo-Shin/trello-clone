@@ -26,20 +26,50 @@ export const BoardHeader = styled.div`
 
 export const BoardCanvas = styled.div`
   background-color: ${(props) => props.theme.boardCanvasColor};
-  padding: 12px;
   flex-grow: 1;
 `;
 
 export const BoardsStyle = styled.ul`
   display: flex;
-  background-color: gray;
+  height: 100%;
+  padding: 12px 6px;
 `;
 
-export const Board = styled.li`
-  width: 275px;
-  min-height: 90px;
+export const BoardBlock = styled.li`
+  width: 284px;
+  padding: 0 6px;
+`;
+
+export const BoardContainer = styled.div`
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
   background-color: #f1f2f4;
-  margin-right: 12px;
+  border-radius: 12px;
+`;
+
+export const BoardTitle = styled.h2`
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 8px;
+  padding-left: 12px;
+  margin-bottom: 8px;
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+`;
+
+export const Cards = styled.ul`
+  padding: 2px 0;
+`;
+
+export const Card = styled.li`
+  width: 256px;
+  height: 36px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0px 1px 1px #091e4240;
 `;
 
 export const AnotherList = styled.div`

@@ -1,39 +1,27 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { AnotherList, Board, BoardsStyle } from "../style/style";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { AnotherList, BoardsStyle } from "../style/style";
+import { useRecoilValue } from "recoil";
+import { boardsState } from "../atom";
+import Board from "./Board";
 
 function Boards() {
+  const boards = useRecoilValue(boardsState);
+  const onDragEnd = (info: DropResult) => {
+    console.log(info);
+  };
   return (
-    <DragDropContext onDragEnd={() => {}}>
-      <Droppable droppableId="canvas" direction="horizontal">
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="canvas" type="canvas" direction="horizontal">
         {(provided) => (
           <BoardsStyle ref={provided.innerRef} {...provided.droppableProps}>
-            <Draggable draggableId="0" index={0}>
-              {(provided) => (
-                <Board
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                ></Board>
-              )}
-            </Draggable>
-            <Draggable draggableId="1" index={1}>
-              {(provided) => (
-                <Board
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                ></Board>
-              )}
-            </Draggable>
-            <Draggable draggableId="2" index={2}>
-              {(provided) => (
-                <Board
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                ></Board>
-              )}
-            </Draggable>
+            {Object.keys(boards).map((board, index) => (
+              <Board
+                key={board}
+                boardId={board}
+                cards={boards[board]}
+                index={index}
+              />
+            ))}
             {provided.placeholder}
             <AnotherList />
           </BoardsStyle>
