@@ -9,6 +9,11 @@ interface IList {
   [key: string]: ICard[];
 }
 
+export const boardOrderState = atom({
+  key: "boardOrderState",
+  default: ["To do", "Doing", "Done"],
+});
+
 export const boardsState = atom<IList>({
   key: "boardsState",
   default: {
