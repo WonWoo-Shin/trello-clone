@@ -1,13 +1,12 @@
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { AnotherList, BoardsStyle } from "../style/style";
 import { useRecoilState } from "recoil";
-import { boardOrderState, boardsState } from "../atom";
+import { DefaultBoard, boardOrderState, boardsState } from "../atom";
 import Board from "./Board";
 
 function Boards() {
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [boards, setBoards] = useRecoilState(boardsState);
-  console.log(boardOrder);
   const onDragEnd = ({ source, destination, type }: DropResult) => {
     if (!destination) return;
     // 보드 이동
@@ -23,7 +22,9 @@ function Boards() {
     // 같은 보드 내 카드 이동
     if (source.droppableId === destination?.droppableId) {
       setBoards((currentBoards) => {
-        const copyCards = [...currentBoards[source.droppableId]];
+        const copyCards = [
+          ...currentBoards[source.droppableId as DefaultBoard],
+        ];
         const draggedCard = copyCards.splice(source.index, 1);
         copyCards.splice(destination.index, 0, ...draggedCard);
         return { ...currentBoards, [source.droppableId]: copyCards };
@@ -32,9 +33,11 @@ function Boards() {
     // 다른 보드로 카드 이동
     else if (source.droppableId !== destination?.droppableId) {
       setBoards((currentBoards) => {
-        const copySourceCards = [...currentBoards[source.droppableId]];
+        const copySourceCards = [
+          ...currentBoards[source.droppableId as DefaultBoard],
+        ];
         const copyDestinationCards = [
-          ...currentBoards[destination?.droppableId],
+          ...currentBoards[destination?.droppableId as DefaultBoard],
         ];
         const draggedCard = copySourceCards.splice(source.index, 1);
         copyDestinationCards.splice(destination.index, 0, ...draggedCard);
