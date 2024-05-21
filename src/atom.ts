@@ -5,18 +5,18 @@ export interface ICard {
   text: string;
 }
 
-export type DefaultBoard = "To do" | "Doing" | "Done";
+export type TDefaultBoard = "To do" | "Doing" | "Done";
 
-type typeList = {
-  [key in DefaultBoard]: ICard[];
+type TList = {
+  [key in TDefaultBoard]: ICard[];
 };
 
-export const boardOrderState = atom<DefaultBoard[]>({
+export const boardOrderState = atom<TDefaultBoard[]>({
   key: "boardOrderState",
   default: ["To do", "Doing", "Done"],
 });
 
-export const boardsState = atom<typeList>({
+export const boardsState = atom<TList>({
   key: "boardsState",
   default: {
     "To do": [
