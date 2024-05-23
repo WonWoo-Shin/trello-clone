@@ -42,13 +42,16 @@ export const BoardBlock = styled.li`
 
 export const BoardContainer = styled.div`
   width: 100%;
-  min-height: 80px;
+  min-height: 88px;
   padding: 8px;
   background-color: #f1f2f4;
   border-radius: 12px;
   box-shadow: 0px 1px 1px #091e4240;
   font-size: 14px;
   color: #172b4d;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const BoardTitle = styled.h2`
@@ -56,17 +59,11 @@ export const BoardTitle = styled.h2`
   padding: 6px 8px;
   padding-left: 12px;
   margin-bottom: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
-    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
 `;
 
-export const Cards = styled.ul`
-  padding: 2px 0;
-`;
+export const Cards = styled.ul``;
 
 export const Card = styled.li`
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
-    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
   height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -76,7 +73,8 @@ export const Card = styled.li`
 `;
 
 export const AddCardBtn = styled.div`
-  height: 30px;
+  width: 100%;
+  height: 32px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -85,9 +83,6 @@ export const AddCardBtn = styled.div`
   transition: background-color 0.1s ease;
   svg {
     margin-right: 8px;
-  }
-  span {
-    padding-bottom: 2px;
   }
   &:hover {
     background-color: #d0d5db;
@@ -98,7 +93,6 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(Card)`
   width: 100%;
   border: none;
-  resize: none;
   &:focus {
     outline: none;
   }
@@ -113,13 +107,13 @@ export const SubmitArea = styled.div`
 
 export const SubmitButton = styled.button`
   font-weight: 600;
-  width: 83px;
   height: 100%;
   padding: 6px 12px;
   border: none;
   border-radius: 3px;
   color: #ffffff;
   background-color: #0c66e4;
+  cursor: pointer;
 `;
 
 export const Xmark = styled.div`
@@ -138,5 +132,37 @@ export const Xmark = styled.div`
 
 export const AnotherList = styled.div`
   flex-grow: 1;
-  background-color: skyblue;
+  padding: 0 6px;
+`;
+
+export const AddBoardBtn = styled(AddCardBtn)`
+  width: 272px;
+  height: 44px;
+  border-radius: 12px;
+  padding: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #ffffff3d;
+  &:hover {
+    background-color: #1b85c5;
+  }
+`;
+
+export const AddBoardForm = styled(BoardContainer)`
+  width: 272px;
+  height: 80px;
+`;
+
+export const AddBoardInput = styled.input`
+  width: 100%;
+  height: 32px;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid #8590a2;
+  &:focus {
+    border: 1px solid #388bff;
+    outline: 1px solid #388bff;
+  }
 `;

@@ -1,50 +1,40 @@
 import { memo, useState } from "react";
 import {
-  AddCardBtn,
-  FormInput,
+  AddBoardBtn,
+  AddBoardForm,
+  AddBoardInput,
   SubmitArea,
   SubmitButton,
   Xmark,
 } from "../style/style";
-import { useRecoilState } from "recoil";
-import { TDefaultBoard, boardsState } from "../atom";
+import { useSetRecoilState } from "recoil";
+import { boardOrderState, boardsState } from "../atom";
 
-interface IAddProps {
-  boardId: TDefaultBoard;
-}
-
-function AddCard({ boardId }: IAddProps) {
+function AddBoard() {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
-  const [boards, setBoards] = useRecoilState(boardsState);
+  const setBoardOrder = useSetRecoilState(boardOrderState);
+  const setBoards = useSetRecoilState(boardsState);
   const toggleForm = () => {
     setIsOpen((curr) => !curr);
-    setText("");
   };
-  const addCard = (event: React.FormEvent<HTMLFormElement>) => {
+  const addBoard = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (text === "") {
-      toggleForm();
-      return;
-    }
-    setBoards((currBoards) => {
-      const newBoards = [...currBoards[boardId], { id: Date.now(), text }];
-      return { ...boards, [boardId]: newBoards };
-    });
     setText("");
+    setBoardOrder((curr) => [...curr, text]);
+    setBoards((oldBoards) => {
+      return { ...oldBoards, [text]: [] };
+    });
   };
-
   return isOpen ? (
-    <form onSubmit={addCard}>
-      <FormInput
-        as="input"
-        autoFocus
-        placeholder="Enter a title for this card..."
-        onChange={(event) => setText(event.currentTarget.value)}
+    <AddBoardForm as="form" onSubmit={addBoard}>
+      <AddBoardInput
+        placeholder="Enter list title..."
         value={text}
+        onChange={(event) => setText(event.currentTarget.value)}
       />
       <SubmitArea>
-        <SubmitButton>Add card</SubmitButton>
+        <SubmitButton>Add list</SubmitButton>
         <Xmark onClick={toggleForm}>
           <svg
             fill="none"
@@ -62,9 +52,9 @@ function AddCard({ boardId }: IAddProps) {
           </svg>
         </Xmark>
       </SubmitArea>
-    </form>
+    </AddBoardForm>
   ) : (
-    <AddCardBtn onClick={toggleForm}>
+    <AddBoardBtn onClick={toggleForm}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
@@ -74,9 +64,9 @@ function AddCard({ boardId }: IAddProps) {
       >
         <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
       </svg>
-      <span>Add a card</span>
-    </AddCardBtn>
+      <span>Add another list</span>
+    </AddBoardBtn>
   );
 }
 
-export default memo(AddCard);
+export default memo(AddBoard);

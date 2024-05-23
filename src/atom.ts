@@ -5,13 +5,11 @@ export interface ICard {
   text: string;
 }
 
-export type TDefaultBoard = "To do" | "Doing" | "Done";
-
 type TList = {
-  [key in TDefaultBoard]: ICard[];
+  [key in string]: ICard[];
 };
 
-export const boardOrderState = atom<TDefaultBoard[]>({
+export const boardOrderState = atom<string[]>({
   key: "boardOrderState",
   default: ["To do", "Doing", "Done"],
 });
