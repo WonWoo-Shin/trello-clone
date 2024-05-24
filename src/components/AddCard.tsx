@@ -7,10 +7,10 @@ import {
   Xmark,
 } from "../style/style";
 import { useRecoilState } from "recoil";
-import { TDefaultBoard, boardsState } from "../atom";
+import { boardsState } from "../atom";
 
 interface IAddProps {
-  boardId: TDefaultBoard;
+  boardId: string;
 }
 
 function AddCard({ boardId }: IAddProps) {

@@ -30,6 +30,7 @@ function AddBoard() {
     <AddBoardForm as="form" onSubmit={addBoard}>
       <AddBoardInput
         placeholder="Enter list title..."
+        autoFocus
         value={text}
         onChange={(event) => setText(event.currentTarget.value)}
       />

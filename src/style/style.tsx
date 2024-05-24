@@ -27,6 +27,7 @@ export const BoardHeader = styled.div`
 export const BoardCanvas = styled.div`
   background-color: ${(props) => props.theme.boardCanvasColor};
   flex-grow: 1;
+  font-size: 14px;
 `;
 
 export const BoardsStyle = styled.ul`
@@ -47,7 +48,6 @@ export const BoardContainer = styled.div`
   background-color: #f1f2f4;
   border-radius: 12px;
   box-shadow: 0px 1px 1px #091e4240;
-  font-size: 14px;
   color: #172b4d;
   display: flex;
   flex-direction: column;
@@ -56,6 +56,8 @@ export const BoardContainer = styled.div`
 
 export const BoardTitle = styled.h2`
   font-weight: 600;
+  height: 32px;
+  line-height: 22px;
   padding: 6px 8px;
   padding-left: 12px;
   margin-bottom: 8px;
@@ -70,6 +72,8 @@ export const Card = styled.li`
   margin-bottom: 8px;
   padding: 8px 12px;
   box-shadow: 0px 1px 1px #091e4240;
+  display: flex;
+  align-items: center;
 `;
 
 export const AddCardBtn = styled.div`
@@ -93,6 +97,10 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(Card)`
   width: 100%;
   border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 36px;
   &:focus {
     outline: none;
   }
@@ -141,7 +149,6 @@ export const AddBoardBtn = styled(AddCardBtn)`
   border-radius: 12px;
   padding: 12px;
   color: #ffffff;
-  font-size: 14px;
   font-weight: 600;
   background-color: #ffffff3d;
   &:hover {
@@ -160,9 +167,17 @@ export const AddBoardInput = styled.input`
   padding: 6px 12px;
   margin-bottom: 8px;
   border-radius: 4px;
-  border: 1px solid #8590a2;
+  border: none;
+  outline: 1px solid #8590a2;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 600;
   &:focus {
-    border: 1px solid #388bff;
-    outline: 1px solid #388bff;
+    outline: 2px solid #388bff;
+  }
+  &::placeholder {
+    color: #516079;
+    font-weight: 600;
   }
 `;
