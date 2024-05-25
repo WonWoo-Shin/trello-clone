@@ -54,14 +54,17 @@ export const BoardContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const BoardTitle = styled.h2`
+export const BoardTitle = styled.h2<{ $isShow: boolean }>`
   font-weight: 600;
   height: 32px;
   line-height: 22px;
   padding: 6px 8px;
   padding-left: 12px;
   margin-bottom: 8px;
+  display: ${(props) => props.$isShow && "none"};
 `;
+
+export const BoardInput = styled.input``;
 
 export const Cards = styled.ul``;
 

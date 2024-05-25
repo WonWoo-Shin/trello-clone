@@ -1,5 +1,11 @@
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { BoardBlock, BoardContainer, BoardTitle, Cards } from "../style/style";
+import {
+  BoardBlock,
+  BoardContainer,
+  BoardInput,
+  BoardTitle,
+  Cards,
+} from "../style/style";
 import { memo, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
@@ -14,9 +20,12 @@ interface IBoardProps {
 
 function Board({ boardId, cards, index }: IBoardProps) {
   const [text, setText] = useState(boardId);
+  const [isShow, setIsShow] = useState(false);
+  const toggleShow = () => setIsShow((curr) => !curr);
   const setBoards = useSetRecoilState(boardsState);
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const changeBoardName = () => {
+    toggleShow();
     if (boardId === text) return;
     setBoardOrder((oldOrder) => {
       const targetIndex = oldOrder.indexOf(boardId);
@@ -36,13 +45,22 @@ function Board({ boardId, cards, index }: IBoardProps) {
       {(provided) => (
         <BoardBlock ref={provided.innerRef} {...provided.draggableProps}>
           <BoardContainer>
-            <BoardTitle {...provided.dragHandleProps}>{boardId}</BoardTitle>
-            <input
-              type="text"
-              value={text}
-              onChange={(event) => setText(event.currentTarget.value)}
-              onBlur={changeBoardName}
-            />
+            <BoardTitle
+              {...provided.dragHandleProps}
+              onClick={toggleShow}
+              $isShow={isShow}
+            >
+              {boardId}
+            </BoardTitle>
+            {isShow && (
+              <BoardInput
+                type="text"
+                value={text}
+                onChange={(event) => setText(event.currentTarget.value)}
+                onBlur={changeBoardName}
+                autoFocus
+              />
+            )}
             <Droppable droppableId={boardId}>
               {(provided) => (
                 <Cards ref={provided.innerRef} {...provided.droppableProps}>
