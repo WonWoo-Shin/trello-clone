@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import {
   AddBoardBtn,
   AddBoardForm,
-  AddBoardInput,
+  BoardInput,
   SubmitArea,
   SubmitButton,
   Xmark,
@@ -28,7 +28,7 @@ function AddBoard() {
   };
   return isOpen ? (
     <AddBoardForm as="form" onSubmit={addBoard}>
-      <AddBoardInput
+      <BoardInput
         placeholder="Enter list title..."
         autoFocus
         value={text}

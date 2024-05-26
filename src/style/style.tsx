@@ -64,7 +64,26 @@ export const BoardTitle = styled.h2<{ $isShow: boolean }>`
   display: ${(props) => props.$isShow && "none"};
 `;
 
-export const BoardInput = styled.input``;
+export const BoardInput = styled.input`
+  width: 100%;
+  height: 32px;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: none;
+  outline: 1px solid #8590a2;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 600;
+  &:focus {
+    outline: 2px solid #388bff;
+  }
+  &::placeholder {
+    color: #516079;
+    font-weight: 600;
+  }
+`;
 
 export const Cards = styled.ul``;
 
@@ -162,25 +181,4 @@ export const AddBoardBtn = styled(AddCardBtn)`
 export const AddBoardForm = styled(BoardContainer)`
   width: 272px;
   height: 80px;
-`;
-
-export const AddBoardInput = styled.input`
-  width: 100%;
-  height: 32px;
-  padding: 6px 12px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  border: none;
-  outline: 1px solid #8590a2;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: 600;
-  &:focus {
-    outline: 2px solid #388bff;
-  }
-  &::placeholder {
-    color: #516079;
-    font-weight: 600;
-  }
 `;
