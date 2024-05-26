@@ -26,7 +26,11 @@ function Board({ boardId, cards, index }: IBoardProps) {
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const changeBoardName = () => {
     toggleShow();
-    if (boardId === text) return;
+    if (text === boardId) return;
+    if (text === "") {
+      setText(boardId);
+      return;
+    }
     setBoardOrder((oldOrder) => {
       const targetIndex = oldOrder.indexOf(boardId);
       const newOrder = [...oldOrder];

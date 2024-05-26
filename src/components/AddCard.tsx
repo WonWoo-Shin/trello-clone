@@ -1,11 +1,5 @@
 import { memo, useState } from "react";
-import {
-  AddCardBtn,
-  FormInput,
-  SubmitArea,
-  SubmitButton,
-  Xmark,
-} from "../style/style";
+import { AddCardBtn, FormInput } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardsState } from "../atom";
 import { AddBtn, Submit } from "./Submit";
