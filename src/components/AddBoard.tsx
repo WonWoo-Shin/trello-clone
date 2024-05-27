@@ -19,9 +19,10 @@ function AddBoard() {
       toggleForm();
       return;
     }
-    setBoardOrder((curr) => [...curr, text]);
+    const newBoardId = Date.now();
+    setBoardOrder((curr) => [...curr, newBoardId]);
     setBoards((oldBoards) => {
-      return { ...oldBoards, [text]: [] };
+      return { ...oldBoards, [newBoardId]: { boardName: text, cards: [] } };
     });
     setText("");
   };

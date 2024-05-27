@@ -3,21 +3,20 @@ import { Card } from "../style/style";
 import { memo } from "react";
 import { ICard } from "../atom";
 
-interface ICardProps {
-  card: ICard;
+interface ICardProps extends ICard {
   index: number;
 }
 
-function DraggableCard({ card, index }: ICardProps) {
+function DraggableCard({ cardId, cardText, index }: ICardProps) {
   return (
-    <Draggable draggableId={card.id + ""} index={index}>
+    <Draggable draggableId={cardId + ""} index={index}>
       {(provided) => (
         <Card
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {card.text}
+          {cardText}
         </Card>
       )}
     </Draggable>

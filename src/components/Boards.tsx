@@ -12,8 +12,8 @@ function Boards() {
     if (!destination) return;
     // 보드 이동
     if (type === "canvas") {
-      setBoardOrder((currOrder) => {
-        const newOrder = [...currOrder];
+      setBoardOrder((oldOrder) => {
+        const newOrder = [...oldOrder];
         const draggedItem = newOrder.splice(source.index, 1);
         newOrder.splice(destination.index, 0, ...draggedItem);
         return newOrder;
@@ -22,26 +22,38 @@ function Boards() {
     }
     // 같은 보드 내 카드 이동
     if (source.droppableId === destination?.droppableId) {
-      setBoards((currentBoards) => {
-        const copyCards = [...currentBoards[source.droppableId]];
+      setBoards((oldBoards) => {
+        const copyCards = [...oldBoards[+source.droppableId].cards];
         const draggedCard = copyCards.splice(source.index, 1);
         copyCards.splice(destination.index, 0, ...draggedCard);
-        return { ...currentBoards, [source.droppableId]: copyCards };
+        const newBoard = {
+          ...oldBoards[+source.droppableId],
+          cards: copyCards,
+        };
+        return { ...oldBoards, [+source.droppableId]: newBoard };
       });
     }
     // 다른 보드로 카드 이동
     else if (source.droppableId !== destination?.droppableId) {
-      setBoards((currentBoards) => {
-        const copySourceCards = [...currentBoards[source.droppableId]];
+      setBoards((oldBoards) => {
+        const copySourceCards = [...oldBoards[+source.droppableId].cards];
         const copyDestinationCards = [
-          ...currentBoards[destination?.droppableId],
+          ...oldBoards[+destination?.droppableId].cards,
         ];
         const draggedCard = copySourceCards.splice(source.index, 1);
         copyDestinationCards.splice(destination.index, 0, ...draggedCard);
+        const sourceBoard = {
+          ...oldBoards[+source.droppableId],
+          cards: copySourceCards,
+        };
+        const destinationBoard = {
+          ...oldBoards[+destination.droppableId],
+          cards: copyDestinationCards,
+        };
         return {
-          ...currentBoards,
-          [source.droppableId]: copySourceCards,
-          [destination.droppableId]: copyDestinationCards,
+          ...oldBoards,
+          [+source.droppableId]: sourceBoard,
+          [+destination.droppableId]: destinationBoard,
         };
       });
     }
@@ -51,11 +63,11 @@ function Boards() {
       <Droppable droppableId="canvas" type="canvas" direction="horizontal">
         {(provided) => (
           <BoardsStyle ref={provided.innerRef} {...provided.droppableProps}>
-            {boardOrder.map((board, index) => (
+            {boardOrder.map((boardId, index) => (
               <Board
-                key={board}
-                boardId={board}
-                cards={boards[board]}
+                key={boardId}
+                boardId={boardId}
+                {...boards[boardId]}
                 index={index}
               />
             ))}

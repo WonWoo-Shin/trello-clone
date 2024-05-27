@@ -5,7 +5,7 @@ import { boardsState } from "../atom";
 import { AddBtn, Submit } from "./Submit";
 
 interface IAddProps {
-  boardId: string;
+  boardId: number;
 }
 
 function AddCard({ boardId }: IAddProps) {
@@ -23,8 +23,12 @@ function AddCard({ boardId }: IAddProps) {
       return;
     }
     setBoards((currBoards) => {
-      const newBoards = [...currBoards[boardId], { id: Date.now(), text }];
-      return { ...currBoards, [boardId]: newBoards };
+      const newCards = [
+        ...currBoards[boardId].cards,
+        { cardId: Date.now(), cardText: text },
+      ];
+      const newBoard = { ...currBoards[boardId], cards: newCards };
+      return { ...currBoards, [boardId]: newBoard };
     });
     setText("");
   };
