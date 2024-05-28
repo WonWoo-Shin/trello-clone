@@ -8,7 +8,7 @@ import AddBoard from "./AddBoard";
 function Boards() {
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [boards, setBoards] = useRecoilState(boardsState);
-  const onDragEnd = ({ source, destination, type }: DropResult) => {
+  const dragItem = ({ source, destination, type }: DropResult) => {
     if (!destination) return;
     // 보드 이동
     if (type === "canvas") {
@@ -59,7 +59,7 @@ function Boards() {
     }
   };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={dragItem}>
       <Droppable droppableId="canvas" type="canvas" direction="horizontal">
         {(provided) => (
           <BoardsStyle ref={provided.innerRef} {...provided.droppableProps}>

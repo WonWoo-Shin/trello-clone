@@ -8,9 +8,10 @@ import {
 } from "../style/style";
 import { memo, useState } from "react";
 import DraggableCard from "./DraggableCard";
-import { ICard, boardOrderState, boardsState } from "../atom";
+import { ICard, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
+import skipAnimation from "../functions/skipAnimation";
 
 interface IBoardProps {
   boardId: number;
@@ -38,8 +39,12 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   };
   return (
     <Draggable draggableId={boardId + ""} index={index}>
-      {(provided) => (
-        <BoardBlock ref={provided.innerRef} {...provided.draggableProps}>
+      {(provided, snapshot) => (
+        <BoardBlock
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          style={skipAnimation(provided.draggableProps.style, snapshot)}
+        >
           <BoardContainer>
             <BoardTitle
               {...provided.dragHandleProps}
