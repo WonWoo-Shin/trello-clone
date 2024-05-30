@@ -1,4 +1,3 @@
-import { Draggable } from "react-beautiful-dnd";
 import { Card } from "../style/style";
 import { memo } from "react";
 import { ICard } from "../atom";
@@ -9,20 +8,7 @@ interface ICardProps extends ICard {
 }
 
 function DraggableCard({ cardId, cardText, index }: ICardProps) {
-  return (
-    <Draggable draggableId={cardId + ""} index={index}>
-      {(provided, snapshot) => (
-        <Card
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={skipAnimation(provided.draggableProps.style, snapshot)}
-        >
-          {cardText}
-        </Card>
-      )}
-    </Draggable>
-  );
+  return <Card>{cardText}</Card>;
 }
 
 export default memo(DraggableCard);

@@ -1,4 +1,3 @@
-import { Draggable, Droppable } from "react-beautiful-dnd";
 import {
   BoardBlock,
   BoardContainer,
@@ -38,45 +37,28 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
     });
   };
   return (
-    <Draggable draggableId={boardId + ""} index={index}>
-      {(provided, snapshot) => (
-        <BoardBlock
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          style={skipAnimation(provided.draggableProps.style, snapshot)}
-        >
-          <BoardContainer>
-            <BoardTitle
-              {...provided.dragHandleProps}
-              onClick={toggleShow}
-              $isShow={isShow}
-            >
-              {boardName}
-            </BoardTitle>
-            {isShow && (
-              <BoardInput
-                type="text"
-                value={text}
-                onChange={(event) => setText(event.currentTarget.value)}
-                onBlur={changeBoardName}
-                autoFocus
-              />
-            )}
-            <Droppable droppableId={boardId + ""}>
-              {(provided) => (
-                <Cards ref={provided.innerRef} {...provided.droppableProps}>
-                  {cards.map((card, index) => (
-                    <DraggableCard key={card.cardId} {...card} index={index} />
-                  ))}
-                  {provided.placeholder}
-                </Cards>
-              )}
-            </Droppable>
-            <AddCard boardId={boardId} />
-          </BoardContainer>
-        </BoardBlock>
-      )}
-    </Draggable>
+    <BoardBlock>
+      <BoardContainer>
+        <BoardTitle onClick={toggleShow} $isShow={isShow}>
+          {boardName}
+        </BoardTitle>
+        {isShow && (
+          <BoardInput
+            type="text"
+            value={text}
+            onChange={(event) => setText(event.currentTarget.value)}
+            onBlur={changeBoardName}
+            autoFocus
+          />
+        )}
+        <Cards>
+          {cards.map((card, index) => (
+            <DraggableCard key={card.cardId} {...card} index={index} />
+          ))}
+        </Cards>
+        <AddCard boardId={boardId} />
+      </BoardContainer>
+    </BoardBlock>
   );
 }
 

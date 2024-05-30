@@ -1,4 +1,3 @@
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { AnotherList, BoardsStyle } from "../style/style";
 import { useRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
@@ -8,7 +7,7 @@ import AddBoard from "./AddBoard";
 function Boards() {
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [boards, setBoards] = useRecoilState(boardsState);
-  const dragItem = ({ source, destination, type }: DropResult) => {
+  const dragItem = ({ source, destination, type }: any) => {
     if (!destination) return;
     // 보드 이동
     if (type === "canvas") {
@@ -59,26 +58,19 @@ function Boards() {
     }
   };
   return (
-    <DragDropContext onDragEnd={dragItem}>
-      <Droppable droppableId="canvas" type="canvas" direction="horizontal">
-        {(provided) => (
-          <BoardsStyle ref={provided.innerRef} {...provided.droppableProps}>
-            {boardOrder.map((boardId, index) => (
-              <Board
-                key={boardId}
-                boardId={boardId}
-                {...boards[boardId]}
-                index={index}
-              />
-            ))}
-            {provided.placeholder}
-            <AnotherList>
-              <AddBoard />
-            </AnotherList>
-          </BoardsStyle>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <BoardsStyle>
+      {boardOrder.map((boardId, index) => (
+        <Board
+          key={boardId}
+          boardId={boardId}
+          {...boards[boardId]}
+          index={index}
+        />
+      ))}
+      <AnotherList>
+        <AddBoard />
+      </AnotherList>
+    </BoardsStyle>
   );
 }
 
