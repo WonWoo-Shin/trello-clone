@@ -30,7 +30,7 @@ export const BoardCanvas = styled.div`
   font-size: 14px;
 `;
 
-export const BoardsStyle = styled.ul`
+export const BoardsList = styled.ul`
   display: flex;
   height: 100%;
   padding: 12px 6px;
@@ -52,6 +52,7 @@ export const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transform: translate(0, 0);
 `;
 
 export const BoardTitle = styled.h2<{ $isShow: boolean }>`
@@ -62,6 +63,7 @@ export const BoardTitle = styled.h2<{ $isShow: boolean }>`
   padding-left: 12px;
   margin-bottom: 8px;
   display: ${(props) => props.$isShow && "none"};
+  cursor: pointer;
 `;
 
 export const BoardInput = styled.input`
@@ -84,8 +86,6 @@ export const BoardInput = styled.input`
     font-weight: 600;
   }
 `;
-
-export const Cards = styled.ul``;
 
 export const Card = styled.li`
   height: 36px;

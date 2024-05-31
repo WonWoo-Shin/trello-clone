@@ -3,7 +3,6 @@ import {
   BoardContainer,
   BoardInput,
   BoardTitle,
-  Cards,
 } from "../style/style";
 import { memo, useState } from "react";
 import DraggableCard from "./DraggableCard";
@@ -11,6 +10,7 @@ import { ICard, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import skipAnimation from "../functions/skipAnimation";
+import { useDrag, useDrop } from "react-dnd";
 
 interface IBoardProps {
   boardId: number;
@@ -24,6 +24,19 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
   const setBoards = useSetRecoilState(boardsState);
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: "board",
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "card",
+    drop: () => {},
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
   const changeBoardName = () => {
     toggleShow();
     if (text === boardName) return;
@@ -38,8 +51,8 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   };
   return (
     <BoardBlock>
-      <BoardContainer>
-        <BoardTitle onClick={toggleShow} $isShow={isShow}>
+      <BoardContainer ref={preview}>
+        <BoardTitle ref={drag} onClick={toggleShow} $isShow={isShow}>
           {boardName}
         </BoardTitle>
         {isShow && (
@@ -51,11 +64,11 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
             autoFocus
           />
         )}
-        <Cards>
+        <ul ref={drop}>
           {cards.map((card, index) => (
             <DraggableCard key={card.cardId} {...card} index={index} />
           ))}
-        </Cards>
+        </ul>
         <AddCard boardId={boardId} />
       </BoardContainer>
     </BoardBlock>

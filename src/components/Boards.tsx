@@ -1,12 +1,20 @@
-import { AnotherList, BoardsStyle } from "../style/style";
+import { AnotherList, BoardsList } from "../style/style";
 import { useRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import Board from "./Board";
 import AddBoard from "./AddBoard";
+import { useDrop } from "react-dnd";
 
 function Boards() {
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [boards, setBoards] = useRecoilState(boardsState);
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "board",
+    drop: () => {},
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
   const dragItem = ({ source, destination, type }: any) => {
     if (!destination) return;
     // 보드 이동
@@ -58,7 +66,7 @@ function Boards() {
     }
   };
   return (
-    <BoardsStyle>
+    <BoardsList ref={drop}>
       {boardOrder.map((boardId, index) => (
         <Board
           key={boardId}
@@ -70,7 +78,7 @@ function Boards() {
       <AnotherList>
         <AddBoard />
       </AnotherList>
-    </BoardsStyle>
+    </BoardsList>
   );
 }
 
