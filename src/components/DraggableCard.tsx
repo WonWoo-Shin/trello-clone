@@ -1,7 +1,6 @@
 import { Card } from "../style/style";
 import { memo } from "react";
 import { ICard } from "../atom";
-import skipAnimation from "../functions/skipAnimation";
 import { useDrag } from "react-dnd";
 
 interface ICardProps extends ICard {
@@ -9,13 +8,17 @@ interface ICardProps extends ICard {
 }
 
 function DraggableCard({ cardId, cardText, index }: ICardProps) {
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag({
     type: "card",
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }));
-  return <Card ref={drag}>{cardText}</Card>;
+  });
+  return (
+    <Card ref={drag} $isDragging={isDragging}>
+      {cardText}
+    </Card>
+  );
 }
 
 export default memo(DraggableCard);
