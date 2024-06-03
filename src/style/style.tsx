@@ -39,7 +39,6 @@ export const BoardsList = styled.ul`
 export const BoardBlock = styled.li<{ $isDragging: boolean }>`
   width: 284px;
   padding: 0 6px;
-  display: ${(props) => (props.$isDragging ? "none" : "block")};
 `;
 
 export const BoardTraceBlock = styled.div`
