@@ -12,7 +12,6 @@ import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
-import type { Identifier, XYCoord } from "dnd-core";
 
 interface IBoardProps {
   boardId: number;
@@ -23,42 +22,55 @@ interface IBoardProps {
 
 function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const [text, setText] = useState(boardName);
-  const [isOut, setIsOut] = useState(false);
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
   const setBoards = useSetRecoilState(boardsState);
   const setBoardOrder = useSetRecoilState(boardOrderState);
-  const ref = useRef(null);
+  const moveBoard = (
+    oldBoardOrder: number[],
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
+    const newBoardOrder = [...oldBoardOrder];
+    const draggedBoard = newBoardOrder.splice(sourceIndex, 1);
+    newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
+    return newBoardOrder;
+  };
   const [{ isOver }, drop] = useDrop({
     accept: "board",
-    drop: () => {},
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
     hover(item: any, monitor) {
-      if (boardId === item.boardId) {
+      if (item.boardId === boardId) {
         return;
       }
       setBoardOrder((oldBoardOrder) => {
         const sourceIndex = oldBoardOrder.findIndex(
-          (order) => order === item.boardId
+          (value) => value === item.boardId
         );
         const destinationIndex = oldBoardOrder.findIndex(
-          (order) => order === boardId
+          (value) => value === boardId
         );
-        const newBoardOrder = [...oldBoardOrder];
-        const draggedBoard = newBoardOrder.splice(sourceIndex, 1);
-        newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
-        return newBoardOrder;
+        return moveBoard(oldBoardOrder, sourceIndex, destinationIndex);
       });
     },
   });
   const [{ isDragging }, drag, preview] = useDrag({
     type: "board",
-    item: { boardId },
+    item: { boardId, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end: (item, monitor) => {
+      if (!monitor.didDrop()) {
+        const originalIndex = item.index;
+        const cancleIndex = index;
+        setBoardOrder((oldOrder) => {
+          return moveBoard(oldOrder, cancleIndex, originalIndex);
+        });
+      }
+    },
   });
   const changeBoardName = () => {
     toggleShow();
@@ -72,36 +84,29 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       return { ...oldBoards, [boardId]: newBoard };
     });
   };
-
   return (
-    <>
-      <BoardBlock ref={drop} $isDragging={isDragging}>
-        {isDragging ? (
-          <BoardTrace />
-        ) : (
-          <BoardContainer ref={preview} $isDragging={isDragging}>
-            <BoardTitle ref={drag} onClick={toggleShow} $isShow={isShow}>
-              {boardName}
-            </BoardTitle>
-            {isShow && (
-              <BoardInput
-                type="text"
-                value={text}
-                onChange={(event) => setText(event.currentTarget.value)}
-                onBlur={changeBoardName}
-                autoFocus
-              />
-            )}
-            <ul>
-              {cards.map((card, index) => (
-                <DraggableCard key={card.cardId} {...card} index={index} />
-              ))}
-            </ul>
-            <AddCard boardId={boardId} />
-          </BoardContainer>
+    <BoardBlock ref={drop}>
+      <BoardContainer ref={preview} $isDragging={isDragging}>
+        <BoardTitle ref={drag} onClick={toggleShow} $isShow={isShow}>
+          {boardName}
+        </BoardTitle>
+        {isShow && (
+          <BoardInput
+            type="text"
+            value={text}
+            onChange={(event) => setText(event.currentTarget.value)}
+            onBlur={changeBoardName}
+            autoFocus
+          />
         )}
-      </BoardBlock>
-    </>
+        <ul>
+          {cards.map((card, index) => (
+            <DraggableCard key={card.cardId} {...card} index={index} />
+          ))}
+        </ul>
+        <AddCard boardId={boardId} />
+      </BoardContainer>
+    </BoardBlock>
   );
 }
 

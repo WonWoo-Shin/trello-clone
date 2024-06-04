@@ -36,7 +36,7 @@ export const BoardsList = styled.ul`
   padding: 12px 6px;
 `;
 
-export const BoardBlock = styled.li<{ $isDragging: boolean }>`
+export const BoardBlock = styled.li`
   width: 284px;
   padding: 0 6px;
 `;
