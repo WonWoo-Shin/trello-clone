@@ -6,13 +6,13 @@ import {
   BoardTrace,
   BoardTraceBlock,
 } from "../style/style";
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
-import { useDrag, useDrop } from "react-dnd";
-import BoardPreview from "./Preview";
+import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 interface IBoardProps {
   boardId: number;
@@ -73,6 +73,9 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       }
     },
   });
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
   const changeBoardName = () => {
     toggleShow();
     if (text === boardName) return;
@@ -88,7 +91,6 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   return (
     <BoardBlock ref={drop}>
       <BoardContainer style={isDragging ? { opacity: "0.4" } : {}}>
-        <div ref={preview}></div>
         <BoardTitle
           ref={drag}
           onClick={toggleShow}
@@ -112,7 +114,6 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
         </ul>
         <AddCard boardId={boardId} />
       </BoardContainer>
-      <BoardPreview />
     </BoardBlock>
   );
 }
