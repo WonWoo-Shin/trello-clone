@@ -46,7 +46,7 @@ export const BoardTraceBlock = styled.div`
   padding: 0 6px;
 `;
 
-export const BoardContainer = styled.div<{ $isDragging: boolean }>`
+export const BoardContainer = styled.div`
   width: 100%;
   min-height: 88px;
   padding: 8px;
@@ -58,7 +58,6 @@ export const BoardContainer = styled.div<{ $isDragging: boolean }>`
   flex-direction: column;
   justify-content: space-between;
   transform: translate(0, 0);
-  opacity: ${(props) => (props.$isDragging ? 0.4 : 1)};
 `;
 
 export const BoardTrace = styled.div`
@@ -68,14 +67,13 @@ export const BoardTrace = styled.div`
   background-color: #006aa7;
 `;
 
-export const BoardTitle = styled.h2<{ $isShow: boolean }>`
+export const BoardTitle = styled.h2`
   font-weight: 600;
   height: 32px;
   line-height: 22px;
   padding: 6px 8px;
   padding-left: 12px;
   margin-bottom: 8px;
-  display: ${(props) => props.$isShow && "none"};
   cursor: pointer;
 `;
 
@@ -100,7 +98,7 @@ export const BoardInput = styled.input`
   }
 `;
 
-export const Card = styled.li<{ $isDragging: boolean }>`
+export const Card = styled.li`
   height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -110,7 +108,6 @@ export const Card = styled.li<{ $isDragging: boolean }>`
   display: flex;
   align-items: center;
   transform: translate(0, 0);
-  opacity: ${(props) => (props.$isDragging ? 0.4 : 1)};
 `;
 
 export const AddCardBtn = styled.div`

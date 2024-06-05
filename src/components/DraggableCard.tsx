@@ -14,11 +14,7 @@ function DraggableCard({ cardId, cardText, index }: ICardProps) {
       isDragging: !!monitor.isDragging(),
     }),
   });
-  return (
-    <Card ref={drag} $isDragging={isDragging}>
-      {cardText}
-    </Card>
-  );
+  return <Card ref={drag}>{cardText}</Card>;
 }
 
 export default memo(DraggableCard);

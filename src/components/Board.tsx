@@ -11,7 +11,8 @@ import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
-import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
+import BoardPreview from "./Preview";
 
 interface IBoardProps {
   boardId: number;
@@ -58,7 +59,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   });
   const [{ isDragging }, drag, preview] = useDrag({
     type: "board",
-    item: { boardId, index },
+    item: { boardId, boardName, cards, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -86,8 +87,13 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   };
   return (
     <BoardBlock ref={drop}>
-      <BoardContainer ref={preview} $isDragging={isDragging}>
-        <BoardTitle ref={drag} onClick={toggleShow} $isShow={isShow}>
+      <BoardContainer style={isDragging ? { opacity: "0.4" } : {}}>
+        <div ref={preview}></div>
+        <BoardTitle
+          ref={drag}
+          onClick={toggleShow}
+          style={isShow ? { display: "none" } : {}}
+        >
           {boardName}
         </BoardTitle>
         {isShow && (
@@ -106,6 +112,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
         </ul>
         <AddCard boardId={boardId} />
       </BoardContainer>
+      <BoardPreview />
     </BoardBlock>
   );
 }
