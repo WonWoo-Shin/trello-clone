@@ -1,4 +1,10 @@
-import { AddCardBtn, BoardContainer, BoardTitle, Card } from "../style/style";
+import {
+  AddCardBtn,
+  BoardContainer,
+  BoardTitle,
+  Card,
+  CardDrop,
+} from "../style/style";
 import { ICard } from "../atom";
 import { AddBtn } from "./Submit";
 import { XYCoord, useDragLayer } from "react-dnd";
@@ -67,7 +73,9 @@ function BoardPreview() {
             <BoardTitle>{item.boardName}</BoardTitle>
             <ul>
               {item.cards.map((card, index) => (
-                <Card key={index}>{card.cardText}</Card>
+                <CardDrop key={index}>
+                  <Card>{card.cardText}</Card>
+                </CardDrop>
               ))}
             </ul>
             <AddCardBtn>
@@ -83,6 +91,7 @@ function BoardPreview() {
             style={{
               ...getItemStyles(initialCursorOffset, currentOffset),
               width: "256px",
+              height: "36px",
             }}
           >
             {item.cardText}

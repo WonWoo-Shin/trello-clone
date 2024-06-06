@@ -73,7 +73,7 @@ export const BoardTitle = styled.h2`
   line-height: 22px;
   padding: 6px 8px;
   padding-left: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   cursor: pointer;
 `;
 
@@ -98,11 +98,15 @@ export const BoardInput = styled.input`
   }
 `;
 
-export const Card = styled.li`
-  height: 36px;
+export const CardDrop = styled.li`
+  height: 44px;
+  padding: 4px 0;
+`;
+
+export const Card = styled.div`
+  height: 100%;
   background-color: #ffffff;
   border-radius: 8px;
-  margin-bottom: 8px;
   padding: 8px 12px;
   box-shadow: 0px 1px 1px #091e4240;
   display: flex;
@@ -116,6 +120,7 @@ export const AddCardBtn = styled.div`
   font-weight: 500;
   display: flex;
   align-items: center;
+  margin-top: 4px;
   padding: 8px;
   border-radius: 8px;
   transition: background-color 0.1s ease;
@@ -130,6 +135,7 @@ export const AddCardBtn = styled.div`
 
 export const FormInput = styled(Card)`
   width: 100%;
+  margin: 4px 0 8px 0;
   border: none;
   color: inherit;
   font-size: inherit;
