@@ -1,16 +1,16 @@
 import { AnotherList, BoardsList } from "../style/style";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import Board from "./Board";
 import AddBoard from "./AddBoard";
-import { useDrop } from "react-dnd";
+import BoardPreview from "./DragPreview";
 
 function Boards() {
-  const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
-  const [boards, setBoards] = useRecoilState(boardsState);
-  const dragItem = () => {};
+  const boardOrder = useRecoilValue(boardOrderState);
+  const boards = useRecoilValue(boardsState);
   return (
     <BoardsList>
+      <BoardPreview />
       {boardOrder.map((boardId, index) => (
         <Board
           key={boardId}

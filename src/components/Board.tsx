@@ -3,15 +3,13 @@ import {
   BoardContainer,
   BoardInput,
   BoardTitle,
-  BoardTrace,
-  BoardTraceBlock,
 } from "../style/style";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
-import { DragPreviewImage, useDrag, useDrop } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 
 interface IBoardProps {
@@ -109,7 +107,12 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
         )}
         <ul>
           {cards.map((card, index) => (
-            <DraggableCard key={card.cardId} {...card} index={index} />
+            <DraggableCard
+              key={card.cardId}
+              {...card}
+              index={index}
+              boardId={boardId}
+            />
           ))}
         </ul>
         <AddCard boardId={boardId} />

@@ -8,6 +8,7 @@ interface IItem {
   boardId: number;
   boardName: string;
   cards: ICard[];
+  cardText: ICard["cardText"];
   index: number;
 }
 
@@ -19,6 +20,7 @@ const layerStyles: CSSProperties = {
   top: 0,
   width: "100%",
   height: "100%",
+  opacity: "0.6",
 };
 
 function getItemStyles(
@@ -60,7 +62,6 @@ function BoardPreview() {
             style={{
               ...getItemStyles(initialCursorOffset, currentOffset),
               width: "272px",
-              opacity: "0.6",
             }}
           >
             <BoardTitle>{item.boardName}</BoardTitle>
@@ -73,6 +74,19 @@ function BoardPreview() {
               <AddBtn addWhat={"a card"} />
             </AddCardBtn>
           </BoardContainer>
+        </div>
+      );
+    case "card":
+      return (
+        <div style={layerStyles}>
+          <Card
+            style={{
+              ...getItemStyles(initialCursorOffset, currentOffset),
+              width: "256px",
+            }}
+          >
+            {item.cardText}
+          </Card>
         </div>
       );
     default:
