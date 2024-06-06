@@ -78,11 +78,13 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    isDragging(monitor) {
+      return monitor.getItem().cardId === cardId;
+    },
   });
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
-  console.log(isDragging);
   return (
     <CardDrop ref={drop}>
       <Card ref={drag} style={isDragging ? { opacity: "0.4" } : {}}>
