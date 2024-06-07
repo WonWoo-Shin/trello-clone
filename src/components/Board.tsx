@@ -3,8 +3,9 @@ import {
   BoardContainer,
   BoardInput,
   BoardTitle,
+  CardDrop,
 } from "../style/style";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
@@ -25,6 +26,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const toggleShow = () => setIsShow((curr) => !curr);
   const setBoards = useSetRecoilState(boardsState);
   const setBoardOrder = useSetRecoilState(boardOrderState);
+  const dropRef = useRef(null);
   const moveBoard = (
     oldBoardOrder: number[],
     sourceIndex: number,
@@ -35,7 +37,8 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
     newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
     return newBoardOrder;
   };
-  const [{ isOver }, drop] = useDrop({
+  const moveCard = () => {};
+  const [{ isOver }, boardDrop] = useDrop({
     accept: "board",
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -53,6 +56,35 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
         );
         return moveBoard(oldBoardOrder, sourceIndex, destinationIndex);
       });
+    },
+  });
+  const [, cardDrop] = useDrop({
+    accept: "card",
+    hover(item: any, monitor) {
+      if (item.boardId === boardId) {
+        return;
+      }
+      setBoards((oldBoards) => {
+        const copySourceCards = [...oldBoards[item.boardId].cards];
+        const copyDestinationCards = [...oldBoards[boardId].cards];
+        const sourceIndex = copySourceCards.findIndex(
+          (card) => card.cardId === item.cardId
+        );
+        const draggedCard = copySourceCards.splice(sourceIndex, 1);
+        copyDestinationCards.push(...draggedCard);
+        return {
+          ...oldBoards,
+          [item.boardId]: {
+            ...oldBoards[item.boardId],
+            cards: copySourceCards,
+          },
+          [boardId]: {
+            ...oldBoards[boardId],
+            cards: copyDestinationCards,
+          },
+        };
+      });
+      item.boardId = boardId;
     },
   });
   const [{ isDragging }, drag, preview] = useDrag({
@@ -86,8 +118,9 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       return { ...oldBoards, [boardId]: newBoard };
     });
   };
+  boardDrop(cardDrop(dropRef));
   return (
-    <BoardBlock ref={drop}>
+    <BoardBlock ref={dropRef}>
       <BoardContainer style={isDragging ? { opacity: "0.4" } : {}}>
         <BoardTitle
           ref={drag}
@@ -112,6 +145,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
               {...card}
               index={index}
               boardId={boardId}
+              moveCard={moveCard}
             />
           ))}
         </ul>

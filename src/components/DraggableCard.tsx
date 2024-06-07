@@ -8,9 +8,16 @@ import { useSetRecoilState } from "recoil";
 interface ICardProps extends ICard {
   index: number;
   boardId: number;
+  moveCard: () => void;
 }
 
-function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
+function DraggableCard({
+  cardId,
+  cardText,
+  index,
+  boardId,
+  moveCard,
+}: ICardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const [{ isOver }, drop] = useDrop({
     accept: "card",
@@ -74,7 +81,7 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
   });
   const [{ isDragging }, drag, preview] = useDrag({
     type: "card",
-    item: { cardId, cardText, boardId },
+    item: { cardId, cardText, boardId, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
