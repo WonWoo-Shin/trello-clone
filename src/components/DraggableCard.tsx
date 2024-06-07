@@ -1,5 +1,5 @@
 import { Card, CardDrop } from "../style/style";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect } from "react";
 import { ICard, boardsState } from "../atom";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
@@ -8,17 +8,11 @@ import { useSetRecoilState } from "recoil";
 interface ICardProps extends ICard {
   index: number;
   boardId: number;
-  moveCard: () => void;
 }
 
-function DraggableCard({
-  cardId,
-  cardText,
-  index,
-  boardId,
-  moveCard,
-}: ICardProps) {
+function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
   const setBoards = useSetRecoilState(boardsState);
+  const moveCard = () => {};
   const [{ isOver }, drop] = useDrop({
     accept: "card",
     collect: (monitor) => ({
@@ -75,7 +69,6 @@ function DraggableCard({
             },
           };
         });
-        item.boardId = boardId;
       }
     },
   });
@@ -87,6 +80,14 @@ function DraggableCard({
     }),
     isDragging(monitor) {
       return monitor.getItem().cardId === cardId;
+    },
+    end: (item, monitor) => {
+      // if (!monitor.didDrop()) {
+      //   const originalIndex = item.index;
+      //   const cancelIndex = index;
+      //   const originalBoardId = item.boardId;
+      //   const destinationBoardId = boardId
+      // }
     },
   });
   useEffect(() => {

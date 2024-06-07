@@ -37,7 +37,6 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
     newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
     return newBoardOrder;
   };
-  const moveCard = () => {};
   const [{ isOver }, boardDrop] = useDrop({
     accept: "board",
     collect: (monitor) => ({
@@ -64,9 +63,11 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       if (item.boardId === boardId) {
         return;
       }
+      const sourceBoardId = item.boardId;
+      const destinationBoardId = boardId;
       setBoards((oldBoards) => {
-        const copySourceCards = [...oldBoards[item.boardId].cards];
-        const copyDestinationCards = [...oldBoards[boardId].cards];
+        const copySourceCards = [...oldBoards[sourceBoardId].cards];
+        const copyDestinationCards = [...oldBoards[destinationBoardId].cards];
         const sourceIndex = copySourceCards.findIndex(
           (card) => card.cardId === item.cardId
         );
@@ -74,12 +75,12 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
         copyDestinationCards.push(...draggedCard);
         return {
           ...oldBoards,
-          [item.boardId]: {
-            ...oldBoards[item.boardId],
+          [sourceBoardId]: {
+            ...oldBoards[sourceBoardId],
             cards: copySourceCards,
           },
-          [boardId]: {
-            ...oldBoards[boardId],
+          [destinationBoardId]: {
+            ...oldBoards[destinationBoardId],
             cards: copyDestinationCards,
           },
         };
@@ -145,7 +146,6 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
               {...card}
               index={index}
               boardId={boardId}
-              moveCard={moveCard}
             />
           ))}
         </ul>
