@@ -70,8 +70,7 @@ export const BoardTrace = styled.div`
 export const BoardTitle = styled.h2`
   font-weight: 600;
   height: 32px;
-  line-height: 20px;
-  padding: 6px 8px;
+  line-height: 32px;
   padding-left: 12px;
   margin-bottom: 4px;
   cursor: pointer;
@@ -80,7 +79,8 @@ export const BoardTitle = styled.h2`
 export const BoardInput = styled.input`
   width: 100%;
   height: 32px;
-  padding: 6px 12px;
+  line-height: 32px;
+  padding-left: 12px;
   margin-bottom: 4px;
   border-radius: 4px;
   border: none;
@@ -104,12 +104,11 @@ export const CardDrop = styled.li`
 `;
 
 export const Card = styled.div`
-  height: 100%;
+  height: 36px;
+  line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
   padding-left: 12px;
-  display: flex;
-  align-items: center;
   box-shadow: 0px 1px 1px #091e4240;
   transform: translate(0, 0);
 `;
@@ -135,7 +134,6 @@ export const AddCardBtn = styled.div`
 
 export const FormInput = styled(Card)`
   width: 100%;
-  height: 36px;
   margin: 4px 0 8px 0;
   border: none;
   color: inherit;
