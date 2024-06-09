@@ -30,13 +30,18 @@ export const BoardCanvas = styled.div`
   font-size: 14px;
 `;
 
-export const BoardsStyle = styled.ul`
+export const BoardsList = styled.ul`
   display: flex;
   height: 100%;
   padding: 12px 6px;
 `;
 
 export const BoardBlock = styled.li`
+  width: 284px;
+  padding: 0 6px;
+`;
+
+export const BoardTraceBlock = styled.div`
   width: 284px;
   padding: 0 6px;
 `;
@@ -52,23 +57,31 @@ export const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transform: translate(0, 0);
 `;
 
-export const BoardTitle = styled.h2<{ $isShow: boolean }>`
+export const BoardTrace = styled.div`
+  width: 100%;
+  min-height: 88px;
+  border-radius: 12px;
+  background-color: #006aa7;
+`;
+
+export const BoardTitle = styled.h2`
   font-weight: 600;
   height: 32px;
-  line-height: 22px;
-  padding: 6px 8px;
+  line-height: 32px;
   padding-left: 12px;
-  margin-bottom: 8px;
-  display: ${(props) => props.$isShow && "none"};
+  margin-bottom: 4px;
+  cursor: pointer;
 `;
 
 export const BoardInput = styled.input`
   width: 100%;
   height: 32px;
-  padding: 6px 12px;
-  margin-bottom: 8px;
+  line-height: 32px;
+  padding-left: 12px;
+  margin-bottom: 4px;
   border-radius: 4px;
   border: none;
   outline: 1px solid #8590a2;
@@ -85,17 +98,19 @@ export const BoardInput = styled.input`
   }
 `;
 
-export const Cards = styled.ul``;
+export const CardDrop = styled.li`
+  height: 44px;
+  padding: 4px 0;
+`;
 
-export const Card = styled.li`
+export const Card = styled.div`
   height: 36px;
+  line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
-  margin-bottom: 8px;
-  padding: 8px 12px;
+  padding-left: 12px;
   box-shadow: 0px 1px 1px #091e4240;
-  display: flex;
-  align-items: center;
+  transform: translate(0, 0);
 `;
 
 export const AddCardBtn = styled.div`
@@ -104,6 +119,7 @@ export const AddCardBtn = styled.div`
   font-weight: 500;
   display: flex;
   align-items: center;
+  margin-top: 4px;
   padding: 8px;
   border-radius: 8px;
   transition: background-color 0.1s ease;
@@ -118,11 +134,12 @@ export const AddCardBtn = styled.div`
 
 export const FormInput = styled(Card)`
   width: 100%;
+  margin: 4px 0 8px 0;
   border: none;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-  line-height: 36px;
+  line-height: 45px;
   &:focus {
     outline: none;
   }
