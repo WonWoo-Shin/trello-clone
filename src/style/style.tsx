@@ -111,6 +111,9 @@ export const Card = styled.div`
   padding-left: 12px;
   box-shadow: 0px 1px 1px #091e4240;
   transform: translate(0, 0);
+  &:hover {
+    outline: 2px solid #4391ff;
+  }
 `;
 
 export const AddCardBtn = styled.div`
