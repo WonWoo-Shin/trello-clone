@@ -6,9 +6,10 @@ import { AddBtn, Submit } from "./Submit";
 
 interface IAddProps {
   boardId: number;
+  isBoardOver: boolean;
 }
 
-function AddCard({ boardId }: IAddProps) {
+function AddCard({ boardId, isBoardOver }: IAddProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
   const setBoards = useSetRecoilState(boardsState);
@@ -44,7 +45,7 @@ function AddCard({ boardId }: IAddProps) {
       <Submit toggleForm={toggleForm} addWhat={"card"} />
     </form>
   ) : (
-    <AddCardBtn onClick={toggleForm}>
+    <AddCardBtn onClick={toggleForm} $isBoardOver={isBoardOver}>
       <AddBtn addWhat={"a card"} />
     </AddCardBtn>
   );

@@ -8,16 +8,21 @@ import { useSetRecoilState } from "recoil";
 interface ICardProps extends ICard {
   index: number;
   boardId: number;
+  isBoardOver: boolean;
 }
 
-function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
+function DraggableCard({
+  cardId,
+  cardText,
+  index,
+  boardId,
+  isBoardOver,
+}: ICardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const moveCard = () => {};
-  const [{ isOver }, drop] = useDrop({
+  const [{}, drop] = useDrop({
     accept: "card",
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
+    collect: (monitor) => ({}),
     hover(item: any) {
       const sourceCardId = item.cardId as ICard["cardId"];
       const destinationCardId = cardId;
@@ -76,11 +81,8 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
     type: "card",
     item: { cardId, cardText, boardId, index },
     collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+      isDragging: monitor.getItem()?.cardId === cardId,
     }),
-    isDragging(monitor) {
-      return monitor.getItem().cardId === cardId;
-    },
     end: (item, monitor) => {
       // if (!monitor.didDrop()) {
       //   const originalIndex = item.index;
@@ -95,7 +97,7 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
   }, []);
   return (
     <CardDrop ref={drop}>
-      <Card ref={drag} style={isDragging ? { opacity: "0.4" } : {}}>
+      <Card ref={drag} $isDragging={isDragging} $isBoardOver={isBoardOver}>
         {cardText}
       </Card>
     </CardDrop>

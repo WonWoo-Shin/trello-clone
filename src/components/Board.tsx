@@ -37,10 +37,10 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
     newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
     return newBoardOrder;
   };
-  const [{ isOver }, boardDrop] = useDrop({
+  const [{ isBoardOver }, boardDrop] = useDrop({
     accept: "board",
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      isBoardOver: !!monitor.getItem(),
     }),
     hover(item: any, monitor) {
       if (item.boardId === boardId) {
@@ -146,10 +146,11 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
               {...card}
               index={index}
               boardId={boardId}
+              isBoardOver={isBoardOver}
             />
           ))}
         </ul>
-        <AddCard boardId={boardId} />
+        <AddCard boardId={boardId} isBoardOver={isBoardOver} />
       </BoardContainer>
     </BoardBlock>
   );

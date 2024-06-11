@@ -103,20 +103,29 @@ export const CardDrop = styled.li`
   padding: 4px 0;
 `;
 
-export const Card = styled.div`
+const CardDesign = styled.div`
   height: 36px;
   line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
   padding-left: 12px;
   box-shadow: 0px 1px 1px #091e4240;
+`;
+
+interface CardProps {
+  $isDragging: boolean;
+  $isBoardOver: boolean;
+}
+
+export const Card = styled(CardDesign)<CardProps>`
   transform: translate(0, 0);
+  opacity: ${(props) => (props.$isDragging ? 0.4 : 1)};
   &:hover {
-    outline: 2px solid #4391ff;
+    outline: ${(props) => (props.$isBoardOver ? "none" : "2px solid #4391ff")};
   }
 `;
 
-export const AddCardBtn = styled.div`
+export const AddCardBtn = styled.div<{ $isBoardOver: boolean }>`
   width: 100%;
   height: 32px;
   font-weight: 500;
@@ -130,19 +139,19 @@ export const AddCardBtn = styled.div`
     margin-right: 8px;
   }
   &:hover {
-    background-color: #d0d5db;
+    background-color: ${(props) => (props.$isBoardOver ? "none" : "#d0d5db")};
     cursor: pointer;
   }
 `;
 
-export const FormInput = styled(Card)`
+export const FormInput = styled(CardDesign)`
   width: 100%;
   margin: 4px 0 8px 0;
   border: none;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-  line-height: 45px;
+  line-height: 36px;
   &:focus {
     outline: none;
   }
