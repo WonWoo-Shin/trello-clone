@@ -1,6 +1,7 @@
 import {
   BoardBlock,
   BoardContainer,
+  BoardHandle,
   BoardInput,
   BoardTitle,
   CardDrop,
@@ -12,6 +13,7 @@ import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
+import BoardTitleArea from "./BoardTitleArea";
 
 interface IBoardProps {
   boardId: number;
@@ -21,9 +23,6 @@ interface IBoardProps {
 }
 
 function Board({ boardId, boardName, cards, index }: IBoardProps) {
-  const [text, setText] = useState(boardName);
-  const [isShow, setIsShow] = useState(false);
-  const toggleShow = () => setIsShow((curr) => !curr);
   const setBoards = useSetRecoilState(boardsState);
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const dropRef = useRef(null);
@@ -107,38 +106,15 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
-  const changeBoardName = () => {
-    toggleShow();
-    if (text === boardName) return;
-    if (text === "") {
-      setText(boardName);
-      return;
-    }
-    setBoards((oldBoards) => {
-      const newBoard = { ...oldBoards[boardId], boardName: text };
-      return { ...oldBoards, [boardId]: newBoard };
-    });
-  };
   boardDrop(cardDrop(dropRef));
   return (
     <BoardBlock ref={dropRef}>
       <BoardContainer style={isDragging ? { opacity: "0.4" } : {}}>
-        <BoardTitle
-          ref={drag}
-          onClick={toggleShow}
-          style={isShow ? { display: "none" } : {}}
-        >
-          {boardName}
-        </BoardTitle>
-        {isShow && (
-          <BoardInput
-            type="text"
-            value={text}
-            onChange={(event) => setText(event.currentTarget.value)}
-            onBlur={changeBoardName}
-            autoFocus
-          />
-        )}
+        <BoardTitleArea
+          dragRef={drag}
+          boardId={boardId}
+          boardName={boardName}
+        />
         <ul>
           {cards.map((card, index) => (
             <DraggableCard

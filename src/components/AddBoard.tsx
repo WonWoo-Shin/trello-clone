@@ -1,5 +1,10 @@
 import { memo, useState } from "react";
-import { AddBoardBtn, AddBoardForm, BoardInput } from "../style/style";
+import {
+  AddBoardBtn,
+  AddBoardForm,
+  BoardHandle,
+  BoardInput,
+} from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import { AddBtn, Submit } from "./Submit";
@@ -28,12 +33,16 @@ function AddBoard() {
   };
   return isOpen ? (
     <AddBoardForm as="form" onSubmit={addBoard}>
-      <BoardInput
-        placeholder="Enter list title..."
-        value={text}
-        autoFocus
-        onChange={(event) => setText(event.currentTarget.value)}
-      />
+      <BoardHandle style={{ marginBottom: "0" }}>
+        <BoardInput
+          as={"input"}
+          placeholder="Enter list title..."
+          value={text}
+          autoFocus
+          onChange={(event) => setText(event.currentTarget.value)}
+          style={{ borderRadius: "4px" }}
+        />
+      </BoardHandle>
       <Submit toggleForm={toggleForm} addWhat="list" />
     </AddBoardForm>
   ) : (

@@ -67,22 +67,27 @@ export const BoardTrace = styled.div`
   background-color: #006aa7;
 `;
 
-export const BoardTitle = styled.h2`
-  font-weight: 600;
-  height: 32px;
-  line-height: 32px;
-  padding-left: 12px;
+export const BoardHandle = styled.div`
+  padding: 10px;
+  padding-bottom: 0;
+  margin: -8px;
   margin-bottom: 4px;
   cursor: pointer;
 `;
 
-export const BoardInput = styled.input`
+const BoardTitleDesign = styled.div`
+  height: 30px;
+  line-height: 30px;
+  padding-left: 10px;
+`;
+
+export const BoardTitle = styled(BoardTitleDesign)`
+  font-weight: 600;
+`;
+
+export const BoardInput = styled(BoardTitleDesign)`
   width: 100%;
-  height: 32px;
-  line-height: 32px;
-  padding-left: 12px;
-  margin-bottom: 4px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   outline: 1px solid #8590a2;
   color: inherit;
@@ -194,7 +199,7 @@ export const AnotherList = styled.div`
   padding: 0 6px;
 `;
 
-export const AddBoardBtn = styled(AddCardBtn)`
+export const AddBoardBtn = styled.div`
   width: 272px;
   height: 44px;
   border-radius: 12px;
@@ -202,6 +207,12 @@ export const AddBoardBtn = styled(AddCardBtn)`
   color: #ffffff;
   font-weight: 600;
   background-color: #ffffff3d;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.1s ease;
+  svg {
+    margin-right: 8px;
+  }
   &:hover {
     background-color: #1b85c5;
   }
