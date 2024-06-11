@@ -52,7 +52,7 @@ export const BoardContainer = styled.div`
   padding: 8px;
   background-color: #f1f2f4;
   border-radius: 12px;
-  box-shadow: 0px 1px 1px #091e4240;
+  box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
   color: #172b4d;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,7 @@ export const BoardTrace = styled.div`
 `;
 
 export const BoardHandle = styled.div`
-  padding: 10px;
+  padding: 8px;
   padding-bottom: 0;
   margin: -8px;
   margin-bottom: 4px;
@@ -76,9 +76,9 @@ export const BoardHandle = styled.div`
 `;
 
 const BoardTitleDesign = styled.div`
-  height: 30px;
-  line-height: 30px;
-  padding-left: 10px;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 12px;
 `;
 
 export const BoardTitle = styled(BoardTitleDesign)`
@@ -90,12 +90,14 @@ export const BoardInput = styled(BoardTitleDesign)`
   border-radius: 8px;
   border: none;
   outline: 1px solid #8590a2;
+  outline-offset: -1px;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
   font-weight: 600;
   &:focus {
     outline: 2px solid #388bff;
+    outline-offset: -2px;
   }
   &::placeholder {
     color: #516079;
@@ -114,7 +116,7 @@ const CardDesign = styled.div`
   background-color: #ffffff;
   border-radius: 8px;
   padding-left: 12px;
-  box-shadow: 0px 1px 1px #091e4240;
+  box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 `;
 
 interface CardProps {
@@ -127,6 +129,7 @@ export const Card = styled(CardDesign)<CardProps>`
   opacity: ${(props) => (props.$isDragging ? 0.4 : 1)};
   &:hover {
     outline: ${(props) => (props.$isBoardOver ? "none" : "2px solid #4391ff")};
+    outline-offset: -1px;
   }
 `;
 
