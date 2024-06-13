@@ -1,16 +1,19 @@
-import { memo, useState } from "react";
-import { AddBoardBtn, AddBoardForm, BoardInput } from "../style/style";
+import { useState } from "react";
+import { AddBoardForm, BoardInput } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
-import { AddBtn, Submit } from "./Submit";
+import { Submit } from "./Submit";
 
-function AddBoard() {
-  const [isOpen, setIsOpen] = useState(false);
+function AddBoard({
+  setIsAddOpen,
+}: {
+  setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [text, setText] = useState("");
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const setBoards = useSetRecoilState(boardsState);
   const toggleForm = () => {
-    setIsOpen((curr) => !curr);
+    setIsAddOpen((curr) => !curr);
     setText("");
   };
   const addBoard = (event: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +29,7 @@ function AddBoard() {
     });
     setText("");
   };
-  return isOpen ? (
+  return (
     <AddBoardForm as="form" onSubmit={addBoard}>
       <BoardInput
         as={"input"}
@@ -38,11 +41,6 @@ function AddBoard() {
       />
       <Submit toggleForm={toggleForm} addWhat="list" />
     </AddBoardForm>
-  ) : (
-    <AddBoardBtn onClick={toggleForm}>
-      <AddBtn addWhat="another list" />
-    </AddBoardBtn>
   );
 }
-
-export default memo(AddBoard);
+export default AddBoard;

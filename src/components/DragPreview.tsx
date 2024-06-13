@@ -8,7 +8,7 @@ import {
 import { ICard } from "../atom";
 import { AddBtn } from "./Submit";
 import { XYCoord, useDragLayer } from "react-dnd";
-import { CSSProperties, memo } from "react";
+import { CSSProperties } from "react";
 
 interface IItem {
   boardId: number;
@@ -107,4 +107,4 @@ function BoardPreview() {
   }
 }
 
-export default memo(BoardPreview);
+export default BoardPreview;

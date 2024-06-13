@@ -211,6 +211,7 @@ export const AddBoardBtn = styled.div`
   background-color: #ffffff3d;
   display: flex;
   align-items: center;
+  cursor: pointer;
   transition: background-color 0.1s ease;
   svg {
     margin-right: 8px;

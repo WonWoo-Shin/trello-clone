@@ -46,31 +46,31 @@ function DraggableCard({
       });
     }
     // 다른 보드로 카드 이동
-    else if (sourceBoardId !== destinationBoardId) {
-      setBoards((oldBoards) => {
-        const copySourceCards = [...oldBoards[sourceBoardId].cards];
-        const copyDestinationCards = [...oldBoards[destinationBoardId].cards];
-        const sourceIndex = copySourceCards.findIndex(
-          (card) => card.cardId === sourceCardId
-        );
-        const destinationIndex = copyDestinationCards.findIndex(
-          (card) => card.cardId === destinationCardId
-        );
-        const draggedCard = copySourceCards.splice(sourceIndex, 1);
-        copyDestinationCards.splice(destinationIndex, 0, ...draggedCard);
-        return {
-          ...oldBoards,
-          [sourceBoardId]: {
-            ...oldBoards[sourceBoardId],
-            cards: copySourceCards,
-          },
-          [destinationBoardId]: {
-            ...oldBoards[destinationBoardId],
-            cards: copyDestinationCards,
-          },
-        };
-      });
-    }
+    // else if (sourceBoardId !== destinationBoardId) {
+    //   setBoards((oldBoards) => {
+    //     const copySourceCards = [...oldBoards[sourceBoardId].cards];
+    //     const copyDestinationCards = [...oldBoards[destinationBoardId].cards];
+    //     const sourceIndex = copySourceCards.findIndex(
+    //       (card) => card.cardId === sourceCardId
+    //     );
+    //     const destinationIndex = copyDestinationCards.findIndex(
+    //       (card) => card.cardId === destinationCardId
+    //     );
+    //     const draggedCard = copySourceCards.splice(sourceIndex, 1);
+    //     copyDestinationCards.splice(destinationIndex, 0, ...draggedCard);
+    //     return {
+    //       ...oldBoards,
+    //       [sourceBoardId]: {
+    //         ...oldBoards[sourceBoardId],
+    //         cards: copySourceCards,
+    //       },
+    //       [destinationBoardId]: {
+    //         ...oldBoards[destinationBoardId],
+    //         cards: copyDestinationCards,
+    //       },
+    //     };
+    //   });
+    // }
   };
   const [{}, drop] = useDrop({
     accept: "card",
@@ -92,7 +92,7 @@ function DraggableCard({
         // const originalBoardId = item.boardId;
         // console.log(originalBoardId);
         // const destinationBoardId = boardId;
-        console.log("not drop");
+        return;
       }
     },
   });
