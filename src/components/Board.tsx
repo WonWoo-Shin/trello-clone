@@ -58,12 +58,12 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   });
   const [, cardDrop] = useDrop({
     accept: "card",
-    hover(item: any, monitor) {
-      if (item.boardId === boardId) {
-        return;
-      }
+    hover(item: any) {
       const sourceBoardId = item.boardId;
       const destinationBoardId = boardId;
+      if (sourceBoardId === destinationBoardId) {
+        return;
+      }
       setBoards((oldBoards) => {
         const copySourceCards = [...oldBoards[sourceBoardId].cards];
         const copyDestinationCards = [...oldBoards[destinationBoardId].cards];

@@ -159,7 +159,6 @@ export const FormInput = styled(CardDesign)`
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-  line-height: 36px;
   &:focus {
     outline: none;
   }

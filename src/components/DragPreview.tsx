@@ -74,11 +74,13 @@ function BoardPreview() {
             <ul>
               {item.cards.map((card, index) => (
                 <CardDrop key={index}>
-                  <Card>{card.cardText}</Card>
+                  <Card $isBoardOver={false} $isDragging={false}>
+                    {card.cardText}
+                  </Card>
                 </CardDrop>
               ))}
             </ul>
-            <AddCardBtn>
+            <AddCardBtn $isBoardOver={false}>
               <AddBtn addWhat={"a card"} />
             </AddCardBtn>
           </BoardContainer>
@@ -93,6 +95,8 @@ function BoardPreview() {
               width: "256px",
               height: "36px",
             }}
+            $isBoardOver={false}
+            $isDragging={false}
           >
             {item.cardText}
           </Card>
