@@ -1,20 +1,19 @@
-import { memo, useState } from "react";
-import { AddCardBtn, FormInput } from "../style/style";
+import { useState } from "react";
+import { FormInput } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardsState } from "../atom";
-import { AddBtn, Submit } from "./Submit";
+import { Submit } from "./Submit";
 
 interface IAddProps {
   boardId: number;
-  isBoardOver: boolean;
+  setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AddCard({ boardId, isBoardOver }: IAddProps) {
-  const [isOpen, setIsOpen] = useState(false);
+function AddCard({ boardId, setIsAddOpen }: IAddProps) {
   const [text, setText] = useState("");
   const setBoards = useSetRecoilState(boardsState);
   const toggleForm = () => {
-    setIsOpen((curr) => !curr);
+    setIsAddOpen((curr) => !curr);
     setText("");
   };
   const addCard = (event: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +32,7 @@ function AddCard({ boardId, isBoardOver }: IAddProps) {
     });
     setText("");
   };
-  return isOpen ? (
+  return (
     <form onSubmit={addCard}>
       <FormInput
         as="input"
@@ -44,11 +43,7 @@ function AddCard({ boardId, isBoardOver }: IAddProps) {
       />
       <Submit toggleForm={toggleForm} addWhat={"card"} />
     </form>
-  ) : (
-    <AddCardBtn onClick={toggleForm} $isBoardOver={isBoardOver}>
-      <AddBtn addWhat={"a card"} />
-    </AddCardBtn>
   );
 }
 
-export default memo(AddCard);
+export default AddCard;

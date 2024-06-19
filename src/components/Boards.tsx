@@ -11,6 +11,7 @@ function Boards() {
   const boardOrder = useRecoilValue(boardOrderState);
   const boards = useRecoilValue(boardsState);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  console.log(boards);
   return (
     <BoardsList>
       <BoardPreview />

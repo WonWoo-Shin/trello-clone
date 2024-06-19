@@ -1,4 +1,5 @@
 import {
+  AddCardBtn,
   BoardBlock,
   BoardContainer,
   BoardHandle,
@@ -14,6 +15,7 @@ import { useSetRecoilState } from "recoil";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import BoardTitleArea from "./BoardTitleArea";
+import { AddBtn } from "./Submit";
 
 interface IBoardProps {
   boardId: number;
@@ -26,6 +28,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const dropRef = useRef(null);
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const moveBoard = (
     oldBoardOrder: number[],
     sourceIndex: number,
@@ -36,10 +39,11 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
     newBoardOrder.splice(destinationIndex, 0, ...draggedBoard);
     return newBoardOrder;
   };
-  const [{ isBoardOver }, boardDrop] = useDrop({
+  const [{ isBoardOver, isBoardHover }, boardDrop] = useDrop({
     accept: "board",
     collect: (monitor) => ({
       isBoardOver: !!monitor.getItem(),
+      isBoardHover: monitor.isOver(),
     }),
     hover(item: any, monitor) {
       if (item.boardId === boardId) {
@@ -56,35 +60,39 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       });
     },
   });
-  const [, cardDrop] = useDrop({
+  const requestedFrame = requestAnimationFrame;
+  const [{ isOver }, cardDrop] = useDrop({
     accept: "card",
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
     hover(item: any) {
-      const sourceBoardId = item.boardId;
-      const destinationBoardId = boardId;
-      if (sourceBoardId === destinationBoardId) {
+      const sourceBoardId = item.boardId as ICard["cardId"];
+      const targetBoardId = boardId;
+      if (sourceBoardId === targetBoardId) {
         return;
       }
+      item.boardId = boardId;
       setBoards((oldBoards) => {
-        const copySourceCards = [...oldBoards[sourceBoardId].cards];
-        const copyDestinationCards = [...oldBoards[destinationBoardId].cards];
-        const sourceIndex = copySourceCards.findIndex(
+        const copySoureCards = [...oldBoards[sourceBoardId].cards];
+        const copyTargetCards = [...oldBoards[targetBoardId].cards];
+        const sourceIndex = copySoureCards.findIndex(
           (card) => card.cardId === item.cardId
         );
-        const draggedCard = copySourceCards.splice(sourceIndex, 1);
-        copyDestinationCards.push(...draggedCard);
+        const draggedItem = copySoureCards.splice(sourceIndex, 1);
+        copyTargetCards.push(...draggedItem);
         return {
           ...oldBoards,
           [sourceBoardId]: {
             ...oldBoards[sourceBoardId],
-            cards: copySourceCards,
+            cards: copySoureCards,
           },
-          [destinationBoardId]: {
-            ...oldBoards[destinationBoardId],
-            cards: copyDestinationCards,
+          [targetBoardId]: {
+            ...oldBoards[targetBoardId],
+            cards: copyTargetCards,
           },
         };
       });
-      item.boardId = boardId;
     },
   });
   const [{ isDragging }, drag, preview] = useDrag({
@@ -126,7 +134,16 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
             />
           ))}
         </ul>
-        <AddCard boardId={boardId} isBoardOver={isBoardOver} />
+        {isAddOpen ? (
+          <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
+        ) : (
+          <AddCardBtn
+            onClick={() => setIsAddOpen(true)}
+            $isBoardOver={isBoardOver}
+          >
+            <AddBtn addWhat={"a card"} />
+          </AddCardBtn>
+        )}
       </BoardContainer>
     </BoardBlock>
   );

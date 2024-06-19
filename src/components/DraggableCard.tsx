@@ -3,7 +3,7 @@ import { memo, useEffect } from "react";
 import { ICard, boardsState } from "../atom";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 interface ICardProps extends ICard {
   index: number;
@@ -85,14 +85,8 @@ function DraggableCard({
     collect: (monitor) => ({
       isDragging: monitor.getItem()?.cardId === cardId,
     }),
-    end: (item, monitor) => {
+    end(draggedItem, monitor) {
       if (!monitor.didDrop()) {
-        // const originalIndex = item.index;
-        // const cancelIndex = index;
-        // const originalBoardId = item.boardId;
-        // console.log(originalBoardId);
-        // const destinationBoardId = boardId;
-        return;
       }
     },
   });
