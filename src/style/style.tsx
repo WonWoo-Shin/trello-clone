@@ -124,16 +124,16 @@ interface CardProps {
   $isBoardOver: boolean;
 }
 
-export const Card = styled(CardDesign)<CardProps>`
+export const Card = styled(CardDesign)`
   transform: translate(0, 0);
-  opacity: ${(props) => (props.$isDragging ? 0.4 : 1)};
+  /* opacity: 0.4; */
   &:hover {
-    outline: ${(props) => (props.$isBoardOver ? "none" : "2px solid #4391ff")};
+    /* outline: 2px solid #4391ff; */
     outline-offset: -1px;
   }
 `;
 
-export const AddCardBtn = styled.div<{ $isBoardOver: boolean }>`
+export const AddCardBtn = styled.div`
   width: 100%;
   height: 32px;
   font-weight: 500;
@@ -147,7 +147,7 @@ export const AddCardBtn = styled.div<{ $isBoardOver: boolean }>`
     margin-right: 8px;
   }
   &:hover {
-    background-color: ${(props) => (props.$isBoardOver ? "none" : "#d0d5db")};
+    /* background-color: #d0d5db; */
     cursor: pointer;
   }
 `;

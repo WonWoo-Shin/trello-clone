@@ -1,7 +1,5 @@
-import { DndProvider } from "react-dnd";
 import Boards from "./components/Boards";
 import { BoardCanvas, BoardHeader, Header, Main, Surface } from "./style/style";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   return (
@@ -10,9 +8,7 @@ function App() {
       <Main>
         <BoardHeader></BoardHeader>
         <BoardCanvas>
-          <DndProvider backend={HTML5Backend}>
-            <Boards />
-          </DndProvider>
+          <Boards />
         </BoardCanvas>
       </Main>
     </Surface>

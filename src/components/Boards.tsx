@@ -14,7 +14,6 @@ function Boards() {
   console.log(boards);
   return (
     <BoardsList>
-      <BoardPreview />
       {boardOrder.map((boardId, index) => (
         <Board
           key={boardId}

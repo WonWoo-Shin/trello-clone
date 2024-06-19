@@ -2,15 +2,13 @@ import { memo, useState } from "react";
 import { BoardHandle, BoardInput, BoardTitle } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardsState } from "../atom";
-import { ConnectDragSource } from "react-dnd";
 
 interface IBoardTitleProps {
-  dragRef: ConnectDragSource;
   boardId: number;
   boardName: string;
 }
 
-function BoardTitleArea({ dragRef, boardId, boardName }: IBoardTitleProps) {
+function BoardTitleArea({ boardId, boardName }: IBoardTitleProps) {
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
   const [text, setText] = useState(boardName);
@@ -28,7 +26,7 @@ function BoardTitleArea({ dragRef, boardId, boardName }: IBoardTitleProps) {
     });
   };
   return (
-    <BoardHandle ref={isShow ? null : dragRef}>
+    <BoardHandle>
       {isShow ? (
         <BoardInput
           as={"input"}
