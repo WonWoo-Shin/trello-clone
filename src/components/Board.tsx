@@ -1,11 +1,14 @@
 import { AddCardBtn, BoardBlock, BoardContainer } from "../style/style";
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard, boardOrderState, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import BoardTitleArea from "./BoardTitleArea";
 import { AddBtn } from "./Submit";
+import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import invariant from "tiny-invariant";
 
 interface IBoardProps {
   boardId: number;
@@ -16,12 +19,52 @@ interface IBoardProps {
 
 function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
-  const setBoardOrder = useSetRecoilState(boardOrderState);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const dropRef = useRef(null);
+  const dragRef = useRef(null);
+  const dragHandleRef = useRef(null);
+  //drop
+  useEffect(() => {
+    const boardBlock = dropRef.current;
+    invariant(boardBlock);
+    return dropTargetForElements({
+      element: boardBlock,
+      onDragEnter: () => setIsDraggingOver(true),
+      onDragLeave: () => setIsDraggingOver(false),
+      onDrop: () => setIsDraggingOver(false),
+      getData: () => ({ index }),
+    });
+  }, [index]);
+  //drag
+  useEffect(() => {
+    const board = dragRef.current;
+    const boardHandle = dragHandleRef.current;
+    invariant(board);
+    invariant(boardHandle);
+    return draggable({
+      element: board,
+      dragHandle: boardHandle,
+      onDragStart: () => setIsDragging(true),
+      onDrop: () => setIsDragging(false),
+      getInitialData: () => ({ index }),
+    });
+  }, [index]);
   return (
-    <BoardBlock>
-      <BoardContainer>
-        <BoardTitleArea boardId={boardId} boardName={boardName} />
+    <BoardBlock
+      ref={dropRef}
+      style={isDraggingOver ? { backgroundColor: "#006aa7" } : {}}
+    >
+      <BoardContainer
+        ref={dragRef}
+        style={isDragging ? { opacity: "0.4" } : {}}
+      >
+        <BoardTitleArea
+          boardId={boardId}
+          boardName={boardName}
+          boardHandle={dragHandleRef}
+        />
         <ul>
           {cards.map((card, index) => (
             <DraggableCard

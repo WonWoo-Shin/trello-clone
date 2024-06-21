@@ -6,9 +6,10 @@ import { boardsState } from "../atom";
 interface IBoardTitleProps {
   boardId: number;
   boardName: string;
+  boardHandle: React.MutableRefObject<null>;
 }
 
-function BoardTitleArea({ boardId, boardName }: IBoardTitleProps) {
+function BoardTitleArea({ boardId, boardName, boardHandle }: IBoardTitleProps) {
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
   const [text, setText] = useState(boardName);
@@ -26,7 +27,7 @@ function BoardTitleArea({ boardId, boardName }: IBoardTitleProps) {
     });
   };
   return (
-    <BoardHandle>
+    <BoardHandle ref={boardHandle}>
       {isShow ? (
         <BoardInput
           as={"input"}
