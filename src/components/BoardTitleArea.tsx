@@ -6,7 +6,7 @@ import { boardsState } from "../atom";
 interface IBoardTitleProps {
   boardId: number;
   boardName: string;
-  boardHandle: React.MutableRefObject<null>;
+  boardHandle: React.RefObject<HTMLDivElement>;
 }
 
 function BoardTitleArea({ boardId, boardName, boardHandle }: IBoardTitleProps) {

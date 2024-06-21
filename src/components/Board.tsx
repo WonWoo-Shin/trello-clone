@@ -1,14 +1,21 @@
-import { AddCardBtn, BoardBlock, BoardContainer } from "../style/style";
+import {
+  AddCardBtn,
+  BoardBlock,
+  BoardContainer,
+  BoardTrace,
+} from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
-import { ICard, boardOrderState, boardsState } from "../atom";
+import { ICard, boardsState } from "../atom";
 import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import BoardTitleArea from "./BoardTitleArea";
 import { AddBtn } from "./Submit";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import invariant from "tiny-invariant";
+import * as ReactDOM from "react-dom";
 
 interface IBoardProps {
   boardId: number;
@@ -24,7 +31,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const dropRef = useRef(null);
   const dragRef = useRef(null);
-  const dragHandleRef = useRef(null);
+  const dragHandleRef = useRef<HTMLDivElement>(null);
   //drop
   useEffect(() => {
     const boardBlock = dropRef.current;
