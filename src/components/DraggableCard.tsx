@@ -26,8 +26,12 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
       onDragEnter: () => setIsDraggingOver(true),
       onDragLeave: () => setIsDraggingOver(false),
       onDrop: () => setIsDraggingOver(false),
+      getData: () => ({ index, type: "card" }),
+      canDrop: ({ source }) => {
+        return source.data.type === "card";
+      },
     });
-  }, []);
+  }, [index]);
   //drag
   useEffect(() => {
     const card = dragRef.current;
@@ -36,8 +40,9 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
       element: card,
       onDragStart: () => setIsDragging(true),
       onDrop: () => setIsDragging(false),
+      getInitialData: () => ({ index, boardId, type: "card" }),
     });
-  }, []);
+  }, [index]);
   return (
     <CardDrop
       ref={dropRef}

@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 function Boards() {
+  const [boards, setBoards] = useRecoilState(boardsState);
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
-  const boards = useRecoilValue(boardsState);
   const [isAddOpen, setIsAddOpen] = useState(false);
   //monitor
   useEffect(() => {
@@ -30,13 +30,38 @@ function Boards() {
           return;
         }
         if (sourceIndex !== targetIndex) {
-          //move board
-          setBoardOrder((order) => {
-            const newOrder = [...order];
-            const draggedItem = newOrder.splice(sourceIndex, 1);
-            newOrder.splice(targetIndex, 0, ...draggedItem);
-            return newOrder;
-          });
+          //move item
+          switch (source.data.type) {
+            case "board":
+              setBoardOrder((order) => {
+                const newOrder = [...order];
+                const draggedItem = newOrder.splice(sourceIndex, 1);
+                newOrder.splice(targetIndex, 0, ...draggedItem);
+                return newOrder;
+              });
+              break;
+            case "card":
+              const sourceBoardId = source.data.boardId;
+              if (typeof sourceBoardId !== "number") {
+                //type guarding
+                return;
+              }
+              setBoards((boards) => {
+                const copyCards = [...boards[sourceBoardId].cards];
+                const draggedCard = copyCards.splice(sourceIndex, 1);
+                copyCards.splice(targetIndex, 0, ...draggedCard);
+                return {
+                  ...boards,
+                  [sourceBoardId]: {
+                    ...boards[sourceBoardId],
+                    cards: copyCards,
+                  },
+                };
+              });
+              break;
+            default:
+              return;
+          }
         }
       },
     });

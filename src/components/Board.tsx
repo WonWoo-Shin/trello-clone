@@ -11,11 +11,11 @@ import AddCard from "./AddCard";
 import { useSetRecoilState } from "recoil";
 import BoardTitleArea from "./BoardTitleArea";
 import { AddBtn } from "./Submit";
-import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import {
+  draggable,
+  dropTargetForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
-import * as ReactDOM from "react-dom";
 
 interface IBoardProps {
   boardId: number;
@@ -40,8 +40,13 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       element: boardBlock,
       onDragEnter: () => setIsDraggingOver(true),
       onDragLeave: () => setIsDraggingOver(false),
-      onDrop: () => setIsDraggingOver(false),
-      getData: () => ({ index }),
+      onDrop: ({ location, self }) => {
+        setIsDraggingOver(false);
+        if (location.current.dropTargets[0].element === self.element) {
+          return;
+        }
+      },
+      getData: () => ({ index, type: "board" }),
     });
   }, [index]);
   //drag
@@ -55,7 +60,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       dragHandle: boardHandle,
       onDragStart: () => setIsDragging(true),
       onDrop: () => setIsDragging(false),
-      getInitialData: () => ({ index }),
+      getInitialData: () => ({ index, type: "board" }),
     });
   }, [index]);
   return (
