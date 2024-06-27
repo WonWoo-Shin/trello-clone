@@ -46,7 +46,7 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
           return;
         }
       },
-      getData: () => ({ index, type: "board" }),
+      getData: () => ({ boardId, index, type: "board" }),
     });
   }, [index]);
   //drag

@@ -15,6 +15,7 @@ function Boards() {
   useEffect(() => {
     return monitorForElements({
       onDrop: ({ source, location }) => {
+        console.log(location);
         const target = location.current.dropTargets[0];
         if (!target) {
           //drop outside
@@ -29,27 +30,37 @@ function Boards() {
           //type guarding
           return;
         }
-        if (sourceIndex !== targetIndex) {
-          //move item
-          switch (source.data.type) {
-            case "board":
-              setBoardOrder((order) => {
-                const newOrder = [...order];
-                const draggedItem = newOrder.splice(sourceIndex, 1);
-                newOrder.splice(targetIndex, 0, ...draggedItem);
-                return newOrder;
-              });
-              break;
-            case "card":
-              const sourceBoardId = source.data.boardId;
-              if (typeof sourceBoardId !== "number") {
-                //type guarding
-                return;
-              }
+        //move item
+        switch (source.data.type) {
+          case "board":
+            setBoardOrder((order) => {
+              const newOrder = [...order];
+              const draggedItem = newOrder.splice(sourceIndex, 1);
+              newOrder.splice(targetIndex, 0, ...draggedItem);
+              return newOrder;
+            });
+            break;
+          case "card":
+            const sourceBoardId = source.data.boardId;
+            const targetBoardId = target.data.boardId;
+            if (
+              typeof sourceBoardId !== "number" ||
+              typeof targetBoardId !== "number"
+            ) {
+              //type guarding
+              return;
+            }
+            const targetType = target.data.type;
+            if (sourceBoardId === targetBoardId) {
+              //same board
               setBoards((boards) => {
                 const copyCards = [...boards[sourceBoardId].cards];
                 const draggedCard = copyCards.splice(sourceIndex, 1);
-                copyCards.splice(targetIndex, 0, ...draggedCard);
+                if (targetType === "card") {
+                  copyCards.splice(targetIndex, 0, ...draggedCard);
+                } else if (targetType === "board") {
+                  copyCards.push(...draggedCard);
+                }
                 return {
                   ...boards,
                   [sourceBoardId]: {
@@ -58,10 +69,33 @@ function Boards() {
                   },
                 };
               });
-              break;
-            default:
-              return;
-          }
+            } else if (sourceBoardId !== targetBoardId) {
+              //cross board
+              setBoards((boards) => {
+                const copySourceCards = [...boards[sourceBoardId].cards];
+                const copyTargerCards = [...boards[targetBoardId].cards];
+                const draggedCard = copySourceCards.splice(sourceIndex, 1);
+                if (targetType === "card") {
+                  copyTargerCards.splice(targetIndex, 0, ...draggedCard);
+                } else if (targetType === "board") {
+                  copyTargerCards.push(...draggedCard);
+                }
+                return {
+                  ...boards,
+                  [sourceBoardId]: {
+                    ...boards[sourceBoardId],
+                    cards: copySourceCards,
+                  },
+                  [targetBoardId]: {
+                    ...boards[targetBoardId],
+                    cards: copyTargerCards,
+                  },
+                };
+              });
+            }
+            break;
+          default:
+            return;
         }
       },
     });

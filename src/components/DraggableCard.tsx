@@ -26,7 +26,7 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
       onDragEnter: () => setIsDraggingOver(true),
       onDragLeave: () => setIsDraggingOver(false),
       onDrop: () => setIsDraggingOver(false),
-      getData: () => ({ index, type: "card" }),
+      getData: () => ({ index, boardId, type: "card" }),
       canDrop: ({ source }) => {
         return source.data.type === "card";
       },
