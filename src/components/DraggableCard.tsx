@@ -7,11 +7,10 @@ import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 interface ICardProps extends ICard {
-  index: number;
   boardId: number;
 }
 
-function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
+function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -26,12 +25,12 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
       onDragEnter: () => setIsDraggingOver(true),
       onDragLeave: () => setIsDraggingOver(false),
       onDrop: () => setIsDraggingOver(false),
-      getData: () => ({ index, boardId, type: "card" }),
+      getData: () => ({ cardId, boardId, type: "card" }),
       canDrop: ({ source }) => {
         return source.data.type === "card";
       },
     });
-  }, [index]);
+  }, [cardId, boardId]);
   //drag
   useEffect(() => {
     const card = dragRef.current;
@@ -40,9 +39,9 @@ function DraggableCard({ cardId, cardText, index, boardId }: ICardProps) {
       element: card,
       onDragStart: () => setIsDragging(true),
       onDrop: () => setIsDragging(false),
-      getInitialData: () => ({ index, boardId, type: "card" }),
+      getInitialData: () => ({ cardId, boardId, type: "card" }),
     });
-  }, [index]);
+  }, [cardId, boardId]);
   return (
     <CardDrop
       ref={dropRef}

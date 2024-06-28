@@ -21,10 +21,9 @@ interface IBoardProps {
   boardId: number;
   boardName: string;
   cards: ICard[];
-  index: number;
 }
 
-function Board({ boardId, boardName, cards, index }: IBoardProps) {
+function Board({ boardId, boardName, cards }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -46,9 +45,9 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
           return;
         }
       },
-      getData: () => ({ boardId, index, type: "board" }),
+      getData: () => ({ boardId, type: "board" }),
     });
-  }, [index]);
+  }, [boardId]);
   //drag
   useEffect(() => {
     const board = dragRef.current;
@@ -60,9 +59,9 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
       dragHandle: boardHandle,
       onDragStart: () => setIsDragging(true),
       onDrop: () => setIsDragging(false),
-      getInitialData: () => ({ index, type: "board" }),
+      getInitialData: () => ({ boardId, type: "board" }),
     });
-  }, [index]);
+  }, [boardId]);
   return (
     <BoardBlock
       ref={dropRef}
@@ -78,13 +77,8 @@ function Board({ boardId, boardName, cards, index }: IBoardProps) {
           boardHandle={dragHandleRef}
         />
         <ul>
-          {cards.map((card, index) => (
-            <DraggableCard
-              key={card.cardId}
-              {...card}
-              index={index}
-              boardId={boardId}
-            />
+          {cards.map((card) => (
+            <DraggableCard key={card.cardId} {...card} boardId={boardId} />
           ))}
         </ul>
         {isAddOpen ? (
