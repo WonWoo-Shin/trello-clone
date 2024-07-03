@@ -16,6 +16,11 @@ import {
   draggable,
   dropTargetForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+  attachClosestEdge,
+  extractClosestEdge,
+  Edge,
+} from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import invariant from "tiny-invariant";
 
 interface IBoardProps {
@@ -27,7 +32,7 @@ interface IBoardProps {
 function Board({ boardId, boardName, cards }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const [isDragging, setIsDragging] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
+  const [showPreview, setShowPreview] = useState<Edge | null>(null);
   const [boardHide, setBoardHide] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const dropRef = useRef(null);
@@ -39,19 +44,35 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      onDragEnter: () => setShowPreview(true),
-      onDragLeave: ({ source: { data } }) => {
-        if (data.boardId === boardId) {
-          setBoardHide(true);
+      onDragEnter: ({ source, self }) => {
+        if (source.data.type === "board") {
+          const closetEdge = extractClosestEdge(self.data);
+          setShowPreview(closetEdge);
         }
       },
-      onDrop: () => {
-        setShowPreview(false);
+      onDragLeave: ({ source: { data } }) => {
+        if (data.boardId === boardId && data.type === "board") {
+          setBoardHide(true);
+        }
+        setShowPreview(null);
       },
-      getData: () => ({ boardId, type: "board" }),
+      onDrop: () => {
+        setShowPreview(null);
+      },
+      getData: ({ input, element }) => {
+        const data = {
+          boardId,
+          type: "board",
+        };
+        return attachClosestEdge(data, {
+          input,
+          element,
+          allowedEdges: ["left", "right"],
+        });
+      },
       getIsSticky: () => true,
     });
-  }, [boardId]);
+  }, [boardId, showPreview]);
   //drag
   useEffect(() => {
     const board = dragRef.current;
@@ -71,6 +92,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   }, [boardId]);
   return (
     <>
+      {showPreview === "right" && <BoardDropPreview />}
       <BoardBlock ref={dropRef} hidden={boardHide}>
         <BoardContainer
           ref={dragRef}
@@ -95,7 +117,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           )}
         </BoardContainer>
       </BoardBlock>
-      {showPreview && <BoardDropPreview />}
+      {showPreview === "left" && <BoardDropPreview />}
     </>
   );
 }
