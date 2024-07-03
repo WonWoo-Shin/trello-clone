@@ -1,4 +1,4 @@
-import { Card, CardDrop } from "../style/style";
+import { Card, CardDrop, CardDropPreview } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import { ICard, boardsState } from "../atom";
 import { useSetRecoilState } from "recoil";
@@ -12,7 +12,8 @@ interface ICardProps extends ICard {
 
 function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
   const setBoards = useSetRecoilState(boardsState);
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isCardLeave, setIsCardLeave] = useState(false);
+  const [isCardEnter, setIsCardEnter] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -22,9 +23,9 @@ function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
     invariant(cardDrop);
     return dropTargetForElements({
       element: cardDrop,
-      onDragEnter: () => setIsDraggingOver(true),
-      onDragLeave: () => setIsDraggingOver(false),
-      onDrop: () => setIsDraggingOver(false),
+      onDragEnter: () => {},
+      onDragLeave: () => {},
+      onDrop: () => {},
       getData: () => ({ cardId, boardId, type: "card" }),
       canDrop: ({ source }) => {
         return source.data.type === "card";
@@ -38,15 +39,14 @@ function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
     return draggable({
       element: card,
       onDragStart: () => setIsDragging(true),
-      onDrop: () => setIsDragging(false),
+      onDrop: () => {
+        setIsDragging(false);
+      },
       getInitialData: () => ({ cardId, boardId, type: "card" }),
     });
   }, [cardId, boardId]);
   return (
-    <CardDrop
-      ref={dropRef}
-      style={isDraggingOver ? { backgroundColor: "#E2E4E9" } : {}}
-    >
+    <CardDrop ref={dropRef}>
       <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
         {cardText}
       </Card>

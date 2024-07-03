@@ -2,7 +2,8 @@ import {
   AddCardBtn,
   BoardBlock,
   BoardContainer,
-  BoardTrace,
+  BoardDropPreview,
+  CardDropPreview,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
@@ -25,8 +26,9 @@ interface IBoardProps {
 
 function Board({ boardId, boardName, cards }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [boardHide, setBoardHide] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const dropRef = useRef(null);
   const dragRef = useRef(null);
@@ -37,15 +39,17 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      onDragEnter: () => setIsDraggingOver(true),
-      onDragLeave: () => setIsDraggingOver(false),
-      onDrop: ({ location, self }) => {
-        setIsDraggingOver(false);
-        if (location.current.dropTargets[0].element === self.element) {
-          return;
+      onDragEnter: () => setShowPreview(true),
+      onDragLeave: ({ source: { data } }) => {
+        if (data.boardId === boardId) {
+          setBoardHide(true);
         }
       },
+      onDrop: () => {
+        setShowPreview(false);
+      },
       getData: () => ({ boardId, type: "board" }),
+      getIsSticky: () => true,
     });
   }, [boardId]);
   //drag
@@ -58,38 +62,41 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
       element: board,
       dragHandle: boardHandle,
       onDragStart: () => setIsDragging(true),
-      onDrop: () => setIsDragging(false),
+      onDrop: () => {
+        setIsDragging(false);
+        setBoardHide(false);
+      },
       getInitialData: () => ({ boardId, type: "board" }),
     });
   }, [boardId]);
   return (
-    <BoardBlock
-      ref={dropRef}
-      style={isDraggingOver ? { backgroundColor: "#006aa7" } : {}}
-    >
-      <BoardContainer
-        ref={dragRef}
-        style={isDragging ? { opacity: "0.4" } : {}}
-      >
-        <BoardTitleArea
-          boardId={boardId}
-          boardName={boardName}
-          boardHandle={dragHandleRef}
-        />
-        <ul>
-          {cards.map((card) => (
-            <DraggableCard key={card.cardId} {...card} boardId={boardId} />
-          ))}
-        </ul>
-        {isAddOpen ? (
-          <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
-        ) : (
-          <AddCardBtn onClick={() => setIsAddOpen(true)}>
-            <AddBtn addWhat={"a card"} />
-          </AddCardBtn>
-        )}
-      </BoardContainer>
-    </BoardBlock>
+    <>
+      <BoardBlock ref={dropRef} hidden={boardHide}>
+        <BoardContainer
+          ref={dragRef}
+          style={isDragging ? { opacity: "0.4" } : {}}
+        >
+          <BoardTitleArea
+            boardId={boardId}
+            boardName={boardName}
+            boardHandle={dragHandleRef}
+          />
+          <ul>
+            {cards.map((card) => (
+              <DraggableCard key={card.cardId} {...card} boardId={boardId} />
+            ))}
+          </ul>
+          {isAddOpen ? (
+            <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
+          ) : (
+            <AddCardBtn onClick={() => setIsAddOpen(true)}>
+              <AddBtn addWhat={"a card"} />
+            </AddCardBtn>
+          )}
+        </BoardContainer>
+      </BoardBlock>
+      {showPreview && <BoardDropPreview />}
+    </>
   );
 }
 

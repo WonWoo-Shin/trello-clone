@@ -60,9 +60,10 @@ export const BoardContainer = styled.div`
   transform: translate(0, 0);
 `;
 
-export const BoardTrace = styled.div`
-  width: 100%;
-  min-height: 88px;
+export const BoardDropPreview = styled.div`
+  width: 272px;
+  height: 88px;
+  margin: 0 6px;
   border-radius: 12px;
   background-color: #006aa7;
 `;
@@ -110,6 +111,13 @@ export const CardDrop = styled.li`
   padding: 4px 0;
 `;
 
+export const CardDropPreview = styled.div`
+  height: 36px;
+  margin-top: 4px;
+  background-color: #091e420f;
+  border-radius: 8px;
+`;
+
 const CardDesign = styled.div`
   height: 36px;
   line-height: 36px;
@@ -118,11 +126,6 @@ const CardDesign = styled.div`
   padding-left: 12px;
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 `;
-
-interface CardProps {
-  $isDragging: boolean;
-  $isBoardOver: boolean;
-}
 
 export const Card = styled(CardDesign)`
   transform: translate(0, 0);

@@ -16,6 +16,7 @@ function Boards() {
   useEffect(() => {
     return monitorForElements({
       onDrop: ({ source, location }) => {
+        console.log(location.current.dropTargets[0].data);
         if (!location.current.dropTargets.length) {
           //drop outside
           return;
