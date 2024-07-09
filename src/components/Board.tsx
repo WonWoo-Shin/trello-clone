@@ -32,7 +32,8 @@ interface IBoardProps {
 function Board({ boardId, boardName, cards }: IBoardProps) {
   const setBoards = useSetRecoilState(boardsState);
   const [isDragging, setIsDragging] = useState(false);
-  const [showPreview, setShowPreview] = useState<Edge | null>(null);
+  const [closetEdge, setClosetEdge] = useState<Edge | null>();
+  const [showPreview, setShowPreview] = useState(false);
   const [boardHide, setBoardHide] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const dropRef = useRef(null);
@@ -44,20 +45,25 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
+      onDrag: ({ self }) => {
+        const currentClosetEdge = extractClosestEdge(self.data);
+        setClosetEdge(currentClosetEdge);
+      },
       onDragEnter: ({ source, self }) => {
         if (source.data.type === "board") {
-          const closetEdge = extractClosestEdge(self.data);
-          setShowPreview(closetEdge);
+          const currentClosetEdge = extractClosestEdge(self.data);
+          setShowPreview(true);
+          setClosetEdge(currentClosetEdge);
         }
       },
       onDragLeave: ({ source: { data } }) => {
         if (data.boardId === boardId && data.type === "board") {
           setBoardHide(true);
         }
-        setShowPreview(null);
+        setShowPreview(false);
       },
       onDrop: () => {
-        setShowPreview(null);
+        setShowPreview(false);
       },
       getData: ({ input, element }) => {
         const data = {
@@ -72,7 +78,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
       },
       getIsSticky: () => true,
     });
-  }, [boardId, showPreview]);
+  }, [boardId, closetEdge, showPreview, boardHide]);
   //drag
   useEffect(() => {
     const board = dragRef.current;
@@ -92,7 +98,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   }, [boardId]);
   return (
     <>
-      {showPreview === "right" && <BoardDropPreview />}
+      {showPreview && closetEdge === "right" && <BoardDropPreview />}
       <BoardBlock ref={dropRef} hidden={boardHide}>
         <BoardContainer
           ref={dragRef}
@@ -117,7 +123,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           )}
         </BoardContainer>
       </BoardBlock>
-      {showPreview === "left" && <BoardDropPreview />}
+      {showPreview && closetEdge === "left" && <BoardDropPreview />}
     </>
   );
 }
