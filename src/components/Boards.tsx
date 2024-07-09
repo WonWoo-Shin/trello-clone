@@ -7,11 +7,13 @@ import { AddBtn } from "./Submit";
 import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
+import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
 function Boards() {
   const [boards, setBoards] = useRecoilState(boardsState);
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [isAddOpen, setIsAddOpen] = useState(false);
+
   //monitor
   useEffect(() => {
     return monitorForElements({
@@ -29,13 +31,19 @@ function Boards() {
           invariant(typeof targetBoardId === "number");
           switch (source.data.type) {
             case "board":
+              const closetEdge = extractClosestEdge(target.data);
               setBoardOrder((order) => {
                 const sourceIndex = order.findIndex(
                   (item) => item === sourceBoardId
                 );
-                const targetIndex = order.findIndex(
+                let targetIndex = order.findIndex(
                   (item) => item === targetBoardId
                 );
+                if (sourceIndex < targetIndex) {
+                  closetEdge === "left" ? targetIndex-- : targetIndex;
+                } else if (sourceIndex > targetIndex) {
+                  closetEdge === "right" ? targetIndex++ : targetIndex;
+                }
                 const newOrder = [...order];
                 const draggedItem = newOrder.splice(sourceIndex, 1);
                 newOrder.splice(targetIndex, 0, ...draggedItem);
