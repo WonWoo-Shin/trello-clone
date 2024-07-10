@@ -29,6 +29,7 @@ function Boards() {
           const targetBoardId = target.data.boardId;
           invariant(typeof sourceBoardId === "number");
           invariant(typeof targetBoardId === "number");
+
           switch (source.data.type) {
             case "board":
               const closetEdge = extractClosestEdge(target.data);
@@ -39,17 +40,23 @@ function Boards() {
                 let targetIndex = order.findIndex(
                   (item) => item === targetBoardId
                 );
-                if (sourceIndex < targetIndex) {
-                  closetEdge === "left" ? targetIndex-- : targetIndex;
-                } else if (sourceIndex > targetIndex) {
-                  closetEdge === "right" ? targetIndex++ : targetIndex;
+
+                const isMovingRight = sourceIndex < targetIndex;
+                const isMovingLeft = sourceIndex > targetIndex;
+                if (isMovingRight && closetEdge === "left") {
+                  targetIndex -= 1;
+                } else if (isMovingLeft && closetEdge === "right") {
+                  targetIndex += 1;
                 }
+
                 const newOrder = [...order];
                 const draggedItem = newOrder.splice(sourceIndex, 1);
                 newOrder.splice(targetIndex, 0, ...draggedItem);
+
                 return newOrder;
               });
               break;
+
             case "card":
               const targetType = target.data.type;
               const sourceCardId = source.data.cardId;
