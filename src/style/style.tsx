@@ -113,7 +113,7 @@ export const CardDrop = styled.li`
 
 export const CardDropPreview = styled.div`
   height: 36px;
-  margin-top: 4px;
+  margin: 4px 0;
   background-color: #091e420f;
   border-radius: 8px;
 `;

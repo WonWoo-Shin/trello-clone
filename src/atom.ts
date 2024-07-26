@@ -22,6 +22,7 @@ export const boardsState = atom<TList>({
       cards: [
         { cardId: 12345678, cardText: "Project planning" },
         { cardId: 12345679, cardText: "b" },
+        { cardId: 435634256, cardText: "d" },
       ],
     },
     123456790: {

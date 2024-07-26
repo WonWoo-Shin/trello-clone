@@ -1,5 +1,5 @@
 import { AddBoardBtn, AnotherList, BoardsList } from "../style/style";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import Board from "./Board";
 import AddBoard from "./AddBoard";
@@ -17,6 +17,7 @@ function Boards() {
   //monitor
   useEffect(() => {
     return monitorForElements({
+      onDragStart: () => {},
       onDrop: ({ source, location }) => {
         if (!location.current.dropTargets.length) {
           //drop outside
@@ -32,7 +33,7 @@ function Boards() {
 
           switch (source.data.type) {
             case "board":
-              const closetEdge = extractClosestEdge(target.data);
+              const currentClosetEdge = extractClosestEdge(target.data);
               setBoardOrder((order) => {
                 const sourceIndex = order.findIndex(
                   (item) => item === sourceBoardId
@@ -41,11 +42,11 @@ function Boards() {
                   (item) => item === targetBoardId
                 );
 
-                const isMovingRight = sourceIndex < targetIndex;
                 const isMovingLeft = sourceIndex > targetIndex;
-                if (isMovingRight && closetEdge === "left") {
+                const isMovingRight = sourceIndex < targetIndex;
+                if (isMovingRight && currentClosetEdge === "left") {
                   targetIndex -= 1;
-                } else if (isMovingLeft && closetEdge === "right") {
+                } else if (isMovingLeft && currentClosetEdge === "right") {
                   targetIndex += 1;
                 }
 
@@ -61,15 +62,27 @@ function Boards() {
               const targetType = target.data.type;
               const sourceCardId = source.data.cardId;
               const targetCardId = target.data.cardId;
+
               const sourceIndex = boards[sourceBoardId].cards.findIndex(
                 (item) => item.cardId === sourceCardId
               );
-              const targetIndex = boards[targetBoardId].cards.findIndex(
+              let targetIndex = boards[targetBoardId].cards.findIndex(
                 (item) => item.cardId === targetCardId
               );
+
               if (sourceBoardId === targetBoardId) {
                 //same board
                 setBoards((boards) => {
+                  const currentClosetEdge = extractClosestEdge(target.data);
+                  const isMovingTop = sourceIndex > targetIndex;
+                  const isMovingBottom = sourceIndex < targetIndex;
+                  if (isMovingTop && currentClosetEdge === "top") {
+                    targetIndex += 1;
+                  }
+                  if (isMovingBottom && currentClosetEdge === "bottom") {
+                    targetIndex -= 1;
+                  }
+
                   const copyCards = [...boards[sourceBoardId].cards];
                   const draggedCard = copyCards.splice(sourceIndex, 1);
                   if (targetType === "card") {

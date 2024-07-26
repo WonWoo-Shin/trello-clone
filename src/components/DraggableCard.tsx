@@ -5,33 +5,68 @@ import { useSetRecoilState } from "recoil";
 import invariant from "tiny-invariant";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+  attachClosestEdge,
+  extractClosestEdge,
+  Edge,
+} from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
 interface ICardProps extends ICard {
   boardId: number;
 }
 
 function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
-  const setBoards = useSetRecoilState(boardsState);
-  const [isCardLeave, setIsCardLeave] = useState(false);
-  const [isCardEnter, setIsCardEnter] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
+  const [cardHide, setCardHide] = useState(false);
+
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
+
   //drop
   useEffect(() => {
     const cardDrop = dropRef.current;
     invariant(cardDrop);
     return dropTargetForElements({
       element: cardDrop,
-      onDragEnter: () => {},
-      onDragLeave: () => {},
-      onDrop: () => {},
-      getData: () => ({ cardId, boardId, type: "card" }),
+      onDrag: ({ source, self }) => {
+        const currentClosetEdge = extractClosestEdge(self.data);
+        if (source.data.cardId !== cardId) {
+          setClosetEdge(currentClosetEdge);
+        }
+      },
+      onDragEnter: ({ self }) => {
+        const currentClosetEdge = extractClosestEdge(self.data);
+        setClosetEdge(currentClosetEdge);
+      },
+      onDragLeave: ({ source }) => {
+        if (source.data.cardId === cardId) {
+          setCardHide(true);
+        }
+        setClosetEdge(null);
+      },
+      onDrop: () => {
+        setClosetEdge(null);
+      },
+      getData: ({ input, element }) => {
+        const data = {
+          cardId,
+          boardId,
+          type: "card",
+        };
+        return attachClosestEdge(data, {
+          element,
+          input,
+          allowedEdges: ["top", "bottom"],
+        });
+      },
       canDrop: ({ source }) => {
         return source.data.type === "card";
       },
+      getIsSticky: () => true,
     });
-  }, [cardId, boardId]);
+  }, []);
+
   //drag
   useEffect(() => {
     const card = dragRef.current;
@@ -41,16 +76,22 @@ function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
       onDragStart: () => setIsDragging(true),
       onDrop: () => {
         setIsDragging(false);
+        setCardHide(false);
       },
       getInitialData: () => ({ cardId, boardId, type: "card" }),
     });
-  }, [cardId, boardId]);
+  }, []);
+
   return (
-    <CardDrop ref={dropRef}>
-      <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
-        {cardText}
-      </Card>
-    </CardDrop>
+    <>
+      {closetEdge === "bottom" && <CardDropPreview />}
+      <CardDrop ref={dropRef} hidden={cardHide}>
+        <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
+          {cardText}
+        </Card>
+      </CardDrop>
+      {closetEdge === "top" && <CardDropPreview />}
+    </>
   );
 }
 

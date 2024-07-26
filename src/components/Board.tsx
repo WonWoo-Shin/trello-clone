@@ -3,13 +3,11 @@ import {
   BoardBlock,
   BoardContainer,
   BoardDropPreview,
-  CardDropPreview,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
-import { ICard, boardsState } from "../atom";
+import { ICard } from "../atom";
 import AddCard from "./AddCard";
-import { useSetRecoilState } from "recoil";
 import BoardTitleArea from "./BoardTitleArea";
 import { AddBtn } from "./Submit";
 import {
@@ -30,55 +28,57 @@ interface IBoardProps {
 }
 
 function Board({ boardId, boardName, cards }: IBoardProps) {
-  const setBoards = useSetRecoilState(boardsState);
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [boardHide, setBoardHide] = useState(false);
+
   const [isAddOpen, setIsAddOpen] = useState(false);
+
   const dropRef = useRef(null);
   const dragRef = useRef(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
+
   //drop
   useEffect(() => {
     const boardBlock = dropRef.current;
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      onDrag: ({ self }) => {
-        const currentClosetEdge = extractClosestEdge(self.data);
-        setClosetEdge(currentClosetEdge);
+      canDrop: ({ source }) => {
+        return source.data.type === "board";
       },
-      onDragEnter: ({ source, self }) => {
-        if (source.data.type === "board") {
-          const currentClosetEdge = extractClosestEdge(self.data);
-          setShowPreview(true);
+      onDrag: ({ source, self }) => {
+        const currentClosetEdge = extractClosestEdge(self.data);
+        if (source.data.boardId !== boardId) {
           setClosetEdge(currentClosetEdge);
         }
       },
-      onDragLeave: ({ source: { data } }) => {
-        if (data.boardId === boardId && data.type === "board") {
+      onDragEnter: ({ source, self }) => {
+        const currentClosetEdge = extractClosestEdge(self.data);
+        setClosetEdge(currentClosetEdge);
+      },
+      onDragLeave: ({ source }) => {
+        if (source.data.boardId === boardId) {
           setBoardHide(true);
         }
-        setShowPreview(false);
+        setClosetEdge(null);
       },
-      onDrop: () => {
-        setShowPreview(false);
-      },
+      onDrop: () => setClosetEdge(null),
       getData: ({ input, element }) => {
         const data = {
           boardId,
           type: "board",
         };
         return attachClosestEdge(data, {
-          input,
           element,
+          input,
           allowedEdges: ["left", "right"],
         });
       },
       getIsSticky: () => true,
     });
   }, []);
+
   //drag
   useEffect(() => {
     const board = dragRef.current;
@@ -99,7 +99,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   return (
     <>
-      {showPreview && closetEdge === "left" && <BoardDropPreview />}
+      {closetEdge === "left" && <BoardDropPreview />}
       <BoardBlock ref={dropRef} hidden={boardHide}>
         <BoardContainer
           ref={dragRef}
@@ -124,7 +124,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           )}
         </BoardContainer>
       </BoardBlock>
-      {showPreview && closetEdge === "right" && <BoardDropPreview />}
+      {closetEdge === "right" && <BoardDropPreview />}
     </>
   );
 }
