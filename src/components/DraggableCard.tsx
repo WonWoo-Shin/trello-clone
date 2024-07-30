@@ -13,9 +13,15 @@ import {
 
 interface ICardProps extends ICard {
   boardId: number;
+  removeCardPreview: () => void;
 }
 
-function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
+function DraggableCard({
+  cardId,
+  cardText,
+  boardId,
+  removeCardPreview,
+}: ICardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
   const [cardHide, setCardHide] = useState(false);
@@ -29,15 +35,19 @@ function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
     invariant(cardDrop);
     return dropTargetForElements({
       element: cardDrop,
+      canDrop: ({ source }) => {
+        return source.data.type === "card";
+      },
       onDrag: ({ source, self }) => {
         const currentClosetEdge = extractClosestEdge(self.data);
         if (source.data.cardId !== cardId) {
           setClosetEdge(currentClosetEdge);
         }
       },
-      onDragEnter: ({ self }) => {
+      onDragEnter: ({ self, location }) => {
         const currentClosetEdge = extractClosestEdge(self.data);
         setClosetEdge(currentClosetEdge);
+        removeCardPreview();
       },
       onDragLeave: ({ source }) => {
         if (source.data.cardId === cardId) {
@@ -59,9 +69,6 @@ function DraggableCard({ cardId, cardText, boardId }: ICardProps) {
           input,
           allowedEdges: ["top", "bottom"],
         });
-      },
-      canDrop: ({ source }) => {
-        return source.data.type === "card";
       },
       getIsSticky: () => true,
     });

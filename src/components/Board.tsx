@@ -3,6 +3,7 @@ import {
   BoardBlock,
   BoardContainer,
   BoardDropPreview,
+  CardDropPreview,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
@@ -31,6 +32,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
   const [boardHide, setBoardHide] = useState(false);
+  const [isCardOver, setIsCardOver] = useState(false);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
@@ -38,32 +40,50 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const dragRef = useRef(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
+  const removeCardPreview = () => {
+    setIsCardOver(false);
+  };
+
   //drop
   useEffect(() => {
     const boardBlock = dropRef.current;
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      canDrop: ({ source }) => {
-        return source.data.type === "board";
-      },
-      onDrag: ({ source, self }) => {
-        const currentClosetEdge = extractClosestEdge(self.data);
-        if (source.data.boardId !== boardId) {
+      // canDrop: ({ source }) => {
+      //   return source.data.type === "board";
+      // },
+      onDrag: ({ source, self, location }) => {
+        if (source.data.boardId !== boardId && source.data.type === "board") {
+          const currentClosetEdge = extractClosestEdge(self.data);
           setClosetEdge(currentClosetEdge);
         }
       },
       onDragEnter: ({ source, self }) => {
-        const currentClosetEdge = extractClosestEdge(self.data);
-        setClosetEdge(currentClosetEdge);
+        if (source.data.type === "board") {
+          const currentClosetEdge = extractClosestEdge(self.data);
+          setClosetEdge(currentClosetEdge);
+        } else if (source.data.type === "card") {
+          setIsCardOver(true);
+        }
       },
       onDragLeave: ({ source }) => {
-        if (source.data.boardId === boardId) {
-          setBoardHide(true);
+        if (source.data.type === "board") {
+          if (source.data.boardId === boardId) {
+            setBoardHide(true);
+          }
+          setClosetEdge(null);
+        } else if (source.data.type === "card") {
+          setIsCardOver(false);
         }
-        setClosetEdge(null);
       },
-      onDrop: () => setClosetEdge(null),
+      onDrop: ({ source }) => {
+        if (source.data.type === "board") {
+          setClosetEdge(null);
+        } else if (source.data.type === "card") {
+          setIsCardOver(false);
+        }
+      },
       getData: ({ input, element }) => {
         const data = {
           boardId,
@@ -112,9 +132,15 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           />
           <ul>
             {cards.map((card) => (
-              <DraggableCard key={card.cardId} {...card} boardId={boardId} />
+              <DraggableCard
+                key={card.cardId}
+                {...card}
+                boardId={boardId}
+                removeCardPreview={removeCardPreview}
+              />
             ))}
           </ul>
+          {isCardOver && <CardDropPreview />}
           {isAddOpen ? (
             <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
           ) : (

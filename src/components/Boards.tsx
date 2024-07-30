@@ -90,6 +90,7 @@ function Boards() {
                   } else if (targetType === "board") {
                     copyCards.push(...draggedCard);
                   }
+
                   return {
                     ...boards,
                     [sourceBoardId]: {
@@ -109,6 +110,7 @@ function Boards() {
                   } else if (targetType === "board") {
                     copyTargetCards.push(...draggedCard);
                   }
+
                   return {
                     ...boards,
                     [sourceBoardId]: {
@@ -130,6 +132,7 @@ function Boards() {
       },
     });
   }, [boards, boardOrder]);
+
   return (
     <BoardsList>
       {boardOrder.map((boardId) => (
