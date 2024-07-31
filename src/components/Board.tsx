@@ -40,7 +40,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const dragRef = useRef(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
-  const removeCardPreview = () => {
+  const removeBottomCardPreview = () => {
     setIsCardOver(false);
   };
 
@@ -50,9 +50,6 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      // canDrop: ({ source }) => {
-      //   return source.data.type === "board";
-      // },
       onDrag: ({ source, self, location }) => {
         if (source.data.boardId !== boardId && source.data.type === "board") {
           const currentClosetEdge = extractClosestEdge(self.data);
@@ -136,7 +133,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
                 key={card.cardId}
                 {...card}
                 boardId={boardId}
-                removeCardPreview={removeCardPreview}
+                removeBottomCardPreview={removeBottomCardPreview}
               />
             ))}
           </ul>

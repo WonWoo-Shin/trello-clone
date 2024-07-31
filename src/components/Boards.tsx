@@ -102,6 +102,11 @@ function Boards() {
               } else if (sourceBoardId !== targetBoardId) {
                 //cross board
                 setBoards((boards) => {
+                  const currentClosetEdge = extractClosestEdge(target.data);
+                  if (currentClosetEdge === "top") {
+                    targetIndex += 1;
+                  }
+
                   const copySourceCards = [...boards[sourceBoardId].cards];
                   const copyTargetCards = [...boards[targetBoardId].cards];
                   const draggedCard = copySourceCards.splice(sourceIndex, 1);

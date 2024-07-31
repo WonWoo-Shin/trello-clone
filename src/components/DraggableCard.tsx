@@ -13,14 +13,14 @@ import {
 
 interface ICardProps extends ICard {
   boardId: number;
-  removeCardPreview: () => void;
+  removeBottomCardPreview: () => void;
 }
 
 function DraggableCard({
   cardId,
   cardText,
   boardId,
-  removeCardPreview,
+  removeBottomCardPreview,
 }: ICardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
@@ -44,10 +44,10 @@ function DraggableCard({
           setClosetEdge(currentClosetEdge);
         }
       },
-      onDragEnter: ({ self, location }) => {
+      onDragEnter: ({ source, self }) => {
         const currentClosetEdge = extractClosestEdge(self.data);
         setClosetEdge(currentClosetEdge);
-        removeCardPreview();
+        removeBottomCardPreview();
       },
       onDragLeave: ({ source }) => {
         if (source.data.cardId === cardId) {
@@ -67,7 +67,7 @@ function DraggableCard({
         return attachClosestEdge(data, {
           element,
           input,
-          allowedEdges: ["top", "bottom"],
+          allowedEdges: ["top", "bottom", "left", "right"],
         });
       },
       getIsSticky: () => true,
@@ -91,7 +91,7 @@ function DraggableCard({
 
   return (
     <>
-      {closetEdge === "bottom" && <CardDropPreview />}
+      {closetEdge !== "top" && closetEdge !== null && <CardDropPreview />}
       <CardDrop ref={dropRef} hidden={cardHide}>
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
           {cardText}
