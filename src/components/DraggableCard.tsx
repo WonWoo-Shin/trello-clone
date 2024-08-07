@@ -92,11 +92,11 @@ function DraggableCard({
   return (
     <>
       {closetEdge !== "top" && closetEdge !== null && <CardDropPreview />}
-      <CardDrop ref={dropRef} hidden={cardHide}>
+      <li ref={dropRef} hidden={cardHide}>
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
           {cardText}
         </Card>
-      </CardDrop>
+      </li>
       {closetEdge === "top" && <CardDropPreview />}
     </>
   );

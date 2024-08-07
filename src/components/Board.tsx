@@ -3,7 +3,9 @@ import {
   BoardBlock,
   BoardContainer,
   BoardDropPreview,
+  CardBuffer,
   CardDropPreview,
+  CardList,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
@@ -36,6 +38,9 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
+  const cardListRef = useRef<HTMLUListElement>(null);
+  const [draggingBoardHeight, setDraggingBoardHeight] = useState("212px");
+
   const dropRef = useRef(null);
   const dragRef = useRef(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
@@ -50,7 +55,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
-      onDrag: ({ source, self, location }) => {
+      onDrag: ({ source, self }) => {
         if (source.data.boardId !== boardId && source.data.type === "board") {
           const currentClosetEdge = extractClosestEdge(self.data);
           setClosetEdge(currentClosetEdge);
@@ -63,6 +68,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
         } else if (source.data.type === "card") {
           setIsCardOver(true);
         }
+        setDraggingBoardHeight(source.data.boardHeight as string);
       },
       onDragLeave: ({ source }) => {
         if (source.data.type === "board") {
@@ -105,18 +111,25 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     return draggable({
       element: board,
       dragHandle: boardHandle,
-      onDragStart: () => setIsDragging(true),
+      onDragStart: () => {
+        setIsDragging(true);
+      },
       onDrop: () => {
         setIsDragging(false);
         setBoardHide(false);
       },
-      getInitialData: () => ({ boardId, type: "board" }),
+      getInitialData: () => {
+        const boardHeight = getComputedStyle(board).height;
+        return { boardId, type: "board", boardHeight };
+      },
     });
   }, []);
 
   return (
     <>
-      {closetEdge === "left" && <BoardDropPreview />}
+      {closetEdge === "left" && (
+        <BoardDropPreview style={{ height: draggingBoardHeight }} />
+      )}
       <BoardBlock ref={dropRef} hidden={boardHide}>
         <BoardContainer
           ref={dragRef}
@@ -127,7 +140,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
             boardName={boardName}
             boardHandle={dragHandleRef}
           />
-          <ul>
+          <CardList ref={cardListRef}>
             {cards.map((card) => (
               <DraggableCard
                 key={card.cardId}
@@ -136,8 +149,8 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
                 removeBottomCardPreview={removeBottomCardPreview}
               />
             ))}
-          </ul>
-          {isCardOver && <CardDropPreview />}
+            {isCardOver && <CardDropPreview />}
+          </CardList>
           {isAddOpen ? (
             <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
           ) : (
@@ -147,7 +160,9 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           )}
         </BoardContainer>
       </BoardBlock>
-      {closetEdge === "right" && <BoardDropPreview />}
+      {closetEdge === "right" && (
+        <BoardDropPreview style={{ height: draggingBoardHeight }} />
+      )}
     </>
   );
 }

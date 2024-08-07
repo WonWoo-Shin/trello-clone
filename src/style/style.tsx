@@ -48,15 +48,11 @@ export const BoardTraceBlock = styled.div`
 
 export const BoardContainer = styled.div`
   width: 100%;
-  min-height: 88px;
   padding: 8px;
   background-color: #f1f2f4;
   border-radius: 12px;
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
   color: #172b4d;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   transform: translate(0, 0);
 `;
 
@@ -72,7 +68,7 @@ export const BoardHandle = styled.div`
   padding: 8px;
   padding-bottom: 0;
   margin: -8px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   cursor: pointer;
 `;
 
@@ -111,9 +107,19 @@ export const CardDrop = styled.li`
   padding: 4px 0;
 `;
 
+export const CardBuffer = styled.div`
+  height: 8px;
+`;
+
+export const CardList = styled.ul`
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
 export const CardDropPreview = styled.div`
   height: 36px;
-  margin: 4px 0;
   background-color: #091e420f;
   border-radius: 8px;
 `;
@@ -129,7 +135,6 @@ const CardDesign = styled.div`
 
 export const Card = styled(CardDesign)`
   transform: translate(0, 0);
-  /* opacity: 0.4; */
   &:hover {
     /* outline: 2px solid #4391ff; */
     outline-offset: -1px;
@@ -142,7 +147,6 @@ export const AddCardBtn = styled.div`
   font-weight: 500;
   display: flex;
   align-items: center;
-  margin-top: 4px;
   padding: 8px;
   border-radius: 8px;
   transition: background-color 0.1s ease;
@@ -150,14 +154,13 @@ export const AddCardBtn = styled.div`
     margin-right: 8px;
   }
   &:hover {
-    /* background-color: #d0d5db; */
+    background-color: #d0d5db;
     cursor: pointer;
   }
 `;
 
 export const FormInput = styled(CardDesign)`
   width: 100%;
-  margin: 4px 0 8px 0;
   border: none;
   color: inherit;
   font-size: inherit;
@@ -169,6 +172,7 @@ export const FormInput = styled(CardDesign)`
 
 export const SubmitArea = styled.div`
   height: 32px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -226,5 +230,5 @@ export const AddBoardBtn = styled.div`
 
 export const AddBoardForm = styled(BoardContainer)`
   width: 272px;
-  height: 80px;
+  height: 88px;
 `;
