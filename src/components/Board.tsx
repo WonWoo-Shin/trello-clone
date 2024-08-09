@@ -39,7 +39,8 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const cardListRef = useRef<HTMLUListElement>(null);
-  const [draggingBoardHeight, setDraggingBoardHeight] = useState("212px");
+  const [hasCard, setHasCard] = useState(!!cards.length);
+  const [draggingBoardHeight, setDraggingBoardHeight] = useState("0");
 
   const dropRef = useRef(null);
   const dragRef = useRef(null);
@@ -48,6 +49,10 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const removeBottomCardPreview = () => {
     setIsCardOver(false);
   };
+
+  useEffect(() => {
+    setHasCard(!!cards.length);
+  }, [cards]);
 
   //drop
   useEffect(() => {
@@ -65,10 +70,11 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
         if (source.data.type === "board") {
           const currentClosetEdge = extractClosestEdge(self.data);
           setClosetEdge(currentClosetEdge);
+          setDraggingBoardHeight(source.data.boardHeight as string);
         } else if (source.data.type === "card") {
           setIsCardOver(true);
+          setHasCard(true);
         }
-        setDraggingBoardHeight(source.data.boardHeight as string);
       },
       onDragLeave: ({ source }) => {
         if (source.data.type === "board") {
@@ -78,6 +84,11 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setClosetEdge(null);
         } else if (source.data.type === "card") {
           setIsCardOver(false);
+          if (cardListRef.current) {
+            // 변수 수정
+            setHasCard(getComputedStyle(cardListRef.current).height !== "36px");
+            // 변수 수정
+          }
         }
       },
       onDrop: ({ source }) => {
@@ -140,7 +151,10 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
             boardName={boardName}
             boardHandle={dragHandleRef}
           />
-          <CardList ref={cardListRef}>
+          <CardList
+            ref={cardListRef}
+            style={hasCard ? { marginTop: "8px" } : {}}
+          >
             {cards.map((card) => (
               <DraggableCard
                 key={card.cardId}
