@@ -116,6 +116,9 @@ export const CardList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  &:has(> *:not([hidden])) {
+    margin-top: 8px;
+  }
 `;
 
 export const CardDropPreview = styled.div`

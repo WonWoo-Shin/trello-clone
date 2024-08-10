@@ -7,6 +7,7 @@ import {
   CardDropPreview,
   CardList,
 } from "../style/style";
+
 import { memo, useEffect, useRef, useState } from "react";
 import DraggableCard from "./DraggableCard";
 import { ICard } from "../atom";
@@ -38,8 +39,6 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  const cardListRef = useRef<HTMLUListElement>(null);
-  const [hasCard, setHasCard] = useState(!!cards.length);
   const [draggingBoardHeight, setDraggingBoardHeight] = useState("0");
 
   const dropRef = useRef(null);
@@ -49,10 +48,6 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const removeBottomCardPreview = () => {
     setIsCardOver(false);
   };
-
-  useEffect(() => {
-    setHasCard(!!cards.length);
-  }, [cards]);
 
   //drop
   useEffect(() => {
@@ -73,7 +68,6 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setDraggingBoardHeight(source.data.boardHeight as string);
         } else if (source.data.type === "card") {
           setIsCardOver(true);
-          setHasCard(true);
         }
       },
       onDragLeave: ({ source }) => {
@@ -84,11 +78,6 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setClosetEdge(null);
         } else if (source.data.type === "card") {
           setIsCardOver(false);
-          if (cardListRef.current) {
-            // 변수 수정
-            setHasCard(getComputedStyle(cardListRef.current).height !== "36px");
-            // 변수 수정
-          }
         }
       },
       onDrop: ({ source }) => {
@@ -151,10 +140,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
             boardName={boardName}
             boardHandle={dragHandleRef}
           />
-          <CardList
-            ref={cardListRef}
-            style={hasCard ? { marginTop: "8px" } : {}}
-          >
+          <CardList className="card-list">
             {cards.map((card) => (
               <DraggableCard
                 key={card.cardId}
