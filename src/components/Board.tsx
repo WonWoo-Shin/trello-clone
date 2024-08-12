@@ -1,19 +1,6 @@
-import {
-  AddCardBtn,
-  BoardBlock,
-  BoardContainer,
-  BoardDropPreview,
-  CardBuffer,
-  CardDropPreview,
-  CardList,
-} from "../style/style";
-
 import { memo, useEffect, useRef, useState } from "react";
-import DraggableCard from "./DraggableCard";
-import { ICard } from "../atom";
-import AddCard from "./AddCard";
-import BoardTitleArea from "./BoardTitleArea";
-import { AddBtn } from "./Submit";
+import invariant from "tiny-invariant";
+
 import {
   draggable,
   dropTargetForElements,
@@ -23,7 +10,24 @@ import {
   extractClosestEdge,
   Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
-import invariant from "tiny-invariant";
+import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
+import { containsFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
+
+import { ICard } from "../atom";
+
+import DraggableCard from "./DraggableCard";
+import AddCard from "./AddCard";
+import BoardTitleArea from "./BoardTitleArea";
+import { AddBtn } from "./Submit";
+
+import {
+  AddCardBtn,
+  BoardBlock,
+  BoardContainer,
+  BoardDropPreview,
+  CardDropPreview,
+  CardList,
+} from "../style/style";
 
 interface IBoardProps {
   boardId: number;
@@ -41,8 +45,8 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   const [draggingBoardHeight, setDraggingBoardHeight] = useState("0");
 
-  const dropRef = useRef(null);
-  const dragRef = useRef(null);
+  const boardBlockRef = useRef(null);
+  const boardContainerRef = useRef(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
   const removeBottomCardPreview = () => {
@@ -51,7 +55,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   //drop
   useEffect(() => {
-    const boardBlock = dropRef.current;
+    const boardBlock = boardBlockRef.current;
     invariant(boardBlock);
     return dropTargetForElements({
       element: boardBlock,
@@ -104,7 +108,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
 
   //drag
   useEffect(() => {
-    const board = dragRef.current;
+    const board = boardContainerRef.current;
     const boardHandle = dragHandleRef.current;
     invariant(board);
     invariant(boardHandle);
@@ -125,15 +129,29 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     });
   }, []);
 
+  //drop file
+  useEffect(() => {
+    const boardFile = boardContainerRef.current;
+    invariant(boardFile);
+    return dropTargetForExternal({
+      element: boardFile,
+      canDrop: containsFiles,
+      onDragEnter: () => {
+        console.log("file");
+      },
+    });
+  }, []);
+
   return (
     <>
       {closetEdge === "left" && (
         <BoardDropPreview style={{ height: draggingBoardHeight }} />
       )}
-      <BoardBlock ref={dropRef} hidden={boardHide}>
+      <BoardBlock ref={boardBlockRef} hidden={boardHide}>
         <BoardContainer
-          ref={dragRef}
-          style={isDragging ? { opacity: "0.4" } : {}}
+          ref={boardContainerRef}
+          $isDragging={isDragging}
+          $isCardOver={isCardOver}
         >
           <BoardTitleArea
             boardId={boardId}

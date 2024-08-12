@@ -8,13 +8,15 @@ import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
+import { monitorForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
+import { getFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
 
 function Boards() {
   const [boards, setBoards] = useRecoilState(boardsState);
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  //monitor
+  //element monitor
   useEffect(() => {
     return monitorForElements({
       onDragStart: () => {},
@@ -137,6 +139,16 @@ function Boards() {
       },
     });
   }, [boards, boardOrder]);
+
+  //file monitor
+  useEffect(() => {
+    return monitorForExternal({
+      onDrop: ({ source }) => {
+        const file = getFiles({ source });
+        console.log(file);
+      },
+    });
+  }, []);
 
   return (
     <BoardsList>

@@ -46,7 +46,12 @@ export const BoardTraceBlock = styled.div`
   padding: 0 6px;
 `;
 
-export const BoardContainer = styled.div`
+interface IBoardContainer {
+  $isDragging: boolean;
+  $isCardOver: boolean;
+}
+
+export const BoardContainer = styled.div<IBoardContainer>`
   width: 100%;
   padding: 8px;
   background-color: #f1f2f4;
@@ -54,6 +59,8 @@ export const BoardContainer = styled.div`
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
   color: #172b4d;
   transform: translate(0, 0);
+  opacity: ${(props) => props.$isDragging && 0.4};
+  outline: ${(props) => props.$isCardOver && "2px solid #388bff"};
 `;
 
 export const BoardDropPreview = styled.div`
@@ -118,6 +125,7 @@ export const CardList = styled.ul`
   gap: 8px;
   &:has(> *:not([hidden])) {
     margin-top: 8px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -164,6 +172,7 @@ export const AddCardBtn = styled.div`
 
 export const FormInput = styled(CardDesign)`
   width: 100%;
+  margin-top: -2px;
   border: none;
   color: inherit;
   font-size: inherit;
