@@ -136,20 +136,33 @@ export const CardDropPreview = styled.div`
 `;
 
 const CardDesign = styled.div`
-  height: 36px;
+  min-height: 36px;
   line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
-  padding-left: 12px;
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
 `;
 
 export const Card = styled(CardDesign)`
   transform: translate(0, 0);
   &:hover {
-    /* outline: 2px solid #4391ff; */
+    outline: 2px solid #4391ff;
     outline-offset: -1px;
   }
+`;
+
+export const CardImage = styled.img`
+  width: 256px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+`;
+
+export const CardText = styled.span`
+  padding-left: 12px;
 `;
 
 export const AddCardBtn = styled.div`
@@ -172,7 +185,9 @@ export const AddCardBtn = styled.div`
 
 export const FormInput = styled(CardDesign)`
   width: 100%;
+  height: 36px;
   margin-top: -2px;
+  padding-left: 12px;
   border: none;
   color: inherit;
   font-size: inherit;

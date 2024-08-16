@@ -1,4 +1,10 @@
-import { Card, CardDrop, CardDropPreview } from "../style/style";
+import {
+  Card,
+  CardDrop,
+  CardDropPreview,
+  CardImage,
+  CardText,
+} from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import { ICard, boardsState } from "../atom";
 import { useSetRecoilState } from "recoil";
@@ -21,10 +27,12 @@ function DraggableCard({
   cardText,
   boardId,
   removeBottomCardPreview,
+  dataUrl,
 }: ICardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
   const [cardHide, setCardHide] = useState(false);
+  const [draggingCardHeight, setDraggingCardHeight] = useState("36px");
 
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -48,6 +56,7 @@ function DraggableCard({
         const currentClosetEdge = extractClosestEdge(self.data);
         setClosetEdge(currentClosetEdge);
         removeBottomCardPreview();
+        setDraggingCardHeight(source.data.cardHeight as string);
       },
       onDragLeave: ({ source }) => {
         if (source.data.cardId === cardId) {
@@ -85,19 +94,27 @@ function DraggableCard({
         setIsDragging(false);
         setCardHide(false);
       },
-      getInitialData: () => ({ cardId, boardId, type: "card" }),
+      getInitialData: () => {
+        const cardHeight = getComputedStyle(card).height;
+        return { cardId, boardId, type: "card", cardHeight };
+      },
     });
   }, []);
 
   return (
     <>
-      {closetEdge !== "top" && closetEdge !== null && <CardDropPreview />}
+      {closetEdge !== "top" && closetEdge !== null && (
+        <CardDropPreview style={{ height: draggingCardHeight }} />
+      )}
       <li ref={dropRef} hidden={cardHide}>
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
-          {cardText}
+          {dataUrl && <CardImage src={dataUrl} />}
+          <CardText>{cardText}</CardText>
         </Card>
       </li>
-      {closetEdge === "top" && <CardDropPreview />}
+      {closetEdge === "top" && (
+        <CardDropPreview style={{ height: draggingCardHeight }} />
+      )}
     </>
   );
 }

@@ -44,6 +44,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const [draggingBoardHeight, setDraggingBoardHeight] = useState("0");
+  const [draggingCardHeight, setDraggingCardHeight] = useState("36px");
 
   const boardBlockRef = useRef(null);
   const boardContainerRef = useRef(null);
@@ -72,6 +73,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setDraggingBoardHeight(source.data.boardHeight as string);
         } else if (source.data.type === "card") {
           setIsCardOver(true);
+          setDraggingCardHeight(source.data.cardHeight as string);
         }
       },
       onDragLeave: ({ source }) => {
@@ -139,6 +141,9 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
       onDragEnter: () => {
         console.log("file");
       },
+      getData: () => ({
+        boardId,
+      }),
     });
   }, []);
 
@@ -167,7 +172,9 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
                 removeBottomCardPreview={removeBottomCardPreview}
               />
             ))}
-            {isCardOver && <CardDropPreview />}
+            {isCardOver && (
+              <CardDropPreview style={{ height: draggingCardHeight }} />
+            )}
           </CardList>
           {isAddOpen ? (
             <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
