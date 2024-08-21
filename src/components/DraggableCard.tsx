@@ -11,6 +11,10 @@ import { useSetRecoilState } from "recoil";
 import invariant from "tiny-invariant";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+
+import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source";
+
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -97,6 +101,24 @@ function DraggableCard({
       getInitialData: () => {
         const cardHeight = getComputedStyle(card).height;
         return { cardId, boardId, type: "card", cardHeight };
+      },
+      onGenerateDragPreview: ({ nativeSetDragImage, source, location }) => {
+        setCustomNativeDragPreview({
+          getOffset: preserveOffsetOnSource({
+            element: source.element,
+            input: location.current.input,
+          }),
+          render({ container }) {
+            const cardStyle = getComputedStyle(card);
+            const preview = card.cloneNode(true) as HTMLLIElement;
+            preview.style.width = cardStyle.width;
+            preview.style.height = cardStyle.height;
+            preview.style.transform = "rotate(4deg)";
+            preview.style.fontSize = "14px";
+            container.appendChild(preview);
+          },
+          nativeSetDragImage,
+        });
       },
     });
   }, []);

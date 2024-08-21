@@ -114,10 +114,6 @@ export const CardDrop = styled.li`
   padding: 4px 0;
 `;
 
-export const CardBuffer = styled.div`
-  height: 8px;
-`;
-
 export const CardList = styled.ul`
   margin-bottom: 8px;
   display: flex;

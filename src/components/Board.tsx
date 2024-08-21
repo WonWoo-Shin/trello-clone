@@ -13,6 +13,9 @@ import {
 import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
 import { containsFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
 
+import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
+import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source";
+
 import { ICard } from "../atom";
 
 import DraggableCard from "./DraggableCard";
@@ -47,7 +50,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const [draggingCardHeight, setDraggingCardHeight] = useState("36px");
 
   const boardBlockRef = useRef(null);
-  const boardContainerRef = useRef(null);
+  const boardContainerRef = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
   const removeBottomCardPreview = () => {
@@ -127,6 +130,24 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
       getInitialData: () => {
         const boardHeight = getComputedStyle(board).height;
         return { boardId, type: "board", boardHeight };
+      },
+      onGenerateDragPreview: ({ nativeSetDragImage, source, location }) => {
+        setCustomNativeDragPreview({
+          getOffset: preserveOffsetOnSource({
+            element: source.element,
+            input: location.current.input,
+          }),
+          render({ container }) {
+            const boardStyle = getComputedStyle(board);
+            const preview = board.cloneNode(true) as HTMLDivElement;
+            preview.style.width = boardStyle.width;
+            preview.style.height = boardStyle.height;
+            preview.style.transform = "rotate(4deg)";
+            preview.style.fontSize = "14px";
+            container.appendChild(preview);
+          },
+          nativeSetDragImage,
+        });
       },
     });
   }, []);
