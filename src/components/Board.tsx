@@ -184,7 +184,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
             boardName={boardName}
             boardHandle={dragHandleRef}
           />
-          <CardList className="card-list">
+          <CardList>
             {cards.map((card) => (
               <DraggableCard
                 key={card.cardId}

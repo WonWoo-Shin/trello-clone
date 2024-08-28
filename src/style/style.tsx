@@ -109,11 +109,6 @@ export const BoardInput = styled(BoardTitleDesign)`
   }
 `;
 
-export const CardDrop = styled.li`
-  height: 44px;
-  padding: 4px 0;
-`;
-
 export const CardList = styled.ul`
   margin-bottom: 8px;
   display: flex;
@@ -122,6 +117,15 @@ export const CardList = styled.ul`
   &:has(> *:not([hidden])) {
     margin-top: 8px;
     margin-bottom: 10px;
+  }
+`;
+
+export const CardWrapper = styled.li`
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  &[hidden] {
+    display: none;
   }
 `;
 
@@ -182,7 +186,6 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(CardDesign)`
   width: 100%;
   height: 36px;
-  margin-top: -2px;
   padding-left: 12px;
   border: none;
   color: inherit;

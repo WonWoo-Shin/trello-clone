@@ -78,12 +78,12 @@ function Boards() {
                 //same board
                 setBoards((boards) => {
                   const currentClosetEdge = extractClosestEdge(target.data);
-                  const isMovingTop = sourceIndex > targetIndex;
-                  const isMovingBottom = sourceIndex < targetIndex;
-                  if (isMovingTop && currentClosetEdge === "top") {
+                  const isMovingUp = sourceIndex > targetIndex;
+                  const isMovingDown = sourceIndex < targetIndex;
+                  if (isMovingUp && currentClosetEdge === "bottom") {
                     targetIndex += 1;
                   }
-                  if (isMovingBottom && currentClosetEdge === "bottom") {
+                  if (isMovingDown && currentClosetEdge === "top") {
                     targetIndex -= 1;
                   }
 
@@ -107,7 +107,7 @@ function Boards() {
                 //cross board
                 setBoards((boards) => {
                   const currentClosetEdge = extractClosestEdge(target.data);
-                  if (currentClosetEdge === "top") {
+                  if (currentClosetEdge === "bottom") {
                     targetIndex += 1;
                   }
 

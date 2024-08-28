@@ -1,13 +1,13 @@
 import {
   Card,
-  CardDrop,
   CardDropPreview,
   CardImage,
   CardText,
+  CardWrapper,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import { ICard, boardsState } from "../atom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import invariant from "tiny-invariant";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -36,7 +36,7 @@ function DraggableCard({
   const [isDragging, setIsDragging] = useState(false);
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
   const [cardHide, setCardHide] = useState(false);
-  const [draggingCardHeight, setDraggingCardHeight] = useState("36px");
+  const [draggingCardHeight, setDraggingCardHeight] = useState("100%");
 
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -65,6 +65,7 @@ function DraggableCard({
       onDragLeave: ({ source }) => {
         if (source.data.cardId === cardId) {
           setCardHide(true);
+          console.log(cardText);
         }
         setClosetEdge(null);
       },
@@ -80,7 +81,7 @@ function DraggableCard({
         return attachClosestEdge(data, {
           element,
           input,
-          allowedEdges: ["top", "bottom", "left", "right"],
+          allowedEdges: ["top", "bottom"],
         });
       },
       getIsSticky: () => true,
@@ -125,18 +126,18 @@ function DraggableCard({
 
   return (
     <>
-      {closetEdge !== "top" && closetEdge !== null && (
-        <CardDropPreview style={{ height: draggingCardHeight }} />
-      )}
-      <li ref={dropRef} hidden={cardHide}>
+      <CardWrapper ref={dropRef} hidden={cardHide}>
+        {closetEdge === "top" && (
+          <CardDropPreview style={{ height: draggingCardHeight }} />
+        )}
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
           {dataUrl && <CardImage src={dataUrl} />}
           <CardText>{cardText}</CardText>
         </Card>
-      </li>
-      {closetEdge === "top" && (
-        <CardDropPreview style={{ height: draggingCardHeight }} />
-      )}
+        {closetEdge === "bottom" && (
+          <CardDropPreview style={{ height: draggingCardHeight }} />
+        )}
+      </CardWrapper>
     </>
   );
 }
