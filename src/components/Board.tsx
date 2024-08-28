@@ -43,18 +43,19 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
   const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
   const [boardHide, setBoardHide] = useState(false);
   const [isCardOver, setIsCardOver] = useState(false);
+  const [showCardDropPreview, setShowCardDropPreview] = useState(false);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   const [draggingBoardHeight, setDraggingBoardHeight] = useState("0");
-  const [draggingCardHeight, setDraggingCardHeight] = useState("36px");
+  const [draggingCardHeight, setDraggingCardHeight] = useState("0");
 
   const boardBlockRef = useRef(null);
   const boardContainerRef = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
 
   const removeBottomCardPreview = () => {
-    setIsCardOver(false);
+    setShowCardDropPreview(false);
   };
 
   //drop
@@ -67,6 +68,8 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
         if (source.data.boardId !== boardId && source.data.type === "board") {
           const currentClosetEdge = extractClosestEdge(self.data);
           setClosetEdge(currentClosetEdge);
+        } else if (source.data.type === "card") {
+          setIsCardOver(true);
         }
       },
       onDragEnter: ({ source, self }) => {
@@ -75,7 +78,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setClosetEdge(currentClosetEdge);
           setDraggingBoardHeight(source.data.boardHeight as string);
         } else if (source.data.type === "card") {
-          setIsCardOver(true);
+          setShowCardDropPreview(true);
           setDraggingCardHeight(source.data.cardHeight as string);
         }
       },
@@ -87,6 +90,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setClosetEdge(null);
         } else if (source.data.type === "card") {
           setIsCardOver(false);
+          setShowCardDropPreview(false);
         }
       },
       onDrop: ({ source }) => {
@@ -94,6 +98,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
           setClosetEdge(null);
         } else if (source.data.type === "card") {
           setIsCardOver(false);
+          setShowCardDropPreview(false);
         }
       },
       getData: ({ input, element }) => {
@@ -193,7 +198,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
                 removeBottomCardPreview={removeBottomCardPreview}
               />
             ))}
-            {isCardOver && (
+            {showCardDropPreview && (
               <CardDropPreview style={{ height: draggingCardHeight }} />
             )}
           </CardList>

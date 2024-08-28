@@ -65,7 +65,6 @@ function DraggableCard({
       onDragLeave: ({ source }) => {
         if (source.data.cardId === cardId) {
           setCardHide(true);
-          console.log(cardText);
         }
         setClosetEdge(null);
       },
