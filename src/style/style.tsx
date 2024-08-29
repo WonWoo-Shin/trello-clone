@@ -186,6 +186,7 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(CardDesign)`
   width: 100%;
   height: 36px;
+  margin-top: -2px;
   padding-left: 12px;
   border: none;
   color: inherit;

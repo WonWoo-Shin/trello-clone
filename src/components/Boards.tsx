@@ -164,6 +164,7 @@ function Boards() {
               name: file[0].name,
               size: file[0].size,
             };
+            console.log(upload);
             setBoards((boards) => {
               const targetBoardId = target.data.boardId;
               invariant(typeof targetBoardId === "number");
