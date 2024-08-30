@@ -75,7 +75,7 @@ export const BoardHandle = styled.div`
   padding: 8px;
   padding-bottom: 0;
   margin: -8px;
-  margin-bottom: 0;
+  margin-bottom: 0px;
   cursor: pointer;
 `;
 
@@ -110,13 +110,12 @@ export const BoardInput = styled(BoardTitleDesign)`
 `;
 
 export const CardList = styled.ul`
-  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   &:has(> *:not([hidden])) {
     margin-top: 8px;
-    margin-bottom: 10px;
+    padding-bottom: 2px;
   }
 `;
 
@@ -168,6 +167,7 @@ export const CardText = styled.span`
 export const AddCardBtn = styled.div`
   width: 100%;
   height: 32px;
+  margin-top: 8px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -186,7 +186,6 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(CardDesign)`
   width: 100%;
   height: 36px;
-  margin-top: -2px;
   padding-left: 12px;
   border: none;
   color: inherit;

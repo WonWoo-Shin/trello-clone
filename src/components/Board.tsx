@@ -201,10 +201,11 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
             {showCardDropPreview && (
               <CardDropPreview style={{ height: draggingCardHeight }} />
             )}
+            {isAddOpen && (
+              <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
+            )}
           </CardList>
-          {isAddOpen ? (
-            <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
-          ) : (
+          {!isAddOpen && (
             <AddCardBtn onClick={() => setIsAddOpen(true)}>
               <AddBtn addWhat={"a card"} />
             </AddCardBtn>
