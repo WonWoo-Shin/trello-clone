@@ -164,9 +164,7 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
     return dropTargetForExternal({
       element: boardFile,
       canDrop: containsFiles,
-      onDragEnter: () => {
-        console.log("file");
-      },
+      onDragEnter: () => {},
       getData: () => ({
         boardId,
       }),
@@ -198,11 +196,11 @@ function Board({ boardId, boardName, cards }: IBoardProps) {
                 removeBottomCardPreview={removeBottomCardPreview}
               />
             ))}
-            {showCardDropPreview && (
-              <CardDropPreview style={{ height: draggingCardHeight }} />
-            )}
             {isAddOpen && (
               <AddCard boardId={boardId} setIsAddOpen={setIsAddOpen} />
+            )}
+            {showCardDropPreview && (
+              <CardDropPreview style={{ height: draggingCardHeight }} />
             )}
           </CardList>
           {!isAddOpen && (

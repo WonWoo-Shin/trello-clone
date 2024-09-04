@@ -38,6 +38,8 @@ function DraggableCard({
   const [cardHide, setCardHide] = useState(false);
   const [draggingCardHeight, setDraggingCardHeight] = useState("100%");
 
+  const [imageHeight, setImageHeight] = useState({ height: 0, maxHeight: 0 });
+
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
 
@@ -123,6 +125,18 @@ function DraggableCard({
     });
   }, []);
 
+  useEffect(() => {
+    if (dataUrl) {
+      const img = new Image();
+      img.src = dataUrl;
+      const caculatedHeight = img.height / (img.width / 256);
+      setImageHeight({
+        height: caculatedHeight,
+        maxHeight: caculatedHeight,
+      });
+    }
+  }, [dataUrl]);
+
   return (
     <>
       <CardWrapper ref={dropRef} hidden={cardHide}>
@@ -130,7 +144,14 @@ function DraggableCard({
           <CardDropPreview style={{ height: draggingCardHeight }} />
         )}
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
-          {dataUrl && <CardImage src={dataUrl} />}
+          {dataUrl && (
+            <CardImage
+              style={{
+                backgroundImage: `url(${dataUrl})`,
+                height: imageHeight.height,
+              }}
+            />
+          )}
           <CardText>{cardText}</CardText>
         </Card>
         {closetEdge === "bottom" && (
