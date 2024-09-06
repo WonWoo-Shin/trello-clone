@@ -6,8 +6,7 @@ import {
   CardWrapper,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
-import { ICard, boardsState } from "../atom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { ICard } from "../atom";
 import invariant from "tiny-invariant";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -38,7 +37,7 @@ function DraggableCard({
   const [cardHide, setCardHide] = useState(false);
   const [draggingCardHeight, setDraggingCardHeight] = useState("100%");
 
-  const [imageHeight, setImageHeight] = useState({ height: 0, maxHeight: 0 });
+  const [imageHeight, setImageHeight] = useState(0);
 
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -129,11 +128,10 @@ function DraggableCard({
     if (dataUrl) {
       const img = new Image();
       img.src = dataUrl;
-      const caculatedHeight = img.height / (img.width / 256);
-      setImageHeight({
-        height: caculatedHeight,
-        maxHeight: caculatedHeight,
-      });
+      img.onload = () => {
+        const caculatedHeight = (img.height * 256) / img.width;
+        setImageHeight(caculatedHeight);
+      };
     }
   }, [dataUrl]);
 
@@ -148,7 +146,7 @@ function DraggableCard({
             <CardImage
               style={{
                 backgroundImage: `url(${dataUrl})`,
-                height: imageHeight.height,
+                height: imageHeight,
               }}
             />
           )}
