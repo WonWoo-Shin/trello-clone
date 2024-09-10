@@ -19,6 +19,8 @@ import {
   extractClosestEdge,
   Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
+import Vibrant from "node-vibrant";
+import { FastAverageColor } from "fast-average-color";
 
 interface ICardProps extends ICard {
   boardId: number;
@@ -38,6 +40,7 @@ function DraggableCard({
   const [draggingCardHeight, setDraggingCardHeight] = useState("100%");
 
   const [imageHeight, setImageHeight] = useState(0);
+  const [imageColor, setImageColor] = useState("");
 
   const dropRef = useRef<HTMLLIElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -129,8 +132,16 @@ function DraggableCard({
       const img = new Image();
       img.src = dataUrl;
       img.onload = () => {
-        const caculatedHeight = (img.height * 256) / img.width;
-        setImageHeight(caculatedHeight);
+        const imageWidth = img.width;
+        const imageHeight = img.height;
+        const fac = new FastAverageColor();
+        fac.getColorAsync(dataUrl).then((color) => setImageColor(color.rgba));
+        if (imageWidth > 256) {
+          const caculatedHeight = (imageHeight * 256) / imageWidth;
+          setImageHeight(caculatedHeight);
+        } else {
+          setImageHeight(imageHeight);
+        }
       };
     }
   }, [dataUrl]);
@@ -146,6 +157,7 @@ function DraggableCard({
             <CardImage
               style={{
                 backgroundImage: `url(${dataUrl})`,
+                backgroundColor: imageColor,
                 height: imageHeight,
               }}
             />

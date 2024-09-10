@@ -154,7 +154,6 @@ export const CardImage = styled.div`
   width: 100%;
   max-height: 260px;
   background-size: contain;
-  background-color: rgb(182, 188, 206);
   background-repeat: no-repeat;
   background-position: center;
   border-top-left-radius: 8px;
