@@ -4,6 +4,7 @@ import {
   CardImage,
   CardText,
   CardWrapper,
+  ImageText,
 } from "../style/style";
 import { memo, useEffect, useRef, useState } from "react";
 import { ICard } from "../atom";
@@ -153,16 +154,22 @@ function DraggableCard({
           <CardDropPreview style={{ height: draggingCardHeight }} />
         )}
         <Card ref={dragRef} style={isDragging ? { opacity: "0.4" } : {}}>
-          {dataUrl && (
-            <CardImage
-              style={{
-                backgroundImage: `url(${dataUrl})`,
-                backgroundColor: imageColor,
-                height: imageHeight,
-              }}
-            />
+          {dataUrl ? (
+            <>
+              <CardImage
+                style={{
+                  backgroundImage: `url(${dataUrl})`,
+                  backgroundColor: imageColor,
+                  height: imageHeight,
+                }}
+              />
+              <ImageText>
+                <span>{cardText}</span>
+              </ImageText>
+            </>
+          ) : (
+            <CardText>{cardText}</CardText>
           )}
-          <CardText>{cardText}</CardText>
         </Card>
         {closetEdge === "bottom" && (
           <CardDropPreview style={{ height: draggingCardHeight }} />

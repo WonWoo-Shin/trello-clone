@@ -43,8 +43,8 @@ export const boardsState = atom<TList>({
         },
         {
           cardId: 15436237,
-          cardText: "123",
-          dataUrl: "/MOKOKO_01.png",
+          cardText: "Logo.png",
+          dataUrl: "/Logo.png",
         },
       ],
     },

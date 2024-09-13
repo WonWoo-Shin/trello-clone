@@ -136,7 +136,6 @@ export const CardDropPreview = styled.div`
 
 const CardDesign = styled.div`
   min-height: 36px;
-  line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
@@ -165,7 +164,19 @@ export const CardImage = styled.div`
 `;
 
 export const CardText = styled.span`
+  line-height: 36px;
   padding-left: 12px;
+`;
+
+export const ImageText = styled.div`
+  padding-top: 8px;
+  padding-left: 12px;
+  height: 28px;
+  span {
+    display: block;
+    height: 20px;
+    text-align: center;
+  }
 `;
 
 export const AddCardBtn = styled.div`
@@ -190,6 +201,7 @@ export const AddCardBtn = styled.div`
 export const FormInput = styled(CardDesign)`
   width: 100%;
   height: 36px;
+  line-height: 36px;
   padding-left: 12px;
   border: none;
   color: inherit;
@@ -254,7 +266,7 @@ export const AddBoardBtn = styled.div`
     margin-right: 8px;
   }
   &:hover {
-    background-color: #1b85c5;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 `;
 
