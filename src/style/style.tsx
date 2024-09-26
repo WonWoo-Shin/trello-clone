@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const Surface = styled.div`
   display: flex;
@@ -39,11 +39,7 @@ export const BoardsList = styled.ul`
 export const BoardBlock = styled.li`
   width: 284px;
   padding: 0 6px;
-`;
-
-export const BoardTraceBlock = styled.div`
-  width: 284px;
-  padding: 0 6px;
+  flex-shrink: 0;
 `;
 
 interface IBoardContainer {
@@ -57,7 +53,7 @@ export const BoardContainer = styled.div<IBoardContainer>`
   background-color: #f1f2f4;
   border-radius: 12px;
   box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
-  color: #172b4d;
+  color: #44546f;
   transform: translate(0, 0);
   opacity: ${(props) => props.$isDragging && 0.4};
   outline: ${(props) => props.$isCardOver && "2px solid #388bff"};
@@ -68,6 +64,7 @@ export const BoardDropPreview = styled.div`
   height: 88px;
   margin: 0 6px;
   border-radius: 12px;
+  flex-shrink: 0;
   background-color: #006aa7;
 `;
 
@@ -169,13 +166,29 @@ export const CardText = styled.span`
 `;
 
 export const ImageText = styled.div`
-  padding-top: 8px;
-  padding-left: 12px;
-  height: 28px;
-  span {
+  height: 64px;
+  padding: 8px 12px;
+  > span {
     display: block;
     height: 20px;
-    text-align: center;
+    margin-bottom: 9px;
+    line-height: 20px;
+  }
+`;
+
+export const ImageAttachment = styled.div`
+  margin-left: 4px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  svg {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+  }
+  span {
+    display: inline;
+    font-size: 12px;
   }
 `;
 
