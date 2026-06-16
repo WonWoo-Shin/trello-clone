@@ -353,4 +353,4 @@ body{
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
     Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
 }
-`,bA={headerColor:"#0065A0",boardHeaderColor:"#005C91",boardCanvasColor:"#0079BF",lineColor:"#297EB0"};Rs.createRoot(document.getElementById("root")).render($.jsxs(le.StrictMode,{children:[$.jsx(fx,{children:$.jsxs(BS,{theme:bA,children:[$.jsx(MA,{}),$.jsx(OA,{})]})}),"//"," "]}));
+`,bA={headerColor:"#0065A0",boardHeaderColor:"#005C91",boardCanvasColor:"#0079BF",lineColor:"#297EB0"};Rs.createRoot(document.getElementById("root")).render($.jsx(le.StrictMode,{children:$.jsx(fx,{children:$.jsxs(BS,{theme:bA,children:[$.jsx(MA,{}),$.jsx(OA,{})]})})}));
