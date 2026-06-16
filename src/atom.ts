@@ -31,22 +31,11 @@ export const boardsState = atom<TList>({
     },
     123456790: {
       boardName: "Doing",
-      cards: [{ cardId: 3256423, cardText: "123", dataUrl: "/123.webp" }],
+      cards: [],
     },
     123456791: {
       boardName: "Done",
-      cards: [
-        {
-          cardId: 15436457,
-          cardText: "123",
-          dataUrl: "/1714118910.jpg",
-        },
-        {
-          cardId: 15436237,
-          cardText: "Logo.png",
-          dataUrl: "/Logo.png",
-        },
-      ],
+      cards: [],
     },
   },
 });

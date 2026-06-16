@@ -1,4 +1,4 @@
-import Boards from "./components/Boards";
+import { Boards } from "./components/Boards";
 import { BoardCanvas, BoardHeader, Header, Main, Surface } from "./style/style";
 
 function App() {

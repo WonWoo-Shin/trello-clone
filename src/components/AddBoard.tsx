@@ -4,18 +4,21 @@ import { useSetRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import { Submit } from "./Submit";
 
-function AddBoard({
-  setIsAddOpen,
-}: {
+interface IProps {
   setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}
+
+export const AddBoard = ({ setIsAddOpen }: IProps) => {
   const [text, setText] = useState("");
+
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const setBoards = useSetRecoilState(boardsState);
+
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
     setText("");
   };
+
   const addBoard = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (text === "") {
@@ -29,6 +32,7 @@ function AddBoard({
     });
     setText("");
   };
+
   return (
     <AddBoardForm as="form" onSubmit={addBoard}>
       <BoardInput
@@ -42,5 +46,4 @@ function AddBoard({
       <Submit toggleForm={toggleForm} addWhat="list" />
     </AddBoardForm>
   );
-}
-export default AddBoard;
+};

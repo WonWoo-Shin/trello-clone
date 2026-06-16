@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import { BoardHandle, BoardInput, BoardTitle } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardsState } from "../atom";
@@ -9,11 +9,18 @@ interface IBoardTitleProps {
   boardHandle: React.RefObject<HTMLDivElement>;
 }
 
-function BoardTitleArea({ boardId, boardName, boardHandle }: IBoardTitleProps) {
+export const BoardTitleArea = ({
+  boardId,
+  boardName,
+  boardHandle,
+}: IBoardTitleProps) => {
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
+
   const [text, setText] = useState(boardName);
+
   const setBoards = useSetRecoilState(boardsState);
+
   const changeBoardName = () => {
     toggleShow();
     if (text === boardName) return;
@@ -26,6 +33,7 @@ function BoardTitleArea({ boardId, boardName, boardHandle }: IBoardTitleProps) {
       return { ...oldBoards, [boardId]: newBoard };
     });
   };
+
   return (
     <BoardHandle ref={boardHandle}>
       {isShow ? (
@@ -44,6 +52,4 @@ function BoardTitleArea({ boardId, boardName, boardHandle }: IBoardTitleProps) {
       )}
     </BoardHandle>
   );
-}
-
-export default memo(BoardTitleArea);
+};

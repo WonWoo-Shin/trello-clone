@@ -5,7 +5,7 @@ interface ISubmitProps {
   addWhat: string;
 }
 
-export function Submit({ toggleForm, addWhat }: ISubmitProps) {
+export const Submit = ({ toggleForm, addWhat }: ISubmitProps) => {
   return (
     <SubmitArea>
       <SubmitButton>Add {addWhat}</SubmitButton>
@@ -27,9 +27,9 @@ export function Submit({ toggleForm, addWhat }: ISubmitProps) {
       </Xmark>
     </SubmitArea>
   );
-}
+};
 
-export function AddBtn({ addWhat }: { addWhat: string }) {
+export const AddBtn = ({ addWhat }: { addWhat: string }) => {
   return (
     <>
       <svg
@@ -44,4 +44,4 @@ export function AddBtn({ addWhat }: { addWhat: string }) {
       <span>Add {addWhat}</span>
     </>
   );
-}
+};

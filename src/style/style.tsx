@@ -42,18 +42,23 @@ export const BoardBlock = styled.li`
   flex-shrink: 0;
 `;
 
+export const BoardDesign = styled.div`
+  width: 100%;
+  padding: 8px;
+  background-color: #f1f2f4;
+  border-radius: 12px;
+  box-shadow:
+    0px 1px 1px #091e4240,
+    0px 0px 1px #091e424f;
+  color: #44546f;
+`;
+
 interface IBoardContainer {
   $isDragging: boolean;
   $isCardOver: boolean;
 }
 
-export const BoardContainer = styled.div<IBoardContainer>`
-  width: 100%;
-  padding: 8px;
-  background-color: #f1f2f4;
-  border-radius: 12px;
-  box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
-  color: #44546f;
+export const BoardContainer = styled(BoardDesign)<IBoardContainer>`
   transform: translate(0, 0);
   opacity: ${(props) => props.$isDragging && 0.4};
   outline: ${(props) => props.$isCardOver && "2px solid #388bff"};
@@ -120,8 +125,9 @@ export const CardWrapper = styled.li`
   display: flex;
   flex-direction: column;
   row-gap: 8px;
+  position: relative;
   &[hidden] {
-    display: none;
+    display: none; //display : flex와 hidden property 중복 적용 불가
   }
 `;
 
@@ -133,12 +139,18 @@ export const CardDropPreview = styled.div`
 
 const CardDesign = styled.div`
   min-height: 36px;
+  padding: 0 12px;
+  line-height: 36px;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+  box-shadow:
+    0px 1px 1px #091e4240,
+    0px 0px 1px #091e424f;
 `;
 
 export const Card = styled(CardDesign)`
+  display: flex;
+  justify-content: space-between;
   transform: translate(0, 0);
   &:hover {
     outline: 2px solid #4391ff;
@@ -160,10 +172,56 @@ export const CardImage = styled.div`
   -o-user-drag: none;
 `;
 
-export const CardText = styled.span`
-  line-height: 36px;
-  padding-left: 12px;
+export const CardText = styled.span``;
+
+export const CardEditArea = styled.div`
+  display: flex;
+  svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    color: rgb(80, 82, 88);
+  }
 `;
+
+export const EditButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CardEditButton = styled.button`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+`;
+
+export const FormInput = styled(CardDesign)`
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  /* padding-left: 12px; */
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const EditCardForm = styled.form`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+`;
+
+export const EditCardInput = styled(FormInput)``;
 
 export const ImageText = styled.div`
   height: 64px;
@@ -208,20 +266,6 @@ export const AddCardBtn = styled.div`
   &:hover {
     background-color: #d0d5db;
     cursor: pointer;
-  }
-`;
-
-export const FormInput = styled(CardDesign)`
-  width: 100%;
-  height: 36px;
-  line-height: 36px;
-  padding-left: 12px;
-  border: none;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  &:focus {
-    outline: none;
   }
 `;
 
@@ -283,7 +327,7 @@ export const AddBoardBtn = styled.div`
   }
 `;
 
-export const AddBoardForm = styled(BoardContainer)`
+export const AddBoardForm = styled(BoardDesign)`
   width: 272px;
   height: 88px;
 `;

@@ -9,13 +9,16 @@ interface IAddProps {
   setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AddCard({ boardId, setIsAddOpen }: IAddProps) {
+export const AddCard = ({ boardId, setIsAddOpen }: IAddProps) => {
   const [text, setText] = useState("");
+
   const setBoards = useSetRecoilState(boardsState);
+
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
     setText("");
   };
+
   const addCard = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (text === "") {
@@ -32,6 +35,7 @@ function AddCard({ boardId, setIsAddOpen }: IAddProps) {
     });
     setText("");
   };
+
   return (
     <form onSubmit={addCard}>
       <FormInput
@@ -44,6 +48,4 @@ function AddCard({ boardId, setIsAddOpen }: IAddProps) {
       <Submit toggleForm={toggleForm} addWhat={"card"} />
     </form>
   );
-}
-
-export default AddCard;
+};

@@ -1,8 +1,6 @@
 import { AddBoardBtn, AnotherList, BoardsList } from "../style/style";
 import { useRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
-import Board from "./Board";
-import AddBoard from "./AddBoard";
 import { AddBtn } from "./Submit";
 import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -11,8 +9,10 @@ import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/clo
 import { monitorForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
 import { getFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
 import { bind } from "bind-event-listener";
+import { AddBoard } from "./AddBoard";
+import { Board } from "./Board";
 
-function Boards() {
+export const Boards = () => {
   const [boards, setBoards] = useRecoilState(boardsState);
   const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
 
@@ -40,10 +40,10 @@ function Boards() {
               const currentClosetEdge = extractClosestEdge(target.data);
               setBoardOrder((order) => {
                 const sourceIndex = order.findIndex(
-                  (item) => item === sourceBoardId
+                  (item) => item === sourceBoardId,
                 );
                 let targetIndex = order.findIndex(
-                  (item) => item === targetBoardId
+                  (item) => item === targetBoardId,
                 );
 
                 const isMovingLeft = sourceIndex > targetIndex;
@@ -68,10 +68,10 @@ function Boards() {
               const targetCardId = target.data.cardId;
 
               const sourceIndex = boards[sourceBoardId].cards.findIndex(
-                (item) => item.cardId === sourceCardId
+                (item) => item.cardId === sourceCardId,
               );
               let targetIndex = boards[targetBoardId].cards.findIndex(
-                (item) => item.cardId === targetCardId
+                (item) => item.cardId === targetCardId,
               );
 
               if (sourceBoardId === targetBoardId) {
@@ -193,6 +193,4 @@ function Boards() {
       </AnotherList>
     </BoardsList>
   );
-}
-
-export default Boards;
+};
