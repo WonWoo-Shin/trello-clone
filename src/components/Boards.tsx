@@ -143,39 +143,39 @@ export const Boards = () => {
   }, [boards, boardOrder]);
 
   //file monitor
-  useEffect(() => {
-    return monitorForExternal({
-      onDrop: ({ source, location }) => {
-        if (!location.current.dropTargets.length) {
-          //drop outside
-          return;
-        }
-        const target = location.current.dropTargets[0];
-        const file = getFiles({ source });
-        const reader = new FileReader();
-        reader.readAsDataURL(file[0]);
-        bind(reader, {
-          type: "load",
-          listener() {
-            const result = reader.result;
-            const upload = {
-              type: "image",
-              dataUrl: result,
-              name: file[0].name,
-              size: file[0].size,
-            };
-            console.log(upload);
-            setBoards((boards) => {
-              const targetBoardId = target.data.boardId;
-              invariant(typeof targetBoardId === "number");
-              const newCards = [...boards[targetBoardId].cards];
-              return boards;
-            });
-          },
-        });
-      },
-    });
-  }, []);
+  // useEffect(() => {
+  //   return monitorForExternal({
+  //     onDrop: ({ source, location }) => {
+  //       if (!location.current.dropTargets.length) {
+  //         //drop outside
+  //         return;
+  //       }
+  //       const target = location.current.dropTargets[0];
+  //       const file = getFiles({ source });
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(file[0]);
+  //       bind(reader, {
+  //         type: "load",
+  //         listener() {
+  //           const result = reader.result;
+  //           const upload = {
+  //             type: "image",
+  //             dataUrl: result,
+  //             name: file[0].name,
+  //             size: file[0].size,
+  //           };
+  //           console.log(upload);
+  //           setBoards((boards) => {
+  //             const targetBoardId = target.data.boardId;
+  //             invariant(typeof targetBoardId === "number");
+  //             const newCards = [...boards[targetBoardId].cards];
+  //             return boards;
+  //           });
+  //         },
+  //       });
+  //     },
+  //   });
+  // }, []);
 
   return (
     <BoardsList>
