@@ -176,6 +176,7 @@ export const CardText = styled.span``;
 
 export const CardEditArea = styled.div`
   display: flex;
+
   svg {
     display: inline-block;
     width: 16px;
@@ -186,6 +187,7 @@ export const CardEditArea = styled.div`
 
 export const EditButtonArea = styled.div`
   display: flex;
+  gap: 4px;
   justify-content: center;
   align-items: center;
 `;
