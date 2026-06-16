@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import invariant from "tiny-invariant";
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
-import { monitorForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
-import { getFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
-import { bind } from "bind-event-listener";
+// import { monitorForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
+// import { getFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
+// import { bind } from "bind-event-listener";
 import { AddBoard } from "./AddBoard";
 import { Board } from "./Board";
 
