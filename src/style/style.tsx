@@ -7,10 +7,32 @@ export const Surface = styled.div`
 `;
 
 export const Header = styled.header`
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 50px;
+  padding-left: 10px;
   background-color: ${(props) => props.theme.headerColor};
   border-bottom: 1px solid ${(props) => props.theme.lineColor};
+`;
+
+export const LinkButton = styled.a`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  padding: 0 12px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: BlinkMacSystemFont, sans-serif;
+  text-decoration: none;
+  transition: border-color 0.2s;
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const Main = styled.main`

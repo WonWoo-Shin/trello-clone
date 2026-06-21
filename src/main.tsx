@@ -7,12 +7,13 @@ import { blueTheme } from "./theme.ts";
 import { RecoilRoot } from "recoil";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
-  <RecoilRoot>
-    <ThemeProvider theme={blueTheme}>
-      <GlobalStyle />
-      <App />
-    </ThemeProvider>
-  </RecoilRoot>,
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <RecoilRoot>
+      <ThemeProvider theme={blueTheme}>
+        <GlobalStyle />
+        <App />
+      </ThemeProvider>
+    </RecoilRoot>
+    , //{" "}
+  </React.StrictMode>,
 );
