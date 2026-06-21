@@ -3,6 +3,7 @@ import { atom } from "recoil";
 export interface ICard {
   cardId: number;
   cardText: string;
+  cardCheck: boolean;
   type?: string;
   dataUrl?: string;
   size?: number;
@@ -23,10 +24,9 @@ export const boardsState = atom<TList>({
     123456789: {
       boardName: "To do",
       cards: [
-        { cardId: 12345678, cardText: "Project planning" },
-        { cardId: 12345679, cardText: "b" },
-        { cardId: 435634256, cardText: "d" },
-        { cardId: 12345680, cardText: "c" },
+        { cardId: 12345678, cardText: "Project planning", cardCheck: true },
+        { cardId: 12345679, cardText: "b", cardCheck: false },
+        { cardId: 12345680, cardText: "c", cardCheck: false },
       ],
     },
     123456790: {

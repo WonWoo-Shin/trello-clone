@@ -40,6 +40,7 @@ export const DraggableCard = React.memo(
   ({
     cardId,
     cardText,
+    cardCheck,
     boardId,
     removeBottomCardPreview,
     dataUrl,
@@ -51,6 +52,8 @@ export const DraggableCard = React.memo(
 
     const [imageHeight, setImageHeight] = useState(0);
     const [imageColor, setImageColor] = useState("");
+
+    const [isHover, setIsHover] = useState(false);
 
     const dropRef = useRef<HTMLLIElement>(null);
     const dragRef = useRef<HTMLDivElement>(null);
@@ -195,7 +198,16 @@ export const DraggableCard = React.memo(
       });
     };
 
-    const [isHover, setIsHover] = useState(false);
+    //카드 체크박스 toggle
+    const cardCheckChange = () => {
+      setBoards((currBoards) => {
+        const newCards = currBoards[boardId].cards.map((card) =>
+          card.cardId === cardId ? { ...card, cardCheck: !cardCheck } : card,
+        );
+        const newBoard = { ...currBoards[boardId], cards: newCards };
+        return { ...currBoards, [boardId]: newBoard };
+      });
+    };
 
     return (
       <>
@@ -210,7 +222,13 @@ export const DraggableCard = React.memo(
             style={isDragging ? { opacity: "0.4" } : {}}
           >
             <CardTextArea>
-              {isHover && <CardCheckBox type="checkbox" />}
+              {(isHover || cardCheck) && (
+                <CardCheckBox
+                  type="checkbox"
+                  checked={cardCheck}
+                  onChange={cardCheckChange}
+                />
+              )}
               {dataUrl ? (
                 <>
                   <CardImage

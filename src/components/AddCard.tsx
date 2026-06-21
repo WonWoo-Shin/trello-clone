@@ -28,7 +28,7 @@ export const AddCard = ({ boardId, setIsAddOpen }: IAddProps) => {
     setBoards((currBoards) => {
       const newCards = [
         ...currBoards[boardId].cards,
-        { cardId: Date.now(), cardText: text },
+        { cardId: Date.now(), cardText: text, cardCheck: false },
       ];
       const newBoard = { ...currBoards[boardId], cards: newCards };
       return { ...currBoards, [boardId]: newBoard };
