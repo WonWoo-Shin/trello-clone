@@ -158,6 +158,14 @@ export const Card = styled(CardDesign)`
   }
 `;
 
+export const CardTextArea = styled.div`
+  display: flex;
+`;
+
+export const CardCheckBox = styled.input`
+  margin-right: 6px;
+`;
+
 export const CardImage = styled.div`
   width: 100%;
   max-height: 260px;
@@ -176,7 +184,6 @@ export const CardText = styled.span``;
 
 export const CardEditArea = styled.div`
   display: flex;
-
   svg {
     display: inline-block;
     width: 16px;
