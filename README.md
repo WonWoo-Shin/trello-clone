@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Trello clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trello의 핵심 기능인 Drag & Drop 기능과 상태관리를 통한 CRUD를 구현한 프로젝트
 
-Currently, two official plugins are available:
+### 🔧 개발 환경
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 프로그래밍 언어 : <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white"/>
 
-## Expanding the ESLint configuration
+- 프레임워크 : <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- 라이브러리 :   <img src="https://img.shields.io/badge/pragmatic drag and drop-CF9FFF?style=flat&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat&logo=Recoil&logoColor=white"/>
 
-- Configure the top-level `parserOptions` property like this:
+- 번들러 : <img src="https://img.shields.io/badge/Vite-646CFF?style=flat&logo=Vite&logoColor=white"/>
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- 스타일링 : <img src="https://img.shields.io/badge/styled components-DB7093?style=flat&logo=styled-components&logoColor=white"/> 
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+### 📌 주요 기능
+
+- drag & drop 기반 카드, 보드 재정렬, 보드 간 카드 이동 
+
+- 드래그 중 예상 삽입 위치를 표시하는 Drop Indicator 구현
+<img width="1068" height="307" alt="Image" src="https://github.com/user-attachments/assets/4857478c-17e7-4f9e-84d8-ec2ec3ee2c8b" />
+
+- 카드 추가, 수정, 삭제 구현
+
+- 카드 별 체트 리스트 관리
+<img width="326" height="265" alt="Image" src="https://github.com/user-attachments/assets/3de9b55d-6619-4ff2-b40b-83c3b335b56b" />
+
+
+### 📕 Demo
+
+[깃허브 페이지](https://WonWoo-Shin.github.io/trello-clone/)
