@@ -28,6 +28,7 @@ export const BoardCanvas = styled.div`
   background-color: ${(props) => props.theme.boardCanvasColor};
   flex-grow: 1;
   font-size: 14px;
+  overflow-x: auto;
 `;
 
 export const BoardsList = styled.ul`
@@ -115,6 +116,7 @@ export const CardList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* overflow-y: auto; */
   &:has(> *:not([hidden])) {
     margin-top: 8px;
     padding-bottom: 2px;
@@ -124,6 +126,7 @@ export const CardList = styled.ul`
 export const CardWrapper = styled.li`
   display: flex;
   flex-direction: column;
+  align-self: 1;
   row-gap: 8px;
   position: relative;
   &[hidden] {
