@@ -171,10 +171,9 @@ export const DraggableCard = React.memo(
     const [text, setText] = useState(cardText);
 
     //카드 text 수정
-    const editCard = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+    const editCard = () => {
+      toggleEditCard();
       if (text === "") {
-        toggleEditCard();
         return;
       }
       setBoards((currBoards) => {
@@ -184,7 +183,6 @@ export const DraggableCard = React.memo(
         const newBoard = { ...currBoards[boardId], cards: newCards };
         return { ...currBoards, [boardId]: newBoard };
       });
-      toggleEditCard();
     };
 
     //카드 삭제
@@ -217,8 +215,8 @@ export const DraggableCard = React.memo(
           )}
           <Card
             ref={dragRef}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
+            onMouseOver={() => setIsHover(true)}
+            onMouseOut={() => setIsHover(false)}
             style={isDragging ? { opacity: "0.4" } : {}}
           >
             <CardTextArea>
@@ -283,15 +281,19 @@ export const DraggableCard = React.memo(
             <CardDropPreview style={{ height: draggingCardHeight }} />
           )}
           {cardEditing && (
-            <EditCardForm onSubmit={editCard}>
-              <EditCardInput
-                as="input"
-                placeholder="Enter a title for this card..."
-                value={text}
-                autoFocus
-                onChange={(event) => setText(event.currentTarget.value)}
-              />
-            </EditCardForm>
+            <EditCardInput
+              as="input"
+              placeholder="Enter a title for this card..."
+              value={text}
+              autoFocus
+              onChange={(event) => setText(event.currentTarget.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  editCard();
+                }
+              }}
+              onBlur={editCard}
+            />
           )}
         </CardWrapper>
       </>

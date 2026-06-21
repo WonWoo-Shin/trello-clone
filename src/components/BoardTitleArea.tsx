@@ -42,6 +42,11 @@ export const BoardTitleArea = ({
           type="text"
           value={text}
           onChange={(event) => setText(event.currentTarget.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              changeBoardName();
+            }
+          }}
           onBlur={changeBoardName}
           autoFocus
         />

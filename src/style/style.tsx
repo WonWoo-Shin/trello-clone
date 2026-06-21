@@ -223,14 +223,14 @@ export const FormInput = styled(CardDesign)`
   }
 `;
 
-export const EditCardForm = styled.form`
+export const EditCardForm = styled.form``;
+
+export const EditCardInput = styled(FormInput)`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
 `;
-
-export const EditCardInput = styled(FormInput)``;
 
 export const ImageText = styled.div`
   height: 64px;
