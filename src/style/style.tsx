@@ -180,7 +180,12 @@ export const CardImage = styled.div`
   -o-user-drag: none;
 `;
 
-export const CardText = styled.span``;
+export const CardText = styled.span`
+  display: inline-block;
+  width: 150px;
+  white-space: normal;
+  word-break: break-word;
+`;
 
 export const CardEditArea = styled.div`
   display: flex;
