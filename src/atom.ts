@@ -15,6 +15,19 @@ type TList = {
 export const boardOrderState = atom<number[]>({
   key: "boardOrderState",
   default: [123456789, 123456790, 123456791],
+  effects: [
+    ({ setSelf, onSet }) => {
+      const savedOrder = localStorage.getItem("boardOrder");
+
+      if (savedOrder) {
+        setSelf(JSON.parse(savedOrder));
+      }
+
+      onSet((newValue) => {
+        localStorage.setItem("boardOrder", JSON.stringify(newValue));
+      });
+    },
+  ],
 });
 
 export const boardsState = atom<TList>({
@@ -37,4 +50,17 @@ export const boardsState = atom<TList>({
       cards: [],
     },
   },
+  effects: [
+    ({ setSelf, onSet }) => {
+      const savedData = localStorage.getItem("boards");
+
+      if (savedData) {
+        setSelf(JSON.parse(savedData));
+      }
+
+      onSet((newValue) => {
+        localStorage.setItem("boards", JSON.stringify(newValue));
+      });
+    },
+  ],
 });
