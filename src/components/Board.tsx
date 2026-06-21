@@ -10,8 +10,6 @@ import {
   extractClosestEdge,
   Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
-import { dropTargetForExternal } from "@atlaskit/pragmatic-drag-and-drop/external/adapter";
-import { containsFiles } from "@atlaskit/pragmatic-drag-and-drop/external/file";
 
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source";
@@ -155,20 +153,6 @@ export const Board = React.memo(
             nativeSetDragImage,
           });
         },
-      });
-    }, []);
-
-    //drop file
-    useEffect(() => {
-      const boardFile = boardContainerRef.current;
-      invariant(boardFile);
-      return dropTargetForExternal({
-        element: boardFile,
-        canDrop: containsFiles,
-        onDragEnter: () => {},
-        getData: () => ({
-          boardId,
-        }),
       });
     }, []);
 

@@ -5,7 +5,6 @@ export interface ICard {
   cardText: string;
   cardCheck: boolean;
   type?: string;
-  dataUrl?: string;
   size?: number;
 }
 

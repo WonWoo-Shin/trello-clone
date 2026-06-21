@@ -6,7 +6,7 @@ export const Surface = styled.div`
   height: 100vh;
 `;
 
-export const Header = styled.header`
+export const HeaderStyle = styled.header`
   display: flex;
   align-items: center;
   width: 100%;
@@ -138,7 +138,6 @@ export const CardList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  /* overflow-y: auto; */
   &:has(> *:not([hidden])) {
     margin-top: 8px;
     padding-bottom: 2px;
