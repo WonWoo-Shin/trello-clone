@@ -3,6 +3,7 @@ import { AddBoardForm, BoardInput } from "../style/style";
 import { useSetRecoilState } from "recoil";
 import { boardOrderState, boardsState } from "../atom";
 import { Submit } from "./Submit";
+import { useBoardStore } from "../store/useBoardStore";
 
 interface IProps {
   setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,8 +12,7 @@ interface IProps {
 export const AddBoard = ({ setIsAddOpen }: IProps) => {
   const [text, setText] = useState("");
 
-  const setBoardOrder = useSetRecoilState(boardOrderState);
-  const setBoards = useSetRecoilState(boardsState);
+  const setBoardStore = useBoardStore.setState;
 
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
@@ -26,10 +26,15 @@ export const AddBoard = ({ setIsAddOpen }: IProps) => {
       return;
     }
     const newBoardId = Date.now();
-    setBoardOrder((curr) => [...curr, newBoardId]);
-    setBoards((oldBoards) => {
-      return { ...oldBoards, [newBoardId]: { boardName: text, cards: [] } };
-    });
+
+    setBoardStore((oldBoardStore) => ({
+      boardOrder: [...oldBoardStore.boardOrder, newBoardId],
+      boards: {
+        ...oldBoardStore.boards,
+        [newBoardId]: { boardName: text, cards: [] },
+      },
+    }));
+
     setText("");
   };
 
