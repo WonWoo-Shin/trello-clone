@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BoardHandle, BoardInput, BoardTitle } from "../style/style";
-import { useSetRecoilState } from "recoil";
-import { boardsState } from "../atom";
+import { useBoardStore } from "../store/useBoardStore";
 
 interface IBoardTitleProps {
   boardId: number;
@@ -19,18 +18,24 @@ export const BoardTitleArea = ({
 
   const [text, setText] = useState(boardName);
 
-  const setBoards = useSetRecoilState(boardsState);
+  const setBoardStore = useBoardStore.setState;
 
   const changeBoardName = () => {
     toggleShow();
+
     if (text === boardName) return;
+
     if (text === "") {
       setText(boardName);
       return;
     }
-    setBoards((oldBoards) => {
+
+    setBoardStore((state) => {
+      const oldBoards = state.boards;
+
       const newBoard = { ...oldBoards[boardId], boardName: text };
-      return { ...oldBoards, [boardId]: newBoard };
+
+      return { boards: { ...oldBoards, [boardId]: newBoard } };
     });
   };
 

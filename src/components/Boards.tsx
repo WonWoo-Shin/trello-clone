@@ -1,6 +1,4 @@
 import { AddBoardBtn, AnotherList, BoardsList } from "../style/style";
-import { useRecoilState } from "recoil";
-import { boardOrderState, boardsState } from "../atom";
 import { AddBtn } from "./Submit";
 import { useEffect, useState } from "react";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -11,12 +9,8 @@ import { Board } from "./Board";
 import { useBoardStore } from "../store/useBoardStore";
 
 export const Boards = () => {
-  // const [boards, setBoards] = useRecoilState(boardsState);
-  // const [boardOrder, setBoardOrder] = useRecoilState(boardOrderState);
-
   const boardOrder = useBoardStore((state) => state.boardOrder);
   const boards = useBoardStore((state) => state.boards);
-  // const { boardOrder, boards } = useBoardStore();
   const setBoardStore = useBoardStore.setState;
 
   const [isAddOpen, setIsAddOpen] = useState(false);
