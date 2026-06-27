@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface ICard {
+export interface ICard {
   cardId: number;
   cardText: string;
   cardCheck: boolean;
