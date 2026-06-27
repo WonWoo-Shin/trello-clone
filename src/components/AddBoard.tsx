@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { AddBoardForm, BoardInput } from "../style/style";
-import { useSetRecoilState } from "recoil";
-import { boardOrderState, boardsState } from "../atom";
 import { Submit } from "./Submit";
 import { useBoardStore } from "../store/useBoardStore";
 
@@ -21,10 +19,12 @@ export const AddBoard = ({ setIsAddOpen }: IProps) => {
 
   const addBoard = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (text === "") {
       toggleForm();
       return;
     }
+
     const newBoardId = Date.now();
 
     setBoardStore((oldBoardStore) => ({
