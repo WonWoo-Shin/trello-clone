@@ -11,7 +11,6 @@ import {
   EditCardInput,
 } from "../style/style";
 import React, { useEffect, useRef, useState } from "react";
-import { boardsState, ICard } from "../atom";
 import invariant from "tiny-invariant";
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
@@ -24,7 +23,7 @@ import {
   extractClosestEdge,
   Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
-import { useSetRecoilState } from "recoil";
+import { ICard, useBoardStore } from "../store/useBoardStore";
 
 interface ICardProps extends ICard {
   boardId: number;
@@ -49,7 +48,7 @@ export const DraggableCard = React.memo(
     const dropRef = useRef<HTMLLIElement>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
-    const setBoards = useSetRecoilState(boardsState);
+    const setBoardStore = useBoardStore.setState;
 
     //drop
     useEffect(() => {
@@ -147,34 +146,47 @@ export const DraggableCard = React.memo(
       if (text === "") {
         return;
       }
-      setBoards((currBoards) => {
-        const newCards = currBoards[boardId].cards.map((card) =>
+
+      setBoardStore((state) => {
+        const oldBoards = state.boards;
+
+        const newCards = oldBoards[boardId].cards.map((card) =>
           card.cardId === cardId ? { ...card, cardText: text } : card,
         );
-        const newBoard = { ...currBoards[boardId], cards: newCards };
-        return { ...currBoards, [boardId]: newBoard };
+
+        const newBoard = { ...oldBoards[boardId], cards: newCards };
+
+        return { boards: { ...oldBoards, [boardId]: newBoard } };
       });
     };
 
     //카드 삭제
     const deleteCard = () => {
-      setBoards((currBoards) => {
-        const newCards = currBoards[boardId].cards.filter(
+      setBoardStore((state) => {
+        const oldBoards = state.boards;
+
+        const newCards = oldBoards[boardId].cards.filter(
           (card) => card.cardId !== cardId,
         );
-        const newBoard = { ...currBoards[boardId], cards: newCards };
-        return { ...currBoards, [boardId]: newBoard };
+
+        const newBoard = { ...oldBoards[boardId], cards: newCards };
+
+        return { boards: { ...oldBoards, [boardId]: newBoard } };
       });
     };
 
     //카드 체크박스 toggle
     const cardCheckChange = () => {
-      setBoards((currBoards) => {
-        const newCards = currBoards[boardId].cards.map((card) =>
+      setBoardStore((state) => {
+        const oldBoards = state.boards;
+
+        const newCards = oldBoards[boardId].cards.map((card) =>
           card.cardId === cardId ? { ...card, cardCheck: !cardCheck } : card,
         );
-        const newBoard = { ...currBoards[boardId], cards: newCards };
-        return { ...currBoards, [boardId]: newBoard };
+
+        const newBoard = { ...oldBoards[boardId], cards: newCards };
+
+        return { boards: { ...oldBoards, [boardId]: newBoard } };
       });
     };
 
