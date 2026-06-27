@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { FormInput } from "../style/style";
-import { useSetRecoilState } from "recoil";
-import { boardsState } from "../atom";
 import { Submit } from "./Submit";
+import { useBoardStore } from "../store/useBoardStore";
 
 interface IAddProps {
   boardId: number;
@@ -12,7 +11,7 @@ interface IAddProps {
 export const AddCard = ({ boardId, setIsAddOpen }: IAddProps) => {
   const [text, setText] = useState("");
 
-  const setBoards = useSetRecoilState(boardsState);
+  const setBoardStore = useBoardStore.setState;
 
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
@@ -25,14 +24,25 @@ export const AddCard = ({ boardId, setIsAddOpen }: IAddProps) => {
       toggleForm();
       return;
     }
-    setBoards((currBoards) => {
+
+    setBoardStore((state) => {
+      const oldBoards = state.boards;
+
       const newCards = [
-        ...currBoards[boardId].cards,
+        ...oldBoards[boardId].cards,
         { cardId: Date.now(), cardText: text, cardCheck: false },
       ];
-      const newBoard = { ...currBoards[boardId], cards: newCards };
-      return { ...currBoards, [boardId]: newBoard };
+
+      const newBoard = { ...oldBoards[boardId], cards: newCards };
+
+      return {
+        boards: {
+          ...oldBoards,
+          [boardId]: newBoard,
+        },
+      };
     });
+
     setText("");
   };
 
