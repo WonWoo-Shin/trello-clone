@@ -10,14 +10,14 @@ interface IProps {
 export const AddBoard = ({ setIsAddOpen }: IProps) => {
   const [text, setText] = useState("");
 
-  const setBoardStore = useBoardStore.setState;
+  const addBoard = useBoardStore((state) => state.addBoard);
 
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
     setText("");
   };
 
-  const addBoard = (event: React.FormEvent<HTMLFormElement>) => {
+  const addBoardSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (text === "") {
@@ -25,21 +25,13 @@ export const AddBoard = ({ setIsAddOpen }: IProps) => {
       return;
     }
 
-    const newBoardId = Date.now();
-
-    setBoardStore((oldBoardStore) => ({
-      boardOrder: [...oldBoardStore.boardOrder, newBoardId],
-      boards: {
-        ...oldBoardStore.boards,
-        [newBoardId]: { boardName: text, cards: [] },
-      },
-    }));
+    addBoard(text);
 
     setText("");
   };
 
   return (
-    <AddBoardForm as="form" onSubmit={addBoard}>
+    <AddBoardForm as="form" onSubmit={addBoardSubmit}>
       <BoardInput
         as={"input"}
         placeholder="Enter list title..."

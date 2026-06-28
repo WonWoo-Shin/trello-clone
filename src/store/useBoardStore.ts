@@ -17,6 +17,7 @@ interface IBoards {
 interface IBoardState {
   boardOrder: number[];
   boards: IBoards;
+  addBoard: (text: string) => void;
 }
 
 export const useBoardStore = create<IBoardState>()(
@@ -41,6 +42,18 @@ export const useBoardStore = create<IBoardState>()(
           cards: [],
         },
       },
+      addBoard: (text) =>
+        set((state) => {
+          const newBoardId = Date.now();
+
+          return {
+            boardOrder: [...state.boardOrder, newBoardId],
+            boards: {
+              ...state.boards,
+              [newBoardId]: { boardName: text, cards: [] },
+            },
+          };
+        }),
     }),
     {
       name: "boardStorage",
