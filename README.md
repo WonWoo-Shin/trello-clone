@@ -8,7 +8,7 @@ Trello의 핵심 기능인 Drag & Drop 기능과 상태관리를 통한 CRUD를 
 
 - 프레임워크 : <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white"/>
 
-- 라이브러리 :   <img src="https://img.shields.io/badge/pragmatic drag and drop-CF9FFF?style=flat&logoColor=white"/> <img src="https://img.shields.io/badge/Recoil-3578E5?style=flat&logo=Recoil&logoColor=white"/>
+- 라이브러리 : ![pragmatic drag and drop](https://img.shields.io/badge/pragmatic%20drag%20and%20drop-CF9FFF?style=flat&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-FF6B35?style=flat&logoColor=white)
 
 - 번들러 : <img src="https://img.shields.io/badge/Vite-646CFF?style=flat&logo=Vite&logoColor=white"/>
 
@@ -27,6 +27,9 @@ Trello의 핵심 기능인 Drag & Drop 기능과 상태관리를 통한 CRUD를 
 - 카드 별 체트 리스트 관리
 <img width="326" height="265" alt="Image" src="https://github.com/user-attachments/assets/3de9b55d-6619-4ff2-b40b-83c3b335b56b" />
 
+### 🔄 Changelog
+
+- 상태관리 라이브러리 Recoil → Zustand 마이그레이션 (보일러플레이트 감소, 리렌더링 최적화)
 
 ### 📕 Demo
 
