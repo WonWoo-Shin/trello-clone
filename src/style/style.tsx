@@ -97,41 +97,57 @@ export const BoardDropPreview = styled.div`
 `;
 
 export const BoardHandle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 8px;
   padding-bottom: 0;
   margin: -8px;
   margin-bottom: 0px;
+`;
+
+export const BoardTitleArea = styled.div`
+  flex-grow: 1;
+  height: 32px;
+  line-height: 32px;
+  color: #172b4d;
+  font-weight: 600;
+`;
+
+export const BoardTitle = styled.h2`
+  width: 100%;
+  padding-left: 12px;
   cursor: pointer;
 `;
 
-const BoardTitleDesign = styled.div`
-  height: 32px;
-  line-height: 32px;
-  padding-left: 12px;
-`;
-
-export const BoardTitle = styled(BoardTitleDesign)`
-  font-weight: 600;
-`;
-
-export const BoardInput = styled(BoardTitleDesign)`
-  width: 100%;
-  border-radius: 8px;
-  border: none;
+export const BoardTextarea = styled.textarea`
+  /*
   outline: 1px solid #8590a2;
   outline-offset: -1px;
-  color: inherit;
+  
+  &::placeholder {
+    color: #516079;
+    font-weight: 600;
+  } */
+  width: 100%;
+  height: 32px;
+  padding: 0;
+  padding-left: 12px;
+  border: none;
+  border-radius: 4px;
   font-size: inherit;
   font-family: inherit;
-  font-weight: 600;
+  font-weight: inherit;
+  line-height: inherit;
+  resize: none;
   &:focus {
     outline: 2px solid #388bff;
     outline-offset: -2px;
   }
-  &::placeholder {
-    color: #516079;
-    font-weight: 600;
-  }
+`;
+
+export const CardCount = styled.div`
+  margin: 0 6px;
 `;
 
 export const CardList = styled.ul`

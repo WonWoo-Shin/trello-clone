@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AddBoardForm, BoardInput } from "../style/style";
+import { AddBoardForm, BoardTextarea } from "../style/style";
 import { Submit } from "./Submit";
 import { useBoardStore } from "../store/useBoardStore";
 
@@ -32,7 +32,7 @@ export const AddBoard = ({ setIsAddOpen }: IProps) => {
 
   return (
     <AddBoardForm as="form" onSubmit={addBoardSubmit}>
-      <BoardInput
+      <BoardTextarea
         as={"input"}
         placeholder="Enter list title..."
         value={text}

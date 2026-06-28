@@ -14,8 +14,6 @@ import {
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source";
 
-import { ICard } from "../atom";
-
 import { AddBtn } from "./Submit";
 
 import {
@@ -27,8 +25,9 @@ import {
   CardList,
 } from "../style/style";
 import { AddCard } from "./AddCard";
-import { BoardTitleArea } from "./BoardTitleArea";
+import { BoardHeader } from "./BoardHeader";
 import { DraggableCard } from "./DraggableCard";
+import { ICard } from "../store/useBoardStore";
 
 interface IBoardProps {
   boardId: number;
@@ -167,7 +166,7 @@ export const Board = React.memo(
             $isDragging={isDragging}
             $isCardOver={isCardOver}
           >
-            <BoardTitleArea
+            <BoardHeader
               boardId={boardId}
               boardName={boardName}
               boardHandle={dragHandleRef}
