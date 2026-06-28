@@ -121,33 +121,47 @@ export const BoardTitle = styled.h2`
 `;
 
 export const BoardTextarea = styled.textarea`
-  /*
-  outline: 1px solid #8590a2;
-  outline-offset: -1px;
-  
-  &::placeholder {
-    color: #516079;
-    font-weight: 600;
-  } */
   width: 100%;
   height: 32px;
   padding: 0;
   padding-left: 12px;
   border: none;
   border-radius: 4px;
-  font-size: inherit;
+  font-size: 14px;
   font-family: inherit;
-  font-weight: inherit;
-  line-height: inherit;
+  font-weight: 600;
+  line-height: 32px;
+  outline: 1px solid #8590a2;
+  outline-offset: -1px;
   resize: none;
   &:focus {
     outline: 2px solid #388bff;
     outline-offset: -2px;
   }
+  &::placeholder {
+    color: #516079;
+    font-weight: 600;
+  }
 `;
 
 export const CardCount = styled.div`
   margin: 0 6px;
+`;
+
+export const BoardSideButton = styled.button`
+  width: 32px;
+  height: 32px;
+  padding: 9px;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: ease 85ms background-color;
+  cursor: pointer;
+  &:hover {
+    background-color: #091e4224;
+  }
+  svg {
+  }
 `;
 
 export const CardList = styled.ul`

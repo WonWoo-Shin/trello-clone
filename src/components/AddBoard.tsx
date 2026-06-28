@@ -33,7 +33,6 @@ export const AddBoard = ({ setIsAddOpen }: IProps) => {
   return (
     <AddBoardForm as="form" onSubmit={addBoardSubmit}>
       <BoardTextarea
-        as={"input"}
         placeholder="Enter list title..."
         value={text}
         autoFocus

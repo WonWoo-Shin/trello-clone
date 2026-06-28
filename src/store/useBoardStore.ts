@@ -18,6 +18,7 @@ interface IBoardState {
   boardOrder: number[];
   boards: IBoards;
   addBoard: (text: string) => void;
+  deleteBoard: (boardId: number) => void;
 }
 
 export const useBoardStore = create<IBoardState>()(
@@ -53,6 +54,16 @@ export const useBoardStore = create<IBoardState>()(
               [newBoardId]: { boardName: text, cards: [] },
             },
           };
+        }),
+      deleteBoard: (boardId) =>
+        set((state) => {
+          const newBoardOrder = state.boardOrder.filter(
+            (item) => item !== boardId,
+          );
+
+          const newBoards = { boardId, ...state.boards };
+
+          return { boardOrder: newBoardOrder, boards: newBoards };
         }),
     }),
     {
