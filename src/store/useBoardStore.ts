@@ -1,25 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface ICard {
-  cardId: number;
-  cardText: string;
-  cardCheck: boolean;
-}
-
-interface IBoards {
-  [key: number]: {
-    boardName: string;
-    cards: ICard[];
-  };
-}
-
-interface IBoardState {
-  boardOrder: number[];
-  boards: IBoards;
-  addBoard: (text: string) => void;
-  deleteBoard: (boardId: number) => void;
-}
+import { IBoardState } from "../type";
 
 export const useBoardStore = create<IBoardState>()(
   persist(
@@ -61,9 +42,36 @@ export const useBoardStore = create<IBoardState>()(
             (item) => item !== boardId,
           );
 
-          const newBoards = { boardId, ...state.boards };
+          const newBoards = { ...state.boards };
+          delete newBoards[boardId];
 
           return { boardOrder: newBoardOrder, boards: newBoards };
+        }),
+      addCard: (boardId, text) =>
+        set((state) => {
+          const oldBoards = state.boards;
+
+          const newCards = [
+            ...oldBoards[boardId].cards,
+            { cardId: Date.now(), cardText: text, cardCheck: false },
+          ];
+
+          const newBoard = { ...oldBoards[boardId], cards: newCards };
+
+          return {
+            boards: {
+              ...oldBoards,
+              [boardId]: newBoard,
+            },
+          };
+        }),
+      editBoardName: (boardId, text) =>
+        set((state) => {
+          const oldBoards = state.boards;
+
+          const newBoard = { ...oldBoards[boardId], boardName: text };
+
+          return { boards: { ...oldBoards, [boardId]: newBoard } };
         }),
     }),
     {

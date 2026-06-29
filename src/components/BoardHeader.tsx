@@ -8,11 +8,13 @@ import {
   BoardTitle,
   CardCount,
   BoardSideButton,
+  ButtonTag,
 } from "../style/style";
+import { BoardId, BoardName } from "../type";
 
 interface IBoardTitleProps {
-  boardId: number;
-  boardName: string;
+  boardId: BoardId;
+  boardName: BoardName;
   boardHandle: React.RefObject<HTMLDivElement>;
 }
 
@@ -26,10 +28,10 @@ export const BoardHeader = ({
 
   const [text, setText] = useState(boardName);
 
-  const setBoardStore = useBoardStore.setState;
+  const editBoardName = useBoardStore((state) => state.editBoardName);
   const deleteBoard = useBoardStore((state) => state.deleteBoard);
 
-  const changeBoardName = () => {
+  const editBoardNameSubmit = () => {
     toggleShow();
 
     if (text === boardName) return;
@@ -39,13 +41,7 @@ export const BoardHeader = ({
       return;
     }
 
-    setBoardStore((state) => {
-      const oldBoards = state.boards;
-
-      const newBoard = { ...oldBoards[boardId], boardName: text };
-
-      return { boards: { ...oldBoards, [boardId]: newBoard } };
-    });
+    editBoardName(boardId, text);
   };
 
   return (
@@ -57,10 +53,10 @@ export const BoardHeader = ({
             onChange={(event) => setText(event.currentTarget.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
-                changeBoardName();
+                editBoardNameSubmit();
               }
             }}
-            onBlur={changeBoardName}
+            onBlur={editBoardNameSubmit}
             autoFocus
           />
         ) : (
@@ -72,7 +68,10 @@ export const BoardHeader = ({
       <CardCount>
         <span>0</span>
       </CardCount>
-      <BoardSideButton onClick={() => deleteBoard(boardId)}>
+      <BoardSideButton
+        onClick={() => deleteBoard(boardId)}
+        aria-label="보드 삭제"
+      >
         <svg fill="none" viewBox="0 0 16 16" role="presentation">
           <path
             fill="currentcolor"
@@ -81,6 +80,7 @@ export const BoardHeader = ({
             clipRule="evenodd"
           ></path>
         </svg>
+        {/* <ButtonTag className="button-tag">삭제</ButtonTag> */}
       </BoardSideButton>
     </BoardHandle>
   );

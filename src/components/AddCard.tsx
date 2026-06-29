@@ -2,52 +2,37 @@ import { useState } from "react";
 import { FormInput } from "../style/style";
 import { Submit } from "./Submit";
 import { useBoardStore } from "../store/useBoardStore";
+import { BoardId } from "../type";
 
 interface IAddProps {
-  boardId: number;
+  boardId: BoardId;
   setIsAddOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AddCard = ({ boardId, setIsAddOpen }: IAddProps) => {
   const [text, setText] = useState("");
 
-  const setBoardStore = useBoardStore.setState;
+  const addCard = useBoardStore((state) => state.addCard);
 
   const toggleForm = () => {
     setIsAddOpen((curr) => !curr);
     setText("");
   };
 
-  const addCard = (event: React.FormEvent<HTMLFormElement>) => {
+  const addCardSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (text === "") {
       toggleForm();
       return;
     }
 
-    setBoardStore((state) => {
-      const oldBoards = state.boards;
-
-      const newCards = [
-        ...oldBoards[boardId].cards,
-        { cardId: Date.now(), cardText: text, cardCheck: false },
-      ];
-
-      const newBoard = { ...oldBoards[boardId], cards: newCards };
-
-      return {
-        boards: {
-          ...oldBoards,
-          [boardId]: newBoard,
-        },
-      };
-    });
+    addCard(boardId, text);
 
     setText("");
   };
 
   return (
-    <form onSubmit={addCard}>
+    <form onSubmit={addCardSubmit}>
       <FormInput
         as="input"
         placeholder="Enter a title for this card..."
