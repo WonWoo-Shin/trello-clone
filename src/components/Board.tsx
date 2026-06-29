@@ -27,11 +27,11 @@ import {
 import { AddCard } from "./AddCard";
 import { BoardHeader } from "./BoardHeader";
 import { DraggableCard } from "./DraggableCard";
-import { ICard } from "../store/useBoardStore";
+import { BoardId, BoardName, ICard } from "../type";
 
 interface IBoardProps {
-  boardId: number;
-  boardName: string;
+  boardId: BoardId;
+  boardName: BoardName;
   cards: ICard[];
 }
 

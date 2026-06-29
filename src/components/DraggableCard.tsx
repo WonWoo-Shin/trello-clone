@@ -23,10 +23,11 @@ import {
   extractClosestEdge,
   Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
-import { ICard, useBoardStore } from "../store/useBoardStore";
+import { useBoardStore } from "../store/useBoardStore";
+import { BoardId, ICard } from "../type";
 
-interface ICardProps extends ICard {
-  boardId: number;
+interface IProps extends ICard {
+  boardId: BoardId;
   removeBottomCardPreview: () => void;
 }
 
@@ -37,7 +38,7 @@ export const DraggableCard = React.memo(
     cardCheck,
     boardId,
     removeBottomCardPreview,
-  }: ICardProps) => {
+  }: IProps) => {
     const [isDragging, setIsDragging] = useState(false);
     const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
     const [cardHide, setCardHide] = useState(false);

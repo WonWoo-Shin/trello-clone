@@ -149,6 +149,7 @@ export const CardCount = styled.div`
 `;
 
 export const BoardSideButton = styled.button`
+  position: relative;
   width: 32px;
   height: 32px;
   padding: 9px;
@@ -159,9 +160,22 @@ export const BoardSideButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: #091e4224;
+    .button-tag {
+      display: block;
+    }
   }
-  svg {
-  }
+`;
+
+export const ButtonTag = styled.div`
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  z-index: 1;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: rgb(80, 82, 88);
+  color: white;
+  white-space: nowrap;
 `;
 
 export const CardList = styled.ul`
