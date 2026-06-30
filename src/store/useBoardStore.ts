@@ -1,6 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { IBoardState } from "../type";
+import { BoardId, BoardName, CardId, CardText, IBoards } from "../type";
+
+interface IBoardState {
+  boardOrder: BoardId[];
+  boards: IBoards;
+  addBoard: (text: BoardName) => void;
+  deleteBoard: (boardId: BoardId) => void;
+  addCard: (boardId: BoardId, text: CardText) => void;
+  editBoardName: (boardId: BoardId, text: BoardName) => void;
+  editCardName: (boardId: BoardId, cardId: CardId, text: CardText) => void;
+}
 
 export const useBoardStore = create<IBoardState>()(
   persist(
@@ -70,6 +80,18 @@ export const useBoardStore = create<IBoardState>()(
           const oldBoards = state.boards;
 
           const newBoard = { ...oldBoards[boardId], boardName: text };
+
+          return { boards: { ...oldBoards, [boardId]: newBoard } };
+        }),
+      editCardName: (boardId, cardId, text) =>
+        set((state) => {
+          const oldBoards = state.boards;
+
+          const newCards = oldBoards[boardId].cards.map((card) =>
+            card.cardId === cardId ? { ...card, cardText: text } : card,
+          );
+
+          const newBoard = { ...oldBoards[boardId], cards: newCards };
 
           return { boards: { ...oldBoards, [boardId]: newBoard } };
         }),

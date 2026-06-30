@@ -50,6 +50,7 @@ export const DraggableCard = React.memo(
     const dragRef = useRef<HTMLDivElement>(null);
 
     const setBoardStore = useBoardStore.setState;
+    const editCardName = useBoardStore((state) => state.editCardName);
 
     //drop
     useEffect(() => {
@@ -145,20 +146,11 @@ export const DraggableCard = React.memo(
     const editCard = () => {
       toggleEditCard();
       if (text === "") {
+        setText(cardText);
         return;
       }
 
-      setBoardStore((state) => {
-        const oldBoards = state.boards;
-
-        const newCards = oldBoards[boardId].cards.map((card) =>
-          card.cardId === cardId ? { ...card, cardText: text } : card,
-        );
-
-        const newBoard = { ...oldBoards[boardId], cards: newCards };
-
-        return { boards: { ...oldBoards, [boardId]: newBoard } };
-      });
+      editCardName(boardId, cardId, text);
     };
 
     //카드 삭제

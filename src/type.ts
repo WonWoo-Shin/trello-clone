@@ -15,12 +15,3 @@ export interface IBoards {
     cards: ICard[];
   };
 }
-
-export interface IBoardState {
-  boardOrder: BoardId[];
-  boards: IBoards;
-  addBoard: (text: BoardName) => void;
-  deleteBoard: (boardId: BoardId) => void;
-  addCard: (boardId: BoardId, text: CardText) => void;
-  editBoardName: (boardId: BoardId, text: BoardName) => void;
-}
