@@ -49,8 +49,9 @@ export const DraggableCard = React.memo(
     const dropRef = useRef<HTMLLIElement>(null);
     const dragRef = useRef<HTMLDivElement>(null);
 
-    const setBoardStore = useBoardStore.setState;
     const editCardName = useBoardStore((state) => state.editCardName);
+    const deleteCard = useBoardStore((state) => state.deleteCard);
+    const cardCheckToggle = useBoardStore((state) => state.cardCheckToggle);
 
     //drop
     useEffect(() => {
@@ -143,7 +144,7 @@ export const DraggableCard = React.memo(
     const [text, setText] = useState(cardText);
 
     //카드 text 수정
-    const editCard = () => {
+    const editCardNameSubmit = () => {
       toggleEditCard();
       if (text === "") {
         setText(cardText);
@@ -151,36 +152,6 @@ export const DraggableCard = React.memo(
       }
 
       editCardName(boardId, cardId, text);
-    };
-
-    //카드 삭제
-    const deleteCard = () => {
-      setBoardStore((state) => {
-        const oldBoards = state.boards;
-
-        const newCards = oldBoards[boardId].cards.filter(
-          (card) => card.cardId !== cardId,
-        );
-
-        const newBoard = { ...oldBoards[boardId], cards: newCards };
-
-        return { boards: { ...oldBoards, [boardId]: newBoard } };
-      });
-    };
-
-    //카드 체크박스 toggle
-    const cardCheckChange = () => {
-      setBoardStore((state) => {
-        const oldBoards = state.boards;
-
-        const newCards = oldBoards[boardId].cards.map((card) =>
-          card.cardId === cardId ? { ...card, cardCheck: !cardCheck } : card,
-        );
-
-        const newBoard = { ...oldBoards[boardId], cards: newCards };
-
-        return { boards: { ...oldBoards, [boardId]: newBoard } };
-      });
     };
 
     return (
@@ -200,7 +171,7 @@ export const DraggableCard = React.memo(
                 <CardCheckBox
                   type="checkbox"
                   checked={cardCheck}
-                  onChange={cardCheckChange}
+                  onChange={() => cardCheckToggle(boardId, cardId, cardCheck)}
                 />
               )}
               <CardText>{cardText}</CardText>
@@ -218,7 +189,7 @@ export const DraggableCard = React.memo(
                       ></path>
                     </svg>
                   </CardEditButton>
-                  <CardEditButton onClick={deleteCard}>
+                  <CardEditButton onClick={() => deleteCard(boardId, cardId)}>
                     <svg fill="none" viewBox="0 0 16 16" role="presentation">
                       <path
                         fill="currentcolor"
@@ -244,10 +215,10 @@ export const DraggableCard = React.memo(
               onChange={(event) => setText(event.currentTarget.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                  editCard();
+                  editCardNameSubmit();
                 }
               }}
-              onBlur={editCard}
+              onBlur={editCardNameSubmit}
             />
           )}
         </CardWrapper>
