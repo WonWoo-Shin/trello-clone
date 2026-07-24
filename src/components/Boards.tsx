@@ -12,6 +12,7 @@ export const Boards = () => {
   const boardOrder = useBoardStore((state) => state.boardOrder);
   const boards = useBoardStore((state) => state.boards);
   const setBoardStore = useBoardStore.setState;
+  const moveBoard = useBoardStore((state) => state.moveBoard);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
@@ -20,56 +21,32 @@ export const Boards = () => {
     return monitorForElements({
       onDragStart: () => {},
       onDrop: ({ source, location }) => {
-        if (!location.current.dropTargets.length) {
-          //drop outside
-          return;
-        }
-        const target = location.current.dropTargets[0];
-        if (target.element !== location.initial.dropTargets[0].element) {
-          //move item
+        //drop 영역 바깥으로 나갈 시
+        const hasDropTarget = location.current.dropTargets.length > 0;
+        if (!hasDropTarget) return;
+
+        const dropTarget = location.current.dropTargets[0];
+        const initialDropTarget = location.initial.dropTargets[0];
+
+        //시작 지점과 drop 지점이 다를 때(이동이 일어났을 때)
+        if (dropTarget.element !== initialDropTarget.element) {
           const sourceBoardId = source.data.boardId;
-          const targetBoardId = target.data.boardId;
+          const targetBoardId = dropTarget.data.boardId;
           invariant(typeof sourceBoardId === "number");
           invariant(typeof targetBoardId === "number");
 
-          const currentClosetEdge = extractClosestEdge(target.data);
+          const currentClosetEdge = extractClosestEdge(dropTarget.data);
 
           switch (source.data.type) {
             case "board":
-              setBoardStore((state) => {
-                const oldOrder = state.boardOrder;
-
-                const sourceIndex = oldOrder.findIndex(
-                  (item) => item === sourceBoardId,
-                );
-                let targetIndex = oldOrder.findIndex(
-                  (item) => item === targetBoardId,
-                );
-
-                // 마우스가 넘어가도 일정 구간 이상 넘어가지 않으면 반영하지 않음
-                const isMovingLeft = sourceIndex > targetIndex;
-                const isMovingRight = sourceIndex < targetIndex;
-
-                if (isMovingRight && currentClosetEdge === "left") {
-                  targetIndex -= 1;
-                } else if (isMovingLeft && currentClosetEdge === "right") {
-                  targetIndex += 1;
-                }
-                // 마우스가 넘어가도 일정 구간 이상 넘어가지 않으면 반영하지 않음
-
-                const newOrder = [...oldOrder];
-                const draggedItem = newOrder.splice(sourceIndex, 1);
-                newOrder.splice(targetIndex, 0, ...draggedItem);
-
-                return { boardOrder: newOrder };
-              });
+              moveBoard(sourceBoardId, targetBoardId, currentClosetEdge);
               break;
 
             case "card":
-              const targetType = target.data.type;
+              const targetType = dropTarget.data.type;
 
               const sourceCardId = source.data.cardId;
-              const targetCardId = target.data.cardId;
+              const targetCardId = dropTarget.data.cardId;
 
               const sourceIndex = boards[sourceBoardId].cards.findIndex(
                 (item) => item.cardId === sourceCardId,
