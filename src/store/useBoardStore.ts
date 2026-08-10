@@ -21,6 +21,15 @@ interface IBoardState {
   addBoard: (text: BoardName) => void;
   deleteBoard: (boardId: BoardId) => void;
   addCard: (boardId: BoardId, text: CardText) => void;
+  moveCardSameBoard: (
+    sourceBoardId: BoardId,
+    sourceIndex: number,
+    targetBoardId: BoardId,
+    currentClosetEdge: Edge | null,
+    targetType: "card" | "board",
+    targetCardId: CardId,
+  ) => void;
+  moveCardCrossBoard: () => void;
   editBoardName: (boardId: BoardId, text: BoardName) => void;
   editCardName: (boardId: BoardId, cardId: CardId, text: CardText) => void;
   deleteCard: (boardId: BoardId, cardId: CardId) => void;
@@ -124,6 +133,55 @@ export const useBoardStore = create<IBoardState>()(
               [boardId]: newBoard,
             },
           };
+        }),
+
+      moveCardSameBoard: (
+        sourceBoardId,
+        sourceIndex,
+        targetBoardId,
+        currentClosetEdge,
+        targetType,
+        targetCardId,
+      ) =>
+        set((state) => {
+          const oldBoards = state.boards;
+          const newCards = [...oldBoards[sourceBoardId].cards];
+          const draggedCard = newCards.splice(sourceIndex, 1)[0];
+
+          //카드 위에 드롭했을 때
+          if (targetType === "card") {
+            let targetIndex = oldBoards[targetBoardId].cards.findIndex(
+              (item) => item.cardId === targetCardId,
+            );
+
+            const isMovingDown = sourceIndex < targetIndex;
+            const isMovingUp = sourceIndex > targetIndex;
+
+            if (isMovingDown && currentClosetEdge === "top") {
+              targetIndex -= 1;
+            }
+            if (isMovingUp && currentClosetEdge === "bottom") {
+              targetIndex += 1;
+            }
+            newCards.splice(targetIndex, 0, draggedCard);
+          } else if (targetType === "board") {
+            newCards.push(draggedCard);
+          }
+
+          return {
+            boards: {
+              ...oldBoards,
+              [sourceBoardId]: {
+                ...oldBoards[sourceBoardId],
+                cards: newCards,
+              },
+            },
+          };
+        }),
+
+      moveCardCrossBoard: () =>
+        set((state) => {
+          return {};
         }),
 
       editBoardName: (boardId, text) =>

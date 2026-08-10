@@ -7,12 +7,14 @@ import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/clo
 import { AddBoard } from "./AddBoard";
 import { Board } from "./Board";
 import { useBoardStore } from "../store/useBoardStore";
+import { CardId } from "../type";
 
 export const Boards = () => {
   const boardOrder = useBoardStore((state) => state.boardOrder);
   const boards = useBoardStore((state) => state.boards);
   const setBoardStore = useBoardStore.setState;
   const moveBoard = useBoardStore((state) => state.moveBoard);
+  const moveCardSameBoard = useBoardStore((state) => state.moveCardSameBoard);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
@@ -48,46 +50,19 @@ export const Boards = () => {
                 (item) => item.cardId === sourceCardId,
               );
 
-              const targetType = dropTarget.data.type;
+              const targetType = dropTarget.data.type as "card" | "board";
+              const targetCardId = dropTarget.data.cardId as CardId;
 
               //같은 보드 내 이동
               if (sourceBoardId === targetBoardId) {
-                setBoardStore((state) => {
-                  const oldBoards = state.boards;
-                  const newCards = [...oldBoards[sourceBoardId].cards];
-                  const draggedCard = newCards.splice(sourceIndex, 1)[0];
-
-                  //카드 위에 드롭했을 때
-                  if (targetType === "card") {
-                    const targetCardId = dropTarget.data.cardId;
-                    let targetIndex = oldBoards[targetBoardId].cards.findIndex(
-                      (item) => item.cardId === targetCardId,
-                    );
-
-                    const isMovingDown = sourceIndex < targetIndex;
-                    const isMovingUp = sourceIndex > targetIndex;
-
-                    if (isMovingDown && currentClosetEdge === "top") {
-                      targetIndex -= 1;
-                    }
-                    if (isMovingUp && currentClosetEdge === "bottom") {
-                      targetIndex += 1;
-                    }
-                    newCards.splice(targetIndex, 0, draggedCard);
-                  } else if (targetType === "board") {
-                    newCards.push(draggedCard);
-                  }
-
-                  return {
-                    boards: {
-                      ...oldBoards,
-                      [sourceBoardId]: {
-                        ...oldBoards[sourceBoardId],
-                        cards: newCards,
-                      },
-                    },
-                  };
-                });
+                moveCardSameBoard(
+                  sourceBoardId,
+                  sourceIndex,
+                  targetBoardId,
+                  currentClosetEdge,
+                  targetType,
+                  targetCardId,
+                );
               }
 
               //다른 보드로 이동

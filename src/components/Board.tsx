@@ -27,7 +27,7 @@ import {
 import { AddCard } from "./AddCard";
 import { BoardHeader } from "./BoardHeader";
 import { DraggableCard } from "./DraggableCard";
-import { BoardId, BoardName, ICard } from "../type";
+import { BoardId, BoardName, IBoardDndData, ICard } from "../type";
 
 interface IBoardProps {
   boardId: BoardId;
@@ -132,7 +132,11 @@ export const Board = React.memo(
         },
         getInitialData: () => {
           const boardHeight = getComputedStyle(board).height;
-          return { boardId, type: "board", boardHeight };
+          return {
+            boardId,
+            type: "board",
+            boardHeight,
+          };
         },
         onGenerateDragPreview: ({ nativeSetDragImage, source, location }) => {
           setCustomNativeDragPreview({
