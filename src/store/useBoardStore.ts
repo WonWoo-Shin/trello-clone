@@ -1,13 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import {
-  BoardId,
-  BoardName,
-  CardCheck,
-  CardId,
-  CardText,
-  IBoards,
-} from "../type";
+import { BoardId, BoardName, CardId, CardText, IBoards } from "../type";
 import { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
 interface IBoardState {
@@ -16,7 +9,7 @@ interface IBoardState {
   moveBoard: (
     sourceBoardId: number,
     targetBoardId: number,
-    currentClosetEdge: Edge | null,
+    currentClosestEdge: Edge | null,
   ) => void;
   addBoard: (text: BoardName) => void;
   deleteBoard: (boardId: BoardId) => void;
@@ -25,7 +18,7 @@ interface IBoardState {
     sourceBoardId: BoardId,
     sourceIndex: number,
     targetBoardId: BoardId,
-    currentClosetEdge: Edge | null,
+    currentClosestEdge: Edge | null,
     targetType: "card" | "board",
     targetCardId: CardId,
   ) => void;
@@ -33,18 +26,14 @@ interface IBoardState {
     sourceBoardId: BoardId,
     sourceIndex: number,
     targetBoardId: BoardId,
-    currentClosetEdge: Edge | null,
+    currentClosestEdge: Edge | null,
     targetType: "card" | "board",
     targetCardId: CardId,
   ) => void;
   editBoardName: (boardId: BoardId, text: BoardName) => void;
   editCardName: (boardId: BoardId, cardId: CardId, text: CardText) => void;
   deleteCard: (boardId: BoardId, cardId: CardId) => void;
-  cardCheckToggle: (
-    boardId: BoardId,
-    cardId: CardId,
-    cardCheck: CardCheck,
-  ) => void;
+  cardCheckToggle: (boardId: BoardId, cardId: CardId) => void;
 }
 
 export const useBoardStore = create<IBoardState>()(
@@ -69,7 +58,7 @@ export const useBoardStore = create<IBoardState>()(
           cards: [],
         },
       },
-      moveBoard: (sourceBoardId, targetBoardId, currentClosetEdge) =>
+      moveBoard: (sourceBoardId, targetBoardId, currentClosestEdge) =>
         set((state) => {
           const oldOrder = state.boardOrder;
 
@@ -84,9 +73,9 @@ export const useBoardStore = create<IBoardState>()(
           const isMovingLeft = sourceIndex > targetIndex;
           const isMovingRight = sourceIndex < targetIndex;
 
-          if (isMovingRight && currentClosetEdge === "left") {
+          if (isMovingRight && currentClosestEdge === "left") {
             targetIndex -= 1;
-          } else if (isMovingLeft && currentClosetEdge === "right") {
+          } else if (isMovingLeft && currentClosestEdge === "right") {
             targetIndex += 1;
           }
           // 마우스가 넘어가도 일정 구간 이상 넘어가지 않으면 반영하지 않음
@@ -146,7 +135,7 @@ export const useBoardStore = create<IBoardState>()(
         sourceBoardId,
         sourceIndex,
         targetBoardId,
-        currentClosetEdge,
+        currentClosestEdge,
         targetType,
         targetCardId,
       ) =>
@@ -164,10 +153,10 @@ export const useBoardStore = create<IBoardState>()(
             const isMovingDown = sourceIndex < targetIndex;
             const isMovingUp = sourceIndex > targetIndex;
 
-            if (isMovingDown && currentClosetEdge === "top") {
+            if (isMovingDown && currentClosestEdge === "top") {
               targetIndex -= 1;
             }
-            if (isMovingUp && currentClosetEdge === "bottom") {
+            if (isMovingUp && currentClosestEdge === "bottom") {
               targetIndex += 1;
             }
             newCards.splice(targetIndex, 0, draggedCard);
@@ -190,7 +179,7 @@ export const useBoardStore = create<IBoardState>()(
         sourceBoardId,
         sourceIndex,
         targetBoardId,
-        currentClosetEdge,
+        currentClosestEdge,
         targetType,
         targetCardId,
       ) =>
@@ -206,7 +195,7 @@ export const useBoardStore = create<IBoardState>()(
             );
 
             //다른 보드 내 카드 아래 배치할 경우 기존 카드 index아래에 배치
-            if (currentClosetEdge === "bottom") {
+            if (currentClosestEdge === "bottom") {
               targetIndex += 1;
             }
 
@@ -265,12 +254,14 @@ export const useBoardStore = create<IBoardState>()(
           return { boards: { ...oldBoards, [boardId]: newBoard } };
         }),
 
-      cardCheckToggle: (boardId, cardId, cardCheck) =>
+      cardCheckToggle: (boardId, cardId) =>
         set((state) => {
           const oldBoards = state.boards;
 
           const newCards = oldBoards[boardId].cards.map((card) =>
-            card.cardId === cardId ? { ...card, cardCheck: !cardCheck } : card,
+            card.cardId === cardId
+              ? { ...card, cardCheck: !card.cardCheck }
+              : card,
           );
 
           const newBoard = { ...oldBoards[boardId], cards: newCards };

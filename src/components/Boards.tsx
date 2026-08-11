@@ -37,11 +37,11 @@ export const Boards = () => {
           invariant(typeof sourceBoardId === "number");
           invariant(typeof targetBoardId === "number");
 
-          const currentClosetEdge = extractClosestEdge(dropTarget.data);
+          const currentClosestEdge = extractClosestEdge(dropTarget.data);
 
           switch (source.data.type) {
             case "board":
-              moveBoard(sourceBoardId, targetBoardId, currentClosetEdge);
+              moveBoard(sourceBoardId, targetBoardId, currentClosestEdge);
               break;
 
             case "card":
@@ -59,7 +59,7 @@ export const Boards = () => {
                   sourceBoardId,
                   sourceIndex,
                   targetBoardId,
-                  currentClosetEdge,
+                  currentClosestEdge,
                   targetType,
                   targetCardId,
                 );
@@ -71,7 +71,7 @@ export const Boards = () => {
                   sourceBoardId,
                   sourceIndex,
                   targetBoardId,
-                  currentClosetEdge,
+                  currentClosestEdge,
                   targetType,
                   targetCardId,
                 );

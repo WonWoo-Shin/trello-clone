@@ -38,7 +38,7 @@ interface IBoardProps {
 export const Board = React.memo(
   ({ boardId, boardName, cards }: IBoardProps) => {
     const [isDragging, setIsDragging] = useState(false);
-    const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
+    const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [boardHide, setBoardHide] = useState(false);
     const [isCardOver, setIsCardOver] = useState(false);
     const [showCardDropPreview, setShowCardDropPreview] = useState(false);
@@ -64,16 +64,16 @@ export const Board = React.memo(
         element: boardBlock,
         onDrag: ({ source, self }) => {
           if (source.data.boardId !== boardId && source.data.type === "board") {
-            const currentClosetEdge = extractClosestEdge(self.data);
-            setClosetEdge(currentClosetEdge);
+            const currentClosestEdge = extractClosestEdge(self.data);
+            setClosestEdge(currentClosestEdge);
           } else if (source.data.type === "card") {
             setIsCardOver(true);
           }
         },
         onDragEnter: ({ source, self }) => {
           if (source.data.type === "board") {
-            const currentClosetEdge = extractClosestEdge(self.data);
-            setClosetEdge(currentClosetEdge);
+            const currentClosestEdge = extractClosestEdge(self.data);
+            setClosestEdge(currentClosestEdge);
             setDraggingBoardHeight(source.data.boardHeight as string);
           } else if (source.data.type === "card") {
             setShowCardDropPreview(true);
@@ -85,7 +85,7 @@ export const Board = React.memo(
             if (source.data.boardId === boardId) {
               setBoardHide(true);
             }
-            setClosetEdge(null);
+            setClosestEdge(null);
           } else if (source.data.type === "card") {
             setIsCardOver(false);
             setShowCardDropPreview(false);
@@ -93,7 +93,7 @@ export const Board = React.memo(
         },
         onDrop: ({ source }) => {
           if (source.data.type === "board") {
-            setClosetEdge(null);
+            setClosestEdge(null);
           } else if (source.data.type === "card") {
             setIsCardOver(false);
             setShowCardDropPreview(false);
@@ -161,7 +161,7 @@ export const Board = React.memo(
 
     return (
       <>
-        {closetEdge === "left" && (
+        {closestEdge === "left" && (
           <BoardDropPreview style={{ height: draggingBoardHeight }} />
         )}
         <BoardBlock ref={boardBlockRef} hidden={boardHide}>
@@ -198,7 +198,7 @@ export const Board = React.memo(
             )}
           </BoardContainer>
         </BoardBlock>
-        {closetEdge === "right" && (
+        {closestEdge === "right" && (
           <BoardDropPreview style={{ height: draggingBoardHeight }} />
         )}
       </>

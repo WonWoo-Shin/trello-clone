@@ -40,7 +40,7 @@ export const DraggableCard = React.memo(
     removeBottomCardPreview,
   }: IProps) => {
     const [isDragging, setIsDragging] = useState(false);
-    const [closetEdge, setClosetEdge] = useState<Edge | null>(null);
+    const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [cardHide, setCardHide] = useState(false);
     const [draggingCardHeight, setDraggingCardHeight] = useState("100%");
 
@@ -63,14 +63,14 @@ export const DraggableCard = React.memo(
           return source.data.type === "card";
         },
         onDrag: ({ source, self }) => {
-          const currentClosetEdge = extractClosestEdge(self.data);
+          const currentClosestEdge = extractClosestEdge(self.data);
           if (source.data.cardId !== cardId) {
-            setClosetEdge(currentClosetEdge);
+            setClosestEdge(currentClosestEdge);
           }
         },
         onDragEnter: ({ source, self }) => {
-          const currentClosetEdge = extractClosestEdge(self.data);
-          setClosetEdge(currentClosetEdge);
+          const currentClosestEdge = extractClosestEdge(self.data);
+          setClosestEdge(currentClosestEdge);
           removeBottomCardPreview();
           setDraggingCardHeight(source.data.cardHeight as string);
         },
@@ -78,10 +78,10 @@ export const DraggableCard = React.memo(
           if (source.data.cardId === cardId) {
             setCardHide(true);
           }
-          setClosetEdge(null);
+          setClosestEdge(null);
         },
         onDrop: () => {
-          setClosetEdge(null);
+          setClosestEdge(null);
         },
         getData: ({ input, element }) => {
           const data = {
@@ -157,7 +157,7 @@ export const DraggableCard = React.memo(
     return (
       <>
         <CardWrapper ref={dropRef} hidden={cardHide}>
-          {closetEdge === "top" && (
+          {closestEdge === "top" && (
             <CardDropPreview style={{ height: draggingCardHeight }} />
           )}
           <Card
@@ -171,7 +171,7 @@ export const DraggableCard = React.memo(
                 <CardCheckBox
                   type="checkbox"
                   checked={cardCheck}
-                  onChange={() => cardCheckToggle(boardId, cardId, cardCheck)}
+                  onChange={() => cardCheckToggle(boardId, cardId)}
                 />
               )}
               <CardText>{cardText}</CardText>
@@ -203,7 +203,7 @@ export const DraggableCard = React.memo(
               </CardEditArea>
             )}
           </Card>
-          {closetEdge === "bottom" && (
+          {closestEdge === "bottom" && (
             <CardDropPreview style={{ height: draggingCardHeight }} />
           )}
           {cardEditing && (
