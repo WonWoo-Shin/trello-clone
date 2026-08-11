@@ -12,9 +12,9 @@ import { CardId } from "../type";
 export const Boards = () => {
   const boardOrder = useBoardStore((state) => state.boardOrder);
   const boards = useBoardStore((state) => state.boards);
-  const setBoardStore = useBoardStore.setState;
   const moveBoard = useBoardStore((state) => state.moveBoard);
   const moveCardSameBoard = useBoardStore((state) => state.moveCardSameBoard);
+  const moveCardCrossBoard = useBoardStore((state) => state.moveCardCrossBoard);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
@@ -67,42 +67,14 @@ export const Boards = () => {
 
               //다른 보드로 이동
               else if (sourceBoardId !== targetBoardId) {
-                setBoardStore((state) => {
-                  const oldBoards = state.boards;
-                  const newSourceCards = [...oldBoards[sourceBoardId].cards];
-                  const newTargetCards = [...oldBoards[targetBoardId].cards];
-                  const draggedCard = newSourceCards.splice(sourceIndex, 1)[0];
-
-                  if (targetType === "card") {
-                    const targetCardId = dropTarget.data.cardId;
-                    let targetIndex = oldBoards[targetBoardId].cards.findIndex(
-                      (item) => item.cardId === targetCardId,
-                    );
-
-                    //다른 보드 내 카드 아래 배치할 경우 기존 카드 index아래에 배치
-                    if (currentClosetEdge === "bottom") {
-                      targetIndex += 1;
-                    }
-
-                    newTargetCards.splice(targetIndex, 0, draggedCard);
-                  } else if (targetType === "board") {
-                    newTargetCards.push(draggedCard);
-                  }
-
-                  return {
-                    boards: {
-                      ...oldBoards,
-                      [sourceBoardId]: {
-                        ...oldBoards[sourceBoardId],
-                        cards: newSourceCards,
-                      },
-                      [targetBoardId]: {
-                        ...oldBoards[targetBoardId],
-                        cards: newTargetCards,
-                      },
-                    },
-                  };
-                });
+                moveCardCrossBoard(
+                  sourceBoardId,
+                  sourceIndex,
+                  targetBoardId,
+                  currentClosetEdge,
+                  targetType,
+                  targetCardId,
+                );
               }
               break;
 

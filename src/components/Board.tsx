@@ -27,7 +27,7 @@ import {
 import { AddCard } from "./AddCard";
 import { BoardHeader } from "./BoardHeader";
 import { DraggableCard } from "./DraggableCard";
-import { BoardId, BoardName, IBoardDndData, ICard } from "../type";
+import { BoardId, BoardName, ICard } from "../type";
 
 interface IBoardProps {
   boardId: BoardId;

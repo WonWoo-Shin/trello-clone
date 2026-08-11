@@ -8,7 +8,7 @@ import {
   CardText,
   IBoards,
 } from "../type";
-import { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/dist/types/types";
+import { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
 interface IBoardState {
   boardOrder: BoardId[];
@@ -29,7 +29,14 @@ interface IBoardState {
     targetType: "card" | "board",
     targetCardId: CardId,
   ) => void;
-  moveCardCrossBoard: () => void;
+  moveCardCrossBoard: (
+    sourceBoardId: BoardId,
+    sourceIndex: number,
+    targetBoardId: BoardId,
+    currentClosetEdge: Edge | null,
+    targetType: "card" | "board",
+    targetCardId: CardId,
+  ) => void;
   editBoardName: (boardId: BoardId, text: BoardName) => void;
   editCardName: (boardId: BoardId, cardId: CardId, text: CardText) => void;
   deleteCard: (boardId: BoardId, cardId: CardId) => void;
@@ -179,9 +186,48 @@ export const useBoardStore = create<IBoardState>()(
           };
         }),
 
-      moveCardCrossBoard: () =>
+      moveCardCrossBoard: (
+        sourceBoardId,
+        sourceIndex,
+        targetBoardId,
+        currentClosetEdge,
+        targetType,
+        targetCardId,
+      ) =>
         set((state) => {
-          return {};
+          const oldBoards = state.boards;
+          const newSourceCards = [...oldBoards[sourceBoardId].cards];
+          const newTargetCards = [...oldBoards[targetBoardId].cards];
+          const draggedCard = newSourceCards.splice(sourceIndex, 1)[0];
+
+          if (targetType === "card") {
+            let targetIndex = oldBoards[targetBoardId].cards.findIndex(
+              (item) => item.cardId === targetCardId,
+            );
+
+            //다른 보드 내 카드 아래 배치할 경우 기존 카드 index아래에 배치
+            if (currentClosetEdge === "bottom") {
+              targetIndex += 1;
+            }
+
+            newTargetCards.splice(targetIndex, 0, draggedCard);
+          } else if (targetType === "board") {
+            newTargetCards.push(draggedCard);
+          }
+
+          return {
+            boards: {
+              ...oldBoards,
+              [sourceBoardId]: {
+                ...oldBoards[sourceBoardId],
+                cards: newSourceCards,
+              },
+              [targetBoardId]: {
+                ...oldBoards[targetBoardId],
+                cards: newTargetCards,
+              },
+            },
+          };
         }),
 
       editBoardName: (boardId, text) =>
