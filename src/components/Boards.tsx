@@ -84,7 +84,7 @@ export const Boards = () => {
         }
       },
     });
-  }, [boards, boardOrder]);
+  }, [boards]);
 
   return (
     <BoardsList>
