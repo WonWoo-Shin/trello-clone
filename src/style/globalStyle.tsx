@@ -47,8 +47,13 @@ table {
 *{
     box-sizing: border-box;
 }
+@font-face {
+    font-family: 'Atlassian Sans';
+    src: url('fonts/AtlassianSans.v3.ttf') format('truetype');
+    font-display: swap;
+}
 body{
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    font-family: 'Atlassian Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
     Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
 }
 `;

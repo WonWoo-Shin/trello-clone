@@ -26,7 +26,7 @@ export const LinkButton = styled.a`
   color: #ffffff;
   font-size: 18px;
   font-weight: 600;
-  font-family: BlinkMacSystemFont, sans-serif;
+  /* font-family: BlinkMacSystemFont, sans-serif; */
   text-decoration: none;
   transition: border-color 0.2s;
   svg {
