@@ -174,6 +174,7 @@ export const Board = React.memo(
               boardId={boardId}
               boardName={boardName}
               boardHandle={dragHandleRef}
+              cardCount={cards.length}
             />
             <CardList>
               {cards.map((card) => (

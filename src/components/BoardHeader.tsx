@@ -8,7 +8,6 @@ import {
   BoardTitle,
   CardCount,
   BoardSideButton,
-  ButtonTag,
 } from "../style/style";
 import { BoardId, BoardName } from "../type";
 
@@ -16,12 +15,14 @@ interface IBoardTitleProps {
   boardId: BoardId;
   boardName: BoardName;
   boardHandle: React.RefObject<HTMLDivElement>;
+  cardCount: number;
 }
 
 export const BoardHeader = ({
   boardId,
   boardName,
   boardHandle,
+  cardCount,
 }: IBoardTitleProps) => {
   const [isShow, setIsShow] = useState(false);
   const toggleShow = () => setIsShow((curr) => !curr);
@@ -66,7 +67,7 @@ export const BoardHeader = ({
         )}
       </BoardTitleArea>
       <CardCount>
-        <span>0</span>
+        <span>{cardCount}</span>
       </CardCount>
       <BoardSideButton
         onClick={() => deleteBoard(boardId)}
