@@ -42,7 +42,8 @@ export const Main = styled.main`
 `;
 
 export const BoardHeader = styled.div`
-  height: 55px;
+  height: 56px;
+  padding: 12px;
   background-color: ${(props) => props.theme.boardHeaderColor};
 `;
 
