@@ -110,16 +110,24 @@ export const BoardHandle = styled.div`
 export const BoardTitleArea = styled.div`
   flex-grow: 1;
   height: 32px;
-  padding: 6px 0;
 `;
 
 export const BoardTitle = styled.h2`
   width: 100%;
-  padding-left: 12px;
+  padding: 6px 12px;
+`;
+
+export const BoardTitleButton = styled.button`
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: inherit;
   cursor: pointer;
   line-height: 20px;
-  color: #292a2e;
+  font-size: inherit;
+  font-family: inherit;
   font-weight: 600;
+  color: #292a2e;
 `;
 
 export const BoardTextarea = styled.textarea`

@@ -8,6 +8,7 @@ import {
   BoardTitle,
   CardCount,
   BoardSideButton,
+  BoardTitleButton,
 } from "../style/style";
 import { BoardId, BoardName } from "../type";
 
@@ -61,8 +62,10 @@ export const BoardHeader = ({
             autoFocus
           />
         ) : (
-          <BoardTitle as={"h2"} onClick={toggleShow}>
-            {boardName}
+          <BoardTitle>
+            <BoardTitleButton onClick={toggleShow}>
+              <span>{boardName}</span>
+            </BoardTitleButton>
           </BoardTitle>
         )}
       </BoardTitleArea>
