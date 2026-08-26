@@ -109,15 +109,15 @@ export const BoardHandle = styled.div`
 export const BoardTitleArea = styled.div`
   flex-grow: 1;
   height: 32px;
-  line-height: 32px;
-  color: #172b4d;
-  font-weight: 600;
 `;
 
 export const BoardTitle = styled.h2`
   width: 100%;
   padding-left: 12px;
   cursor: pointer;
+  line-height: 32px;
+  color: #172b4d;
+  font-weight: 600;
 `;
 
 export const BoardTextarea = styled.textarea`

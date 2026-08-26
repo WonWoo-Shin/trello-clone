@@ -47,9 +47,16 @@ table {
 *{
     box-sizing: border-box;
 }
+/* @font-face {
+    font-family: 'Atlassian Sans';
+    src: url('https://ds-cdn.prod-east.frontend.public.atl-paas.net/assets/fonts/atlassian-sans/v4/AtlassianSans-latin.woff2') format('woff2');
+    font-display: swap;
+} */
 @font-face {
     font-family: 'Atlassian Sans';
-    src: url('fonts/AtlassianSans.v3.ttf') format('truetype');
+    src: url('fonts/AtlassianSans-v3.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
     font-display: swap;
 }
 body{
