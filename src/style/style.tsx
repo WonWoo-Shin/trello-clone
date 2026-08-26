@@ -10,10 +10,10 @@ export const HeaderStyle = styled.header`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 50px;
-  padding-left: 10px;
+  height: 48px;
+  padding: 8px;
   background-color: ${(props) => props.theme.headerColor};
-  border-bottom: 1px solid ${(props) => props.theme.lineColor};
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
 `;
 
 export const LinkButton = styled.a`

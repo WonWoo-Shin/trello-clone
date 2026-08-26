@@ -5,6 +5,5 @@ declare module "styled-components" {
     headerColor: string;
     boardHeaderColor: string;
     boardCanvasColor: string;
-    lineColor: string;
   }
 }
