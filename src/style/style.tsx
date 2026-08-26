@@ -74,7 +74,7 @@ export const BoardDesign = styled.div`
   box-shadow:
     0px 1px 1px #091e4240,
     0px 0px 1px #091e424f;
-  color: #44546f;
+  color: #505258;
 `;
 
 interface IBoardContainer {
@@ -110,14 +110,15 @@ export const BoardHandle = styled.div`
 export const BoardTitleArea = styled.div`
   flex-grow: 1;
   height: 32px;
+  padding: 6px 0;
 `;
 
 export const BoardTitle = styled.h2`
   width: 100%;
   padding-left: 12px;
   cursor: pointer;
-  line-height: 32px;
-  color: #172b4d;
+  line-height: 20px;
+  color: #292a2e;
   font-weight: 600;
 `;
 
@@ -147,17 +148,22 @@ export const BoardTextarea = styled.textarea`
 
 export const CardCount = styled.div`
   margin: 0 6px;
+  line-height: 20px;
 `;
 
 export const BoardSideButton = styled.button`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 32px;
   height: 32px;
-  padding: 9px;
+  padding: 8px;
   border: none;
   border-radius: 8px;
   background-color: transparent;
   transition: ease 85ms background-color;
+  color: inherit;
   cursor: pointer;
   &:hover {
     background-color: #091e4224;
