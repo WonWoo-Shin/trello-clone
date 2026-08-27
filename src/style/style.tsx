@@ -137,22 +137,20 @@ export const BoardTitleButton = styled.button`
 `;
 
 export const BoardTextarea = styled.textarea`
+  overflow: hidden;
   width: 100%;
   height: 32px;
-  padding: 0;
-  padding-left: 12px;
+  padding: 6px 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 0.25rem;
+  font-size: inherit;
   font-family: inherit;
   font-weight: 600;
-  line-height: 32px;
-  outline: 1px solid #8590a2;
-  outline-offset: -1px;
+  line-height: 20px;
   resize: none;
   &:focus {
-    outline: 2px solid #388bff;
-    outline-offset: -2px;
+    box-shadow: inset 0 0 0 2px #388bff;
+    outline: none;
   }
   &::placeholder {
     color: #516079;
