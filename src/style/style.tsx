@@ -114,20 +114,26 @@ export const BoardTitleArea = styled.div`
 
 export const BoardTitle = styled.h2`
   width: 100%;
-  padding: 6px 12px;
+  height: 100%;
 `;
 
 export const BoardTitleButton = styled.button`
-  padding: 0;
+  width: 100%;
+  padding: 6px 12px;
   border: none;
   outline: none;
   background-color: inherit;
   cursor: pointer;
+  text-align: left;
   line-height: 20px;
   font-size: inherit;
   font-family: inherit;
   font-weight: 600;
   color: #292a2e;
+  span {
+    display: inline-block;
+    line-height: 20px;
+  }
 `;
 
 export const BoardTextarea = styled.textarea`
